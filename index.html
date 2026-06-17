@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NORD WERK AUTOMOTIVE — BMW Coding, Performance & Tuning</title>
+  <meta name="description" content="NORD WERK AUTOMOTIVE — BMW coding, performance parts and ECU tuning. Lights, iDrive display, comfort and security functions, plus turbo, exhaust and suspension upgrades." />
+
+  <link rel="icon" type="image/png" href="Asset/Logo/logo-mark.png" />
+  <link rel="apple-touch-icon" href="Asset/Logo/logo-mark.png" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@300;400;500;600&family=Noto+Sans+Thai:wght@300;400;500&display=swap" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ===================== NAV ===================== -->
+  <header class="nav" id="nav">
+    <div class="nav__inner">
+      <a href="#" class="nav__logo" aria-label="Nord Werk Automotive home">
+        <img class="nav__logo-img" src="Asset/Logo/logo-mark.png" alt="Nord Werk Automotive" width="50" height="34" /><span class="nav__logo-word">NORD WERK<small>AUTOMOTIVE</small></span>
+      </a>
+
+      <nav class="nav__links" id="navLinks">
+        <a href="#categories">Services</a>
+        <a href="#featured">Cars</a>
+        <a href="#brands">Brands</a>
+        <a href="#tuning">Tuning Stages</a>
+        <a href="#reviews">Reviews</a>
+      </nav>
+
+      <div class="nav__actions">
+        <button class="icon-btn" aria-label="Search">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+        </button>
+        <button class="icon-btn" aria-label="Account">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>
+        </button>
+        <button class="nav__burger" id="navBurger" aria-label="Menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- hero + Our Services stack together: the hero pins and Services slides up over it -->
+  <div class="stack-top">
+  <!-- ===================== HERO ===================== -->
+  <section class="hero">
+    <div class="hero__bg"></div>
+    <video class="hero__video" id="heroVideo" autoplay muted playsinline preload="auto" aria-hidden="true">
+      <source src="Asset/video/hero.mp4" type="video/mp4" />
+    </video>
+    <div class="hero__grid-overlay" aria-hidden="true"></div>
+    <div class="hero__scrim" aria-hidden="true"></div>
+    <div class="hero__content hero__content--soon">
+      <div class="hero__loc reveal">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>
+        <span>Pattaya, Thailand</span>
+      </div>
+      <p class="hero__eyebrow reveal">NORD WERK AUTOMOTIVE</p>
+      <h1 class="hero__coming reveal">COMING<br>SOON</h1>
+      <p class="hero__sub reveal">BMW &amp; BENZ coding, performance tuning &amp; service.<br>Grand opening <strong>25 July 2026</strong>.</p>
+
+      <div class="countdown reveal" id="countdown" aria-label="Countdown to opening">
+        <div class="cd"><strong id="cdDays">00</strong><span>Days</span></div>
+        <div class="cd"><strong id="cdHours">00</strong><span>Hours</span></div>
+        <div class="cd"><strong id="cdMins">00</strong><span>Minutes</span></div>
+        <div class="cd"><strong id="cdSecs">00</strong><span>Seconds</span></div>
+      </div>
+
+      <div class="hero__cta reveal">
+        <a href="#contact" class="btn btn--primary">Book Appointment</a>
+        <a href="#tuning" class="btn btn--ghost">Explore Services</a>
+      </div>
+    </div>
+    <a href="#categories" class="hero__scroll" aria-label="Scroll down">▼</a>
+  </section>
+
+  <!-- ===================== CATEGORIES ===================== -->
+  <section class="section" id="categories">
+    <div class="section__head reveal">
+      <h2 class="section__title">OUR SERVICES</h2>
+      <p class="section__lead">BMW &amp; BENZ parts, performance and styling — everything we offer under one roof.</p>
+    </div>
+
+    <!-- Two auto-scrolling rows rendered from the CATEGORIES array in script.js.
+         Drop a photo at Asset/categories/<slug>.webp to auto-replace any icon. -->
+    <div class="services-marquee">
+      <div class="services-row" id="catRow1"></div>
+      <div class="services-row services-row--2" id="catRow2"></div>
+    </div>
+  </section>
+  </div><!-- /.stack-top -->
+
+  <!-- ===================== FEATURED PRODUCTS ===================== -->
+  <section class="section section--alt" id="featured">
+    <div class="section__head reveal">
+      <h2 class="section__title">SHOP BY CAR</h2>
+      <p class="section__lead">Find parts, coding and tuning built for your exact BMW or Mercedes.</p>
+    </div>
+
+    <!-- Cards render from the CARS array in script.js.
+         Drop a photo at Asset/cars/<slug>.webp to set each car's image. -->
+    <div class="car-grid" id="carGrid"></div>
+
+    <div class="section__more reveal">
+      <a href="#contact" class="btn btn--ghost">Don't see your model? Get in touch</a>
+    </div>
+  </section>
+
+  <!-- ===================== VALUE PROPS ===================== -->
+  <section class="props">
+    <div class="props__item reveal">
+      <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 7h11v8H3zM14 10h4l3 3v2h-7"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/></svg>
+      <div><h4>Fast Shipping</h4><p>Free over $199 · ships in 24h</p></div>
+    </div>
+    <div class="props__item reveal">
+      <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 2 4 6v6c0 5 8 8 8 8s8-3 8-8V6z"/><path d="m9 12 2 2 4-4"/></svg>
+      <div><h4>Fitment Guarantee</h4><p>Verified for your make &amp; model</p></div>
+    </div>
+    <div class="props__item reveal">
+      <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 3v18M5 8h14M7 21h10"/><circle cx="12" cy="6" r="2"/></svg>
+      <div><h4>Expert Support</h4><p>Talk to real tuners, 7 days</p></div>
+    </div>
+    <div class="props__item reveal">
+      <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
+      <div><h4>Secure Checkout</h4><p>Encrypted · all major cards</p></div>
+    </div>
+  </section>
+
+  <!-- ===================== TUNING STAGES ===================== -->
+  <section class="section" id="tuning">
+    <div class="section__head reveal">
+      <p class="hero__eyebrow">BMW B58 PERFORMANCE TUNING</p>
+      <h2 class="section__title">TUNING STAGES</h2>
+      <p class="section__lead">Staged power packages for the BMW B58 (M40i · 340i · 440i). Dyno-developed and street-reliable — pick your level.</p>
+    </div>
+
+    <div class="stages-slider">
+      <button class="stages-nav stages-nav--prev" id="stagesPrev" aria-label="Previous stage">‹</button>
+      <div class="stages-track" id="stagesTrack">
+        <!-- Stage cards render from the STAGES array in script.js.
+             Drop Asset/tuning/stage1.webp · stage2.webp · stage3.webp to set the M-style images. -->
+      </div>
+      <button class="stages-nav stages-nav--next" id="stagesNext" aria-label="Next stage">›</button>
+    </div>
+    <div class="stages-dots" id="stagesDots"></div>
+
+    <p class="stages__note reveal">Figures are typical B58 results and vary by model, fuel and supporting mods. Book a consultation for a build tailored to your car.</p>
+  </section>
+
+  <!-- ===================== BRANDS MARQUEE ===================== -->
+  <section class="brands" id="brands">
+    <p class="brands__label reveal">FITMENT FOR THE BRANDS YOU BUILD</p>
+    <div class="brands__track">
+      <div class="brands__row">
+        <span>BMW</span><span>SUPRA</span><span>AUDI</span><span>VW</span><span>SUBARU</span><span>NISSAN</span><span>HONDA</span><span>TOYOTA</span><span>MERCEDES</span><span>PORSCHE</span>
+        <span>BMW</span><span>SUPRA</span><span>AUDI</span><span>VW</span><span>SUBARU</span><span>NISSAN</span><span>HONDA</span><span>TOYOTA</span><span>MERCEDES</span><span>PORSCHE</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== REVIEWS ===================== -->
+  <section class="section" id="reviews">
+    <div class="section__head reveal">
+      <h2 class="section__title">FROM THE GARAGE</h2>
+      <p class="section__lead">Real customer reviews — see them all on Google.</p>
+    </div>
+
+    <!-- Google rating badge (href + rating + count are set from the GOOGLE config in script.js) -->
+    <a class="g-badge reveal" id="gReviewsBadge" href="#" target="_blank" rel="noopener" aria-label="Read Nord Werk Automotive reviews on Google">
+      <span class="g-badge__g" aria-hidden="true">
+        <svg viewBox="0 0 48 48" width="22" height="22"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+      </span>
+      <span class="g-badge__num" id="gRatingNum"></span>
+      <span class="g-badge__stars" id="gRatingStars" aria-hidden="true">★★★★★</span>
+      <span class="g-badge__count" id="gRatingCount">Reviews on Google</span>
+    </a>
+
+    <!-- Live Google reviews render here once FEATURABLE.widgetId is set in script.js -->
+    <div id="liveReviews" class="live-reviews"></div>
+
+    <div class="reviews-grid" id="reviewsFallback">
+      <figure class="review reveal">
+        <div class="review__stars">★★★★★</div>
+        <blockquote>Stage 2 kit fit perfectly and the OTA tune woke the car up. Picked up 110whp on pump gas — insane value.</blockquote>
+        <figcaption>— Marcus T. · BMW M340i</figcaption>
+      </figure>
+      <figure class="review reveal">
+        <div class="review__stars">★★★★★</div>
+        <blockquote>Support actually knows cars. They sorted my fitment question in minutes and the parts shipped next day.</blockquote>
+        <figcaption>— Dana R. · GR Supra</figcaption>
+      </figure>
+      <figure class="review reveal">
+        <div class="review__stars">★★★★★</div>
+        <blockquote>Switching maps from my phone at the track is a game changer. Quality and finish are top tier.</blockquote>
+        <figcaption>— Kenji M. · Golf R</figcaption>
+      </figure>
+    </div>
+
+    <div class="reviews-cta reveal">
+      <a class="btn btn--primary" id="gReviewsLink" href="#" target="_blank" rel="noopener">Read all reviews on Google</a>
+      <a class="btn btn--ghost" id="gWriteLink" href="#" target="_blank" rel="noopener">Write a review</a>
+    </div>
+  </section>
+
+  <!-- ===================== APPOINTMENT + MAP ===================== -->
+  <section class="cta-band" id="contact">
+    <div class="cta-band__wrap">
+      <div class="cta-band__inner reveal">
+        <p class="hero__eyebrow">VISIT THE GARAGE</p>
+        <h2>BOOK AN APPOINTMENT</h2>
+        <p>Reserve a slot at our Pattaya workshop — coding, tuning, diagnostics or service. We'll confirm your booking shortly.</p>
+
+        <form class="book-form" id="bookForm" novalidate>
+          <div class="book-form__row">
+            <div class="book-field">
+              <label for="bkName">Name</label>
+              <input id="bkName" type="text" autocomplete="name" placeholder="Your name" required />
+            </div>
+            <div class="book-field">
+              <label for="bkPhone">Mobile number</label>
+              <input id="bkPhone" type="tel" inputmode="tel" autocomplete="tel" placeholder="08X-XXX-XXXX" required />
+            </div>
+          </div>
+
+          <div class="book-field">
+            <label for="bkService">Service</label>
+            <select id="bkService">
+              <option value="" selected>Select a service (optional)</option>
+              <option>BMW / BENZ Coding</option>
+              <option>Performance Tuning</option>
+              <option>Diagnostics</option>
+              <option>General Service / Maintenance</option>
+              <option>Other</option>
+            </select>
+          </div>
+
+          <div class="book-form__row">
+            <div class="book-field">
+              <label for="bkDate">Preferred date</label>
+              <input id="bkDate" type="date" required />
+            </div>
+            <div class="book-field">
+              <label for="bkTime">Preferred time</label>
+              <select id="bkTime" required>
+                <option value="" selected disabled>Select time</option>
+                <option>09:00</option><option>10:00</option><option>11:00</option><option>12:00</option>
+                <option>13:00</option><option>14:00</option><option>15:00</option><option>16:00</option><option>17:00</option>
+              </select>
+            </div>
+          </div>
+
+          <button class="btn btn--primary book-form__submit" type="submit">Book Appointment</button>
+          <p class="book-form__msg" id="bookMsg" role="status" aria-live="polite"></p>
+        </form>
+
+        <p class="cta-band__addr">
+          <strong>Nord Werk BMW&amp;BENZ Service</strong><br />
+          Pattaya, Chonburi ·
+          <a href="https://www.google.com/maps?cid=10396968605545080179" target="_blank" rel="noopener">Get directions ↗</a>
+        </p>
+      </div>
+
+      <div class="cta-band__map reveal">
+        <iframe
+          title="Nord Werk BMW&amp;BENZ Service Pattaya — location map"
+          src="https://www.google.com/maps?q=Nord%20Werk%20BMW%26BENZ%20Service%20Pattaya&output=embed"
+          loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== FOOTER ===================== -->
+  <footer class="footer">
+    <div class="footer__cols">
+      <div class="footer__brand">
+        <a href="#" class="nav__logo"><img class="nav__logo-img" src="Asset/Logo/logo-mark.png" alt="Nord Werk Automotive" width="50" height="34" /><span class="nav__logo-word">NORD WERK<small>AUTOMOTIVE</small></span></a>
+        <p>Performance parts &amp; cloud ECU tuning. Built for enthusiasts, proven on the dyno.</p>
+      </div>
+      <div class="footer__col">
+        <h5>Shop</h5>
+        <a href="#">Turbo &amp; Boost</a><a href="#">Exhaust</a><a href="#">Intake</a><a href="#">Suspension</a><a href="#">Brakes</a>
+      </div>
+      <div class="footer__col">
+        <h5>Tuning</h5>
+        <a href="#">ECU Flashing</a><a href="#">Custom Maps</a><a href="#">Datalogging</a><a href="#">Supported Cars</a>
+      </div>
+      <div class="footer__col">
+        <h5>Support</h5>
+        <a href="#">Fitment Guide</a><a href="#">Shipping</a><a href="#">Returns</a><a href="#contact">Contact</a>
+      </div>
+    </div>
+    <div class="footer__bar">
+      <span>© 2026 NORD WERK. All rights reserved.</span>
+      <span class="footer__legal"><a href="#">Privacy</a> · <a href="#">Terms</a></span>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

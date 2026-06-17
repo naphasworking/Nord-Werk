@@ -1,0 +1,59 @@
+# =====================================================================
+# Decap CMS — Nord Werk content manager
+# Edit Shop-by-Car and Goods from a friendly admin at  yoursite.com/admin
+# =====================================================================
+
+# --- DEFAULT: hosting on Netlify (easiest login: enable Identity + Git Gateway) ---
+backend:
+  name: git-gateway
+  branch: main
+
+# --- ALTERNATIVE: hosting on GitHub Pages (delete the git-gateway block above,
+#     uncomment this, fill your repo, and set up an OAuth proxy for base_url) ---
+# backend:
+#   name: github
+#   repo: naphasworking/Nord-Werk
+#   branch: main
+#   base_url: https://YOUR-OAUTH-PROXY     # e.g. a free Cloudflare Worker
+
+media_folder: "Asset/uploads"     # where uploaded photos are saved in the repo
+public_folder: "/Asset/uploads"   # the URL path the live site uses for them
+
+collections:
+  - name: "shop"
+    label: "Shop"
+    files:
+      - name: "cars"
+        label: "Shop by Car"
+        file: "data/cars.json"
+        format: "json"
+        description: "The cars shown in the Shop-by-Car section."
+        fields:
+          - label: "Cars"
+            name: "cars"
+            widget: "list"
+            label_singular: "Car"
+            summary: "{{fields.name}} — {{fields.chassis}}"
+            fields:
+              - { label: "Name", name: "name", widget: "string" }
+              - { label: "Chassis / engine", name: "chassis", widget: "string", required: false }
+              - { label: "Photo", name: "image", widget: "image", required: false, hint: "Optional. Overrides the auto image." }
+              - { label: "Image slug (advanced)", name: "slug", widget: "string", required: false, hint: "If no photo set, loads Asset/cars/<slug>.webp" }
+
+      - name: "goods"
+        label: "Goods / Parts"
+        file: "data/goods.json"
+        format: "json"
+        description: "Parts and goods you sell."
+        fields:
+          - label: "Goods"
+            name: "goods"
+            widget: "list"
+            label_singular: "Item"
+            summary: "{{fields.name}}"
+            fields:
+              - { label: "Name", name: "name", widget: "string" }
+              - { label: "Fits car", name: "car", widget: "string", required: false }
+              - { label: "Category", name: "category", widget: "string", required: false }
+              - { label: "Price", name: "price", widget: "string", required: false }
+              - { label: "Photo", name: "image", widget: "image", required: false }

@@ -1,0 +1,12 @@
+{
+  "cars": [
+    { "name": "BMW 3 Series",          "chassis": "G20 · 320i–330i",  "slug": "bmw-3",   "image": "" },
+    { "name": "BMW 4 Series",          "chassis": "G22 · 420i–430i",  "slug": "bmw-4",   "image": "" },
+    { "name": "BMW 5 Series",          "chassis": "G30 · 520i–530i",  "slug": "bmw-5",   "image": "" },
+    { "name": "BMW X3",                "chassis": "G01 · 20i–30i",    "slug": "bmw-x3",  "image": "" },
+    { "name": "BMW X5",                "chassis": "G05 · xDrive40i",  "slug": "bmw-x5",  "image": "" },
+    { "name": "BMW Z4",                "chassis": "G29 · 20i–30i",    "slug": "bmw-z4",  "image": "" },
+    { "name": "Mercedes-Benz C-Class", "chassis": "W206 · C200–C300", "slug": "benz-c",  "image": "" },
+    { "name": "Mercedes-Benz E-Class", "chassis": "W214 · E200–E300", "slug": "benz-e",  "image": "" }
+  ]
+}
