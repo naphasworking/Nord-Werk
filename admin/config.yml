@@ -3,18 +3,14 @@
 # Edit Shop-by-Car and Goods from a friendly admin at  yoursite.com/admin
 # =====================================================================
 
-# --- DEFAULT: hosting on Netlify (easiest login: enable Identity + Git Gateway) ---
+# Login via GitHub (free).
+#  - On Netlify: install the GitHub OAuth provider in site settings — no base_url needed.
+#  - On GitHub Pages: deploy a free Cloudflare Worker OAuth proxy and set base_url to it.
 backend:
-  name: git-gateway
+  name: github
+  repo: naphasworking/Nord-Werk
   branch: main
-
-# --- ALTERNATIVE: hosting on GitHub Pages (delete the git-gateway block above,
-#     uncomment this, fill your repo, and set up an OAuth proxy for base_url) ---
-# backend:
-#   name: github
-#   repo: naphasworking/Nord-Werk
-#   branch: main
-#   base_url: https://YOUR-OAUTH-PROXY     # e.g. a free Cloudflare Worker
+  # base_url: https://YOUR-CLOUDFLARE-WORKER   # only needed for GitHub Pages hosting
 
 media_folder: "Asset/uploads"     # where uploaded photos are saved in the repo
 public_folder: "/Asset/uploads"   # the URL path the live site uses for them
