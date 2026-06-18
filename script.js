@@ -486,7 +486,8 @@ const I18N = {
     "book.svc.service": "General Service / Maintenance", "book.svc.other": "Other",
     "book.date": "Preferred date", "book.time": "Preferred time", "book.time.opt": "Select time",
     "book.submit": "Book Appointment", "book.directions": "Get directions ↗",
-    "footer.brand": "Performance parts & cloud ECU tuning. Built for enthusiasts, proven on the dyno.",
+    "footer.brand": "Pattaya's home for BMW & BENZ coding, performance tuning & service.",
+    "footer.explore": "Explore", "footer.visit": "Visit Us",
     "footer.shop": "Shop", "footer.tuning": "Tuning", "footer.support": "Support", "footer.contact": "Contact"
   },
   th: {
@@ -520,7 +521,8 @@ const I18N = {
     "book.svc.service": "ซ่อมบำรุงทั่วไป", "book.svc.other": "อื่น ๆ",
     "book.date": "วันที่สะดวก", "book.time": "เวลาที่สะดวก", "book.time.opt": "เลือกเวลา",
     "book.submit": "จองคิว", "book.directions": "ดูเส้นทาง ↗",
-    "footer.brand": "อะไหล่สมรรถนะและการจูน ECU สร้างมาเพื่อคนรักรถ พิสูจน์แล้วบนไดโน่",
+    "footer.brand": "ศูนย์รวมบริการโค้ดดิ้ง จูนสมรรถนะ และดูแล BMW & BENZ ในพัทยา",
+    "footer.explore": "เมนู", "footer.visit": "มาหาเรา",
     "footer.shop": "ช็อป", "footer.tuning": "จูน", "footer.support": "ช่วยเหลือ", "footer.contact": "ติดต่อเรา"
   }
 };
