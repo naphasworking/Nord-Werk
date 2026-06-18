@@ -332,8 +332,19 @@ html[lang="th"] .hero__loc { letter-spacing: .06em; }
 .bmw-cat__img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1; }
 
 /* ---------- SHOP BY CAR ---------- */
-.car-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+/* two-row horizontal scroller; the edge card peeks (half) to invite scrolling */
+.car-grid {
+  display: grid; grid-auto-flow: column; grid-template-rows: auto auto;
+  grid-auto-columns: min(340px, 76vw); gap: 18px;
+  overflow-x: auto; overflow-y: hidden; scroll-snap-type: x proximity;
+  padding-bottom: 14px;
+  scrollbar-width: thin; scrollbar-color: var(--border) transparent;
+}
+.car-grid::-webkit-scrollbar { height: 6px; }
+.car-grid::-webkit-scrollbar-track { background: transparent; }
+.car-grid::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
 .car-card {
+  scroll-snap-align: start;
   background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
   overflow: hidden; display: flex; flex-direction: column;
   transition: transform .3s var(--ease), border-color .3s, box-shadow .3s;
@@ -359,8 +370,7 @@ html[lang="th"] .hero__loc { letter-spacing: .06em; }
 .car-card__body { padding: 15px 18px 17px; }
 .car-card__body h3 { font-family: "Sora", sans-serif; font-size: 1.05rem; font-weight: 700; }
 .car-card__chassis { display: block; margin-top: 4px; color: var(--steel-2); font-size: .74rem; letter-spacing: .1em; text-transform: uppercase; font-weight: 600; }
-@media (max-width: 1024px) { .car-grid { grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 520px)  { .car-grid { grid-template-columns: 1fr; } }
+@media (max-width: 520px) { .car-grid { grid-auto-columns: 66vw; } }   /* peek the next card */
 
 /* ---------- PRODUCT GRID ---------- */
 .prod-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
