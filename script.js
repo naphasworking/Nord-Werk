@@ -174,25 +174,23 @@ function initReveal() {
   window.addEventListener("load", () => { check(); setTimeout(check, 300); });
 }
 
-/* ---- Gentle fade-up for the non-stacking sections
-   (the closing Reviews → Contact pair sticky-stacks via CSS instead) ---- */
+/* ---- Gentle fade-up for the non-stacking sections (rect-based; reliable) ---- */
 function initSectionFade() {
-  const secs = document.querySelectorAll("body > section:not(.hero)");
+  let secs = [...document.querySelectorAll("body > section:not(.hero)")];
   if (!secs.length) return;
-  if (!("IntersectionObserver" in window)) {
-    secs.forEach(s => s.classList.add("in"));
-    return;
-  }
   secs.forEach(s => s.classList.add("sect-fade"));
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add("in");
-        io.unobserve(entry.target);
-      }
+  const check = () => {
+    const vh = window.innerHeight || document.documentElement.clientHeight;
+    secs = secs.filter(s => {
+      const r = s.getBoundingClientRect();
+      if (r.top < vh * 0.9 && r.bottom > 0) { s.classList.add("in"); return false; }
+      return true;
     });
-  }, { threshold: 0.08, rootMargin: "0px 0px -8% 0px" });
-  secs.forEach(s => io.observe(s));
+  };
+  check();
+  window.addEventListener("scroll", check, { passive: true });
+  window.addEventListener("resize", check, { passive: true });
+  window.addEventListener("load", () => { check(); setTimeout(check, 300); });
 }
 
 /* =========================================================
@@ -587,4 +585,9 @@ document.addEventListener("DOMContentLoaded", () => {
   initReveal();
   initSectionFade();
   initLangCurrency();
+
+  // safety net: nothing should ever stay hidden — force-reveal after load
+  window.addEventListener("load", () => setTimeout(() => {
+    document.querySelectorAll(".reveal:not(.in), .sect-fade:not(.in)").forEach(el => el.classList.add("in"));
+  }, 2200));
 });
