@@ -24,20 +24,22 @@
       </a>
 
       <nav class="nav__links" id="navLinks">
-        <a href="#categories">Services</a>
-        <a href="#featured">Cars</a>
-        <a href="#brands">Brands</a>
-        <a href="#tuning">Tuning Stages</a>
-        <a href="#reviews">Reviews</a>
+        <a href="#categories" data-i18n="nav.services">Services</a>
+        <a href="#featured" data-i18n="nav.cars">Cars</a>
+        <a href="#brands" data-i18n="nav.brands">Brands</a>
+        <a href="#tuning" data-i18n="nav.tuning">Tuning Stages</a>
+        <a href="#reviews" data-i18n="nav.reviews">Reviews</a>
       </nav>
 
       <div class="nav__actions">
-        <button class="icon-btn" aria-label="Search">
-          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
-        </button>
-        <button class="icon-btn" aria-label="Account">
-          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>
-        </button>
+        <button class="lang-toggle" id="langToggle" aria-label="Switch language">ไทย</button>
+        <select class="cur-select" id="curSelect" aria-label="Currency">
+          <option value="THB">฿ THB</option>
+          <option value="USD">$ USD</option>
+          <option value="CNY">¥ CNY</option>
+          <option value="EUR">€ EUR</option>
+          <option value="RUB">₽ RUB</option>
+        </select>
         <button class="nav__burger" id="navBurger" aria-label="Menu">
           <span></span><span></span><span></span>
         </button>
@@ -58,22 +60,22 @@
     <div class="hero__content hero__content--soon">
       <div class="hero__loc reveal">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>
-        <span>Pattaya, Thailand</span>
+        <span data-i18n="hero.loc">Pattaya, Thailand</span>
       </div>
       <p class="hero__eyebrow reveal">NORD WERK AUTOMOTIVE</p>
-      <h1 class="hero__coming reveal">COMING<br>SOON</h1>
-      <p class="hero__sub reveal">BMW &amp; BENZ coding, performance tuning &amp; service.<br>Grand opening <strong>25 July 2026</strong>.</p>
+      <h1 class="hero__coming reveal" data-i18n-html="hero.coming">COMING<br>SOON</h1>
+      <p class="hero__sub reveal" data-i18n-html="hero.sub">BMW &amp; BENZ coding, performance tuning &amp; service.<br>Grand opening <strong>25 July 2026</strong>.</p>
 
       <div class="countdown reveal" id="countdown" aria-label="Countdown to opening">
-        <div class="cd"><strong id="cdDays">00</strong><span>Days</span></div>
-        <div class="cd"><strong id="cdHours">00</strong><span>Hours</span></div>
-        <div class="cd"><strong id="cdMins">00</strong><span>Minutes</span></div>
-        <div class="cd"><strong id="cdSecs">00</strong><span>Seconds</span></div>
+        <div class="cd"><strong id="cdDays">00</strong><span data-i18n="cd.days">Days</span></div>
+        <div class="cd"><strong id="cdHours">00</strong><span data-i18n="cd.hours">Hours</span></div>
+        <div class="cd"><strong id="cdMins">00</strong><span data-i18n="cd.mins">Minutes</span></div>
+        <div class="cd"><strong id="cdSecs">00</strong><span data-i18n="cd.secs">Seconds</span></div>
       </div>
 
       <div class="hero__cta reveal">
-        <a href="#contact" class="btn btn--primary">Book Appointment</a>
-        <a href="#tuning" class="btn btn--ghost">Explore Services</a>
+        <a href="#contact" class="btn btn--primary" data-i18n="hero.book">Book Appointment</a>
+        <a href="#tuning" class="btn btn--ghost" data-i18n="hero.explore">Explore Services</a>
       </div>
     </div>
     <a href="#categories" class="hero__scroll" aria-label="Scroll down">▼</a>
@@ -81,9 +83,9 @@
 
   <!-- ===================== CATEGORIES ===================== -->
   <section class="section" id="categories">
-    <div class="section__head reveal">
-      <h2 class="section__title">OUR SERVICES</h2>
-      <p class="section__lead">BMW &amp; BENZ parts, performance and styling — everything we offer under one roof.</p>
+    <div class="section__head">
+      <h2 class="section__title" data-i18n="services.title">OUR SERVICES</h2>
+      <p class="section__lead" data-i18n="services.lead">BMW &amp; BENZ parts, performance and styling — everything we offer under one roof.</p>
     </div>
 
     <!-- Two auto-scrolling rows rendered from the CATEGORIES array in script.js.
@@ -95,11 +97,71 @@
   </section>
   </div><!-- /.stack-top -->
 
+  <!-- ===================== APPOINTMENT + MAP ===================== -->
+  <section class="cta-band" id="contact">
+    <div class="cta-band__wrap">
+      <div class="cta-band__inner reveal">
+        <p class="hero__eyebrow" data-i18n="book.eyebrow">VISIT THE GARAGE</p>
+        <h2 data-i18n="book.title">BOOK AN APPOINTMENT</h2>
+        <p data-i18n="book.desc">Reserve a slot at our Pattaya workshop — coding, tuning, diagnostics or service. We'll confirm your booking shortly.</p>
+
+        <form class="book-form" id="bookForm" novalidate>
+          <div class="book-form__row">
+            <div class="book-field">
+              <label for="bkName" data-i18n="book.name">Name</label>
+              <input id="bkName" type="text" autocomplete="name" placeholder="Your name" data-i18n-ph="book.name.ph" required />
+            </div>
+            <div class="book-field">
+              <label for="bkPhone" data-i18n="book.phone">Mobile number</label>
+              <input id="bkPhone" type="tel" inputmode="tel" autocomplete="tel" placeholder="08X-XXX-XXXX" required />
+            </div>
+          </div>
+
+          <div class="book-field">
+            <label for="bkService" data-i18n="book.service">Service</label>
+            <select id="bkService">
+              <option value="" selected data-i18n="book.service.opt">Select a service (optional)</option>
+              <option data-i18n="book.svc.coding">BMW / BENZ Coding</option>
+              <option data-i18n="book.svc.tuning">Performance Tuning</option>
+              <option data-i18n="book.svc.diag">Diagnostics</option>
+              <option data-i18n="book.svc.service">General Service / Maintenance</option>
+              <option data-i18n="book.svc.other">Other</option>
+            </select>
+          </div>
+
+          <div class="book-form__row">
+            <div class="book-field">
+              <label for="bkDate" data-i18n="book.date">Preferred date</label>
+              <input id="bkDate" type="date" required />
+            </div>
+            <div class="book-field">
+              <label for="bkTime" data-i18n="book.time">Preferred time</label>
+              <select id="bkTime" required>
+                <option value="" selected disabled data-i18n="book.time.opt">Select time</option>
+                <option>09:00</option><option>10:00</option><option>11:00</option><option>12:00</option>
+                <option>13:00</option><option>14:00</option><option>15:00</option><option>16:00</option><option>17:00</option>
+              </select>
+            </div>
+          </div>
+
+          <button class="btn btn--primary book-form__submit" type="submit" data-i18n="book.submit">Book Appointment</button>
+          <p class="book-form__msg" id="bookMsg" role="status" aria-live="polite"></p>
+        </form>
+
+        <p class="cta-band__addr">
+          <strong>Nord Werk BMW&amp;BENZ Service</strong><br />
+          Pattaya, Chonburi ·
+          <a href="https://www.google.com/maps?cid=10396968605545080179" target="_blank" rel="noopener" data-i18n="book.directions">Get directions ↗</a>
+        </p>
+      </div>
+    </div>
+  </section>
+
   <!-- ===================== FEATURED PRODUCTS ===================== -->
   <section class="section section--alt" id="featured">
     <div class="section__head reveal">
-      <h2 class="section__title">SHOP BY CAR</h2>
-      <p class="section__lead">Find parts, coding and tuning built for your exact BMW or Mercedes.</p>
+      <h2 class="section__title" data-i18n="cars.title">SHOP BY CAR</h2>
+      <p class="section__lead" data-i18n="cars.lead">Find parts, coding and tuning built for your exact BMW or Mercedes.</p>
     </div>
 
     <!-- Cards render from the CARS array in script.js.
@@ -107,7 +169,7 @@
     <div class="car-grid" id="carGrid"></div>
 
     <div class="section__more reveal">
-      <a href="#contact" class="btn btn--ghost">Don't see your model? Get in touch</a>
+      <a href="#contact" class="btn btn--ghost" data-i18n="cars.cta">Don't see your model? Get in touch</a>
     </div>
   </section>
 
@@ -115,28 +177,28 @@
   <section class="props">
     <div class="props__item reveal">
       <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 7h11v8H3zM14 10h4l3 3v2h-7"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/></svg>
-      <div><h4>Fast Shipping</h4><p>Free over $199 · ships in 24h</p></div>
+      <div><h4 data-i18n="props.ship.t">Fast Shipping</h4><p data-i18n="props.ship.d">Free over $199 · ships in 24h</p></div>
     </div>
     <div class="props__item reveal">
       <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 2 4 6v6c0 5 8 8 8 8s8-3 8-8V6z"/><path d="m9 12 2 2 4-4"/></svg>
-      <div><h4>Fitment Guarantee</h4><p>Verified for your make &amp; model</p></div>
+      <div><h4 data-i18n="props.fit.t">Fitment Guarantee</h4><p data-i18n="props.fit.d">Verified for your make &amp; model</p></div>
     </div>
     <div class="props__item reveal">
       <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 3v18M5 8h14M7 21h10"/><circle cx="12" cy="6" r="2"/></svg>
-      <div><h4>Expert Support</h4><p>Talk to real tuners, 7 days</p></div>
+      <div><h4 data-i18n="props.support.t">Expert Support</h4><p data-i18n="props.support.d">Talk to real tuners, 7 days</p></div>
     </div>
     <div class="props__item reveal">
       <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
-      <div><h4>Secure Checkout</h4><p>Encrypted · all major cards</p></div>
+      <div><h4 data-i18n="props.secure.t">Secure Checkout</h4><p data-i18n="props.secure.d">Encrypted · all major cards</p></div>
     </div>
   </section>
 
   <!-- ===================== TUNING STAGES ===================== -->
   <section class="section" id="tuning">
     <div class="section__head reveal">
-      <p class="hero__eyebrow">BMW B58 PERFORMANCE TUNING</p>
-      <h2 class="section__title">TUNING STAGES</h2>
-      <p class="section__lead">Staged power packages for the BMW B58 (M40i · 340i · 440i). Dyno-developed and street-reliable — pick your level.</p>
+      <p class="hero__eyebrow" data-i18n="tuning.eyebrow">BMW B58 PERFORMANCE TUNING</p>
+      <h2 class="section__title" data-i18n="tuning.title">TUNING STAGES</h2>
+      <p class="section__lead" data-i18n="tuning.lead">Staged power packages for the BMW B58 (M40i · 340i · 440i). Dyno-developed and street-reliable — pick your level.</p>
     </div>
 
     <div class="stages-slider">
@@ -149,16 +211,28 @@
     </div>
     <div class="stages-dots" id="stagesDots"></div>
 
-    <p class="stages__note reveal">Figures are typical B58 results and vary by model, fuel and supporting mods. Book a consultation for a build tailored to your car.</p>
+    <p class="stages__note reveal" data-i18n="tuning.note">Figures are typical B58 results and vary by model, fuel and supporting mods. Book a consultation for a build tailored to your car.</p>
   </section>
 
   <!-- ===================== BRANDS MARQUEE ===================== -->
   <section class="brands" id="brands">
-    <p class="brands__label reveal">FITMENT FOR THE BRANDS YOU BUILD</p>
+    <p class="brands__label reveal" data-i18n="brands.label">BRANDS WE OFFER</p>
     <div class="brands__track">
       <div class="brands__row">
-        <span>BMW</span><span>SUPRA</span><span>AUDI</span><span>VW</span><span>SUBARU</span><span>NISSAN</span><span>HONDA</span><span>TOYOTA</span><span>MERCEDES</span><span>PORSCHE</span>
-        <span>BMW</span><span>SUPRA</span><span>AUDI</span><span>VW</span><span>SUBARU</span><span>NISSAN</span><span>HONDA</span><span>TOYOTA</span><span>MERCEDES</span><span>PORSCHE</span>
+        <img class="brand-logo" src="Asset/partners/brembo.webp" alt="Brembo" loading="lazy" />
+        <img class="brand-logo" src="Asset/partners/eibach.webp" alt="Eibach" loading="lazy" />
+        <img class="brand-logo" src="Asset/partners/kw.webp" alt="KW Suspensions" loading="lazy" />
+        <img class="brand-logo" src="Asset/partners/bilstein.webp" alt="Bilstein" loading="lazy" />
+        <img class="brand-logo" src="Asset/partners/alcon.webp" alt="Alcon" loading="lazy" />
+        <img class="brand-logo" src="Asset/partners/breyton.webp" alt="Breyton" loading="lazy" />
+        <img class="brand-logo" src="Asset/partners/bbs.webp" alt="BBS" loading="lazy" />
+        <img class="brand-logo" src="Asset/partners/brembo.webp" alt="Brembo" loading="lazy" />
+        <img class="brand-logo" src="Asset/partners/eibach.webp" alt="Eibach" loading="lazy" />
+        <img class="brand-logo" src="Asset/partners/kw.webp" alt="KW Suspensions" loading="lazy" />
+        <img class="brand-logo" src="Asset/partners/bilstein.webp" alt="Bilstein" loading="lazy" />
+        <img class="brand-logo" src="Asset/partners/alcon.webp" alt="Alcon" loading="lazy" />
+        <img class="brand-logo" src="Asset/partners/breyton.webp" alt="Breyton" loading="lazy" />
+        <img class="brand-logo" src="Asset/partners/bbs.webp" alt="BBS" loading="lazy" />
       </div>
     </div>
   </section>
@@ -166,8 +240,8 @@
   <!-- ===================== REVIEWS ===================== -->
   <section class="section" id="reviews">
     <div class="section__head reveal">
-      <h2 class="section__title">FROM THE GARAGE</h2>
-      <p class="section__lead">Real customer reviews — see them all on Google.</p>
+      <h2 class="section__title" data-i18n="reviews.title">FROM THE GARAGE</h2>
+      <p class="section__lead" data-i18n="reviews.lead">Real customer reviews — see them all on Google.</p>
     </div>
 
     <!-- Google rating badge (href + rating + count are set from the GOOGLE config in script.js) -->
@@ -177,7 +251,7 @@
       </span>
       <span class="g-badge__num" id="gRatingNum"></span>
       <span class="g-badge__stars" id="gRatingStars" aria-hidden="true">★★★★★</span>
-      <span class="g-badge__count" id="gRatingCount">Reviews on Google</span>
+      <span class="g-badge__count" id="gRatingCount" data-i18n="reviews.count">Reviews on Google</span>
     </a>
 
     <!-- Live Google reviews render here once FEATURABLE.widgetId is set in script.js -->
@@ -202,96 +276,37 @@
     </div>
 
     <div class="reviews-cta reveal">
-      <a class="btn btn--primary" id="gReviewsLink" href="#" target="_blank" rel="noopener">Read all reviews on Google</a>
-      <a class="btn btn--ghost" id="gWriteLink" href="#" target="_blank" rel="noopener">Write a review</a>
-    </div>
-  </section>
-
-  <!-- ===================== APPOINTMENT + MAP ===================== -->
-  <section class="cta-band" id="contact">
-    <div class="cta-band__wrap">
-      <div class="cta-band__inner reveal">
-        <p class="hero__eyebrow">VISIT THE GARAGE</p>
-        <h2>BOOK AN APPOINTMENT</h2>
-        <p>Reserve a slot at our Pattaya workshop — coding, tuning, diagnostics or service. We'll confirm your booking shortly.</p>
-
-        <form class="book-form" id="bookForm" novalidate>
-          <div class="book-form__row">
-            <div class="book-field">
-              <label for="bkName">Name</label>
-              <input id="bkName" type="text" autocomplete="name" placeholder="Your name" required />
-            </div>
-            <div class="book-field">
-              <label for="bkPhone">Mobile number</label>
-              <input id="bkPhone" type="tel" inputmode="tel" autocomplete="tel" placeholder="08X-XXX-XXXX" required />
-            </div>
-          </div>
-
-          <div class="book-field">
-            <label for="bkService">Service</label>
-            <select id="bkService">
-              <option value="" selected>Select a service (optional)</option>
-              <option>BMW / BENZ Coding</option>
-              <option>Performance Tuning</option>
-              <option>Diagnostics</option>
-              <option>General Service / Maintenance</option>
-              <option>Other</option>
-            </select>
-          </div>
-
-          <div class="book-form__row">
-            <div class="book-field">
-              <label for="bkDate">Preferred date</label>
-              <input id="bkDate" type="date" required />
-            </div>
-            <div class="book-field">
-              <label for="bkTime">Preferred time</label>
-              <select id="bkTime" required>
-                <option value="" selected disabled>Select time</option>
-                <option>09:00</option><option>10:00</option><option>11:00</option><option>12:00</option>
-                <option>13:00</option><option>14:00</option><option>15:00</option><option>16:00</option><option>17:00</option>
-              </select>
-            </div>
-          </div>
-
-          <button class="btn btn--primary book-form__submit" type="submit">Book Appointment</button>
-          <p class="book-form__msg" id="bookMsg" role="status" aria-live="polite"></p>
-        </form>
-
-        <p class="cta-band__addr">
-          <strong>Nord Werk BMW&amp;BENZ Service</strong><br />
-          Pattaya, Chonburi ·
-          <a href="https://www.google.com/maps?cid=10396968605545080179" target="_blank" rel="noopener">Get directions ↗</a>
-        </p>
-      </div>
-
-      <div class="cta-band__map reveal">
-        <iframe
-          title="Nord Werk BMW&amp;BENZ Service Pattaya — location map"
-          src="https://www.google.com/maps?q=Nord%20Werk%20BMW%26BENZ%20Service%20Pattaya&output=embed"
-          loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
-      </div>
+      <a class="btn btn--primary" id="gReviewsLink" href="#" target="_blank" rel="noopener" data-i18n="reviews.readall">Read all reviews on Google</a>
+      <a class="btn btn--ghost" id="gWriteLink" href="#" target="_blank" rel="noopener" data-i18n="reviews.write">Write a review</a>
     </div>
   </section>
 
   <!-- ===================== FOOTER ===================== -->
-  <footer class="footer">
-    <div class="footer__cols">
+  <footer class="footer" id="findus">
+    <div class="footer__main">
+      <div class="footer__cols">
       <div class="footer__brand">
         <a href="#" class="nav__logo"><img class="nav__logo-img" src="Asset/Logo/logo-mark.png" alt="Nord Werk Automotive" width="50" height="34" /><span class="nav__logo-word">NORD WERK<small>AUTOMOTIVE</small></span></a>
-        <p>Performance parts &amp; cloud ECU tuning. Built for enthusiasts, proven on the dyno.</p>
+        <p data-i18n="footer.brand">Performance parts &amp; cloud ECU tuning. Built for enthusiasts, proven on the dyno.</p>
       </div>
       <div class="footer__col">
-        <h5>Shop</h5>
+        <h5 data-i18n="footer.shop">Shop</h5>
         <a href="#">Turbo &amp; Boost</a><a href="#">Exhaust</a><a href="#">Intake</a><a href="#">Suspension</a><a href="#">Brakes</a>
       </div>
       <div class="footer__col">
-        <h5>Tuning</h5>
+        <h5 data-i18n="footer.tuning">Tuning</h5>
         <a href="#">ECU Flashing</a><a href="#">Custom Maps</a><a href="#">Datalogging</a><a href="#">Supported Cars</a>
       </div>
       <div class="footer__col">
-        <h5>Support</h5>
-        <a href="#">Fitment Guide</a><a href="#">Shipping</a><a href="#">Returns</a><a href="#contact">Contact</a>
+        <h5 data-i18n="footer.support">Support</h5>
+        <a href="#">Fitment Guide</a><a href="#">Shipping</a><a href="#">Returns</a><a href="#contact" data-i18n="footer.contact">Contact</a>
+      </div>
+      </div>
+      <div class="footer__map">
+        <iframe
+          title="Nord Werk BMW&amp;BENZ Service Pattaya — location map"
+          src="https://www.google.com/maps?q=Nord%20Werk%20BMW%26BENZ%20Service%20Pattaya&output=embed"
+          loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
       </div>
     </div>
     <div class="footer__bar">

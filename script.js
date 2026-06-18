@@ -156,28 +156,28 @@ function initNav() {
   );
 }
 
-/* ---- Scroll reveal ---- */
+/* ---- Scroll reveal (rect-based; reliably reveals anything in view) ---- */
 function initReveal() {
-  const els = document.querySelectorAll(".reveal");
-  if (!("IntersectionObserver" in window)) {
-    els.forEach(el => el.classList.add("in"));
-    return;
-  }
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add("in");
-        io.unobserve(entry.target);
-      }
+  let els = [...document.querySelectorAll(".reveal")];
+  if (!els.length) return;
+  const check = () => {
+    const vh = window.innerHeight || document.documentElement.clientHeight;
+    els = els.filter(el => {
+      const r = el.getBoundingClientRect();
+      if (r.top < vh * 0.92 && r.bottom > 0) { el.classList.add("in"); return false; }
+      return true;
     });
-  }, { threshold: 0.12, rootMargin: "0px 0px -40px 0px" });
-  els.forEach(el => io.observe(el));
+  };
+  check();
+  window.addEventListener("scroll", check, { passive: true });
+  window.addEventListener("resize", check, { passive: true });
+  window.addEventListener("load", () => { check(); setTimeout(check, 300); });
 }
 
 /* ---- Gentle fade-up for the non-stacking sections
    (the closing Reviews → Contact pair sticky-stacks via CSS instead) ---- */
 function initSectionFade() {
-  const secs = document.querySelectorAll("body > section:not(.hero):not(#reviews):not(#contact)");
+  const secs = document.querySelectorAll("body > section:not(.hero)");
   if (!secs.length) return;
   if (!("IntersectionObserver" in window)) {
     secs.forEach(s => s.classList.add("in"));
@@ -453,6 +453,124 @@ function initCountdown() {
   setInterval(tick, 1000);
 }
 
+/* =========================================================
+   LANGUAGE (English default + Thai) and CURRENCY
+   ========================================================= */
+const I18N = {
+  en: {
+    "nav.services": "Services", "nav.cars": "Cars", "nav.brands": "Brands",
+    "nav.tuning": "Tuning Stages", "nav.reviews": "Reviews",
+    "hero.loc": "Pattaya, Thailand",
+    "hero.coming": "COMING<br>SOON",
+    "hero.sub": "BMW &amp; BENZ coding, performance tuning &amp; service.<br>Grand opening <strong>25 July 2026</strong>.",
+    "cd.days": "Days", "cd.hours": "Hours", "cd.mins": "Minutes", "cd.secs": "Seconds",
+    "hero.book": "Book Appointment", "hero.explore": "Explore Services",
+    "services.title": "OUR SERVICES",
+    "services.lead": "BMW & BENZ parts, performance and styling — everything we offer under one roof.",
+    "cars.title": "SHOP BY CAR",
+    "cars.lead": "Find parts, coding and tuning built for your exact BMW or Mercedes.",
+    "cars.cta": "Don't see your model? Get in touch",
+    "props.ship.t": "Fast Shipping", "props.ship.d": "Free over $199 · ships in 24h",
+    "props.fit.t": "Fitment Guarantee", "props.fit.d": "Verified for your make & model",
+    "props.support.t": "Expert Support", "props.support.d": "Talk to real tuners, 7 days",
+    "props.secure.t": "Secure Checkout", "props.secure.d": "Encrypted · all major cards",
+    "tuning.eyebrow": "BMW B58 PERFORMANCE TUNING", "tuning.title": "TUNING STAGES",
+    "tuning.lead": "Staged power packages for the BMW B58 (M40i · 340i · 440i). Dyno-developed and street-reliable — pick your level.",
+    "tuning.note": "Figures are typical B58 results and vary by model, fuel and supporting mods. Book a consultation for a build tailored to your car.",
+    "brands.label": "BRANDS WE OFFER",
+    "reviews.title": "FROM THE GARAGE", "reviews.lead": "Real customer reviews — see them all on Google.",
+    "reviews.count": "Reviews on Google", "reviews.readall": "Read all reviews on Google", "reviews.write": "Write a review",
+    "book.eyebrow": "VISIT THE GARAGE", "book.title": "BOOK AN APPOINTMENT",
+    "book.desc": "Reserve a slot at our Pattaya workshop — coding, tuning, diagnostics or service. We'll confirm your booking shortly.",
+    "book.name": "Name", "book.name.ph": "Your name", "book.phone": "Mobile number",
+    "book.service": "Service", "book.service.opt": "Select a service (optional)",
+    "book.svc.coding": "BMW / BENZ Coding", "book.svc.tuning": "Performance Tuning", "book.svc.diag": "Diagnostics",
+    "book.svc.service": "General Service / Maintenance", "book.svc.other": "Other",
+    "book.date": "Preferred date", "book.time": "Preferred time", "book.time.opt": "Select time",
+    "book.submit": "Book Appointment", "book.directions": "Get directions ↗",
+    "footer.brand": "Performance parts & cloud ECU tuning. Built for enthusiasts, proven on the dyno.",
+    "footer.shop": "Shop", "footer.tuning": "Tuning", "footer.support": "Support", "footer.contact": "Contact"
+  },
+  th: {
+    "nav.services": "บริการ", "nav.cars": "รถยนต์", "nav.brands": "แบรนด์",
+    "nav.tuning": "ระดับการจูน", "nav.reviews": "รีวิว",
+    "hero.loc": "พัทยา ประเทศไทย",
+    "hero.coming": "เปิดให้บริการ<br>เร็ว ๆ นี้",
+    "hero.sub": "บริการโค้ดดิ้ง จูนสมรรถนะ และดูแลรักษา BMW &amp; BENZ<br>พบกัน <strong>25 กรกฎาคม 2026</strong>",
+    "cd.days": "วัน", "cd.hours": "ชั่วโมง", "cd.mins": "นาที", "cd.secs": "วินาที",
+    "hero.book": "จองคิวนัดหมาย", "hero.explore": "ดูบริการ",
+    "services.title": "บริการของเรา",
+    "services.lead": "อะไหล่ สมรรถนะ และของแต่ง BMW & BENZ — ครบจบในที่เดียว",
+    "cars.title": "เลือกตามรุ่นรถ",
+    "cars.lead": "ค้นหาอะไหล่ โค้ดดิ้ง และการจูนสำหรับ BMW หรือ Mercedes รุ่นของคุณ",
+    "cars.cta": "ไม่พบรุ่นรถของคุณ? ติดต่อเรา",
+    "props.ship.t": "จัดส่งรวดเร็ว", "props.ship.d": "ส่งฟรีเมื่อครบกำหนด · จัดส่งใน 24 ชม.",
+    "props.fit.t": "รับประกันความพอดี", "props.fit.d": "ตรวจสอบตรงรุ่นรถของคุณ",
+    "props.support.t": "ทีมผู้เชี่ยวชาญ", "props.support.d": "ปรึกษาช่างจูนตัวจริง ทุกวัน",
+    "props.secure.t": "ชำระเงินปลอดภัย", "props.secure.d": "เข้ารหัส · รับทุกบัตรหลัก",
+    "tuning.eyebrow": "การจูนสมรรถนะ BMW B58", "tuning.title": "ระดับการจูน",
+    "tuning.lead": "แพ็กเกจเพิ่มพลังสำหรับ BMW B58 (M40i · 340i · 440i) พัฒนาบนไดโน่ ขับใช้งานจริงได้ — เลือกระดับของคุณ",
+    "tuning.note": "ตัวเลขเป็นผลลัพธ์ทั่วไปของ B58 และอาจต่างกันตามรุ่น เชื้อเพลิง และอุปกรณ์เสริม ปรึกษาเราเพื่อจัดสเปกให้เหมาะกับรถของคุณ",
+    "brands.label": "แบรนด์ที่เราจำหน่าย",
+    "reviews.title": "เสียงจากลูกค้า", "reviews.lead": "รีวิวจริงจากลูกค้า — ดูทั้งหมดบน Google",
+    "reviews.count": "รีวิวบน Google", "reviews.readall": "อ่านรีวิวทั้งหมดบน Google", "reviews.write": "เขียนรีวิว",
+    "book.eyebrow": "เยี่ยมชมอู่ของเรา", "book.title": "จองคิวนัดหมาย",
+    "book.desc": "จองคิวที่อู่ของเราในพัทยา — โค้ดดิ้ง จูน วิเคราะห์ปัญหา หรือซ่อมบำรุง เราจะยืนยันการจองให้เร็วที่สุด",
+    "book.name": "ชื่อ", "book.name.ph": "ชื่อของคุณ", "book.phone": "เบอร์โทรศัพท์",
+    "book.service": "บริการ", "book.service.opt": "เลือกบริการ (ไม่บังคับ)",
+    "book.svc.coding": "โค้ดดิ้ง BMW / BENZ", "book.svc.tuning": "จูนสมรรถนะ", "book.svc.diag": "วิเคราะห์ปัญหา",
+    "book.svc.service": "ซ่อมบำรุงทั่วไป", "book.svc.other": "อื่น ๆ",
+    "book.date": "วันที่สะดวก", "book.time": "เวลาที่สะดวก", "book.time.opt": "เลือกเวลา",
+    "book.submit": "จองคิว", "book.directions": "ดูเส้นทาง ↗",
+    "footer.brand": "อะไหล่สมรรถนะและการจูน ECU สร้างมาเพื่อคนรักรถ พิสูจน์แล้วบนไดโน่",
+    "footer.shop": "ช็อป", "footer.tuning": "จูน", "footer.support": "ช่วยเหลือ", "footer.contact": "ติดต่อเรา"
+  }
+};
+let LANG = localStorage.getItem("nw_lang") || "en";   // English on first load
+function t(key) { return (I18N[LANG] && I18N[LANG][key]) != null ? I18N[LANG][key] : (I18N.en[key] != null ? I18N.en[key] : key); }
+function applyLang() {
+  document.documentElement.lang = LANG;
+  document.querySelectorAll("[data-i18n]").forEach(el => { el.textContent = t(el.getAttribute("data-i18n")); });
+  document.querySelectorAll("[data-i18n-html]").forEach(el => { el.innerHTML = t(el.getAttribute("data-i18n-html")); });
+  document.querySelectorAll("[data-i18n-ph]").forEach(el => { el.setAttribute("placeholder", t(el.getAttribute("data-i18n-ph"))); });
+  const btn = document.getElementById("langToggle");
+  if (btn) btn.textContent = LANG === "en" ? "ไทย" : "ENG";
+}
+function setLang(l) { LANG = l; localStorage.setItem("nw_lang", l); applyLang(); }
+
+/* ---- Currency (prices are stored in THB via data-thb="amount") ---- */
+const CURRENCIES = {
+  THB: { symbol: "฿", rate: 1,      dp: 0 },
+  USD: { symbol: "$", rate: 0.028,  dp: 2 },
+  CNY: { symbol: "¥", rate: 0.20,   dp: 2 },
+  EUR: { symbol: "€", rate: 0.026,  dp: 2 },
+  RUB: { symbol: "₽", rate: 2.5,    dp: 0 }
+};
+let CURRENCY = localStorage.getItem("nw_cur") || "THB";
+function formatPrice(thb) {
+  const c = CURRENCIES[CURRENCY] || CURRENCIES.THB;
+  const v = thb * c.rate;
+  return c.symbol + v.toLocaleString("en-US", { minimumFractionDigits: c.dp, maximumFractionDigits: c.dp });
+}
+function applyCurrency() {
+  document.querySelectorAll("[data-thb]").forEach(el => {
+    const thb = parseFloat(el.getAttribute("data-thb"));
+    if (!isNaN(thb)) el.textContent = formatPrice(thb);
+  });
+  const sel = document.getElementById("curSelect");
+  if (sel) sel.value = CURRENCY;
+}
+function setCurrency(c) { CURRENCY = c; localStorage.setItem("nw_cur", c); applyCurrency(); }
+
+function initLangCurrency() {
+  const btn = document.getElementById("langToggle");
+  if (btn) btn.addEventListener("click", () => setLang(LANG === "en" ? "th" : "en"));
+  const sel = document.getElementById("curSelect");
+  if (sel) sel.addEventListener("change", () => setCurrency(sel.value));
+  applyLang();
+  applyCurrency();
+}
+
 /* ---- Boot ---- */
 document.addEventListener("DOMContentLoaded", () => {
   initHeroVideo();
@@ -468,4 +586,5 @@ document.addEventListener("DOMContentLoaded", () => {
   initBookingForm();
   initReveal();
   initSectionFade();
+  initLangCurrency();
 });
