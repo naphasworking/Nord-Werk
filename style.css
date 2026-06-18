@@ -630,7 +630,7 @@ html[lang="th"] .hero__loc { letter-spacing: .06em; }
 /* On mobile the sections stack tall (e.g. form ABOVE map), so a sticky section
    taller than the screen would hide its lower content — turn stacking off. */
 @media (max-width: 860px) {
-  .stack-top > section { position: static; }
+  .stack-top > section { position: relative; }   /* relative (not static!) so the hero's absolute video/scrim stay inside the hero */
 }
 
 @media (prefers-reduced-motion: reduce) { .sect-fade, .sect-fade.in { opacity: 1; transform: none; transition: none; } }
