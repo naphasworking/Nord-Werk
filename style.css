@@ -372,6 +372,35 @@ html[lang="th"] .hero__loc { letter-spacing: .06em; }
 .car-card__chassis { display: block; margin-top: 4px; color: var(--steel-2); font-size: .74rem; letter-spacing: .1em; text-transform: uppercase; font-weight: 600; }
 @media (max-width: 520px) { .car-grid { grid-auto-columns: 66vw; } }   /* peek the next card */
 
+/* ---------- PARTS & UPGRADES ---------- */
+.parts-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 360px)); gap: 20px; justify-content: center; }
+.part-card {
+  background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden;
+  display: flex; flex-direction: column; transition: transform .3s var(--ease), border-color .3s, box-shadow .3s;
+}
+.part-card:hover { transform: translateY(-5px); border-color: #3a3a42; box-shadow: 0 24px 50px -24px #000; }
+.part-card__media {
+  position: relative; aspect-ratio: 16 / 9; display: grid; place-items: center; overflow: hidden;
+  border-bottom: 1px solid var(--border);
+  background:
+    radial-gradient(120% 90% at 70% 18%, rgba(44,166,224,.14), transparent 60%),
+    radial-gradient(120% 90% at 25% 95%, rgba(231,34,46,.18), transparent 60%),
+    linear-gradient(145deg, #1d1d24, #121216);
+}
+.part-card__img { width: 88%; height: 88%; object-fit: contain; z-index: 1; transition: transform .5s var(--ease); }
+.part-card:hover .part-card__img { transform: scale(1.06); }
+.part-card__stripe { position: absolute; left: 0; right: 0; top: 0; height: 3px; z-index: 2; background: linear-gradient(90deg, var(--m-light) 0 33.33%, var(--m-dark) 33.33% 66.66%, var(--m-red) 66.66% 100%); }
+.part-card__tag { position: absolute; top: 12px; right: 12px; z-index: 3; background: var(--accent); color: #fff; font-family: "Sora", sans-serif; font-weight: 700; font-size: .58rem; letter-spacing: .07em; text-transform: uppercase; padding: 4px 9px; border-radius: 999px; }
+.part-card__body { padding: 16px 18px 18px; display: flex; flex-direction: column; gap: 3px; flex: 1; }
+.part-card__brand { color: var(--steel-2); font-size: .68rem; letter-spacing: .16em; text-transform: uppercase; font-weight: 700; }
+.part-card__name { font-family: "Sora", sans-serif; font-size: 1.1rem; font-weight: 700; }
+.part-card__fit { color: var(--text); font-size: .84rem; margin-top: 2px; }
+.part-card__models { color: var(--muted); font-size: .78rem; letter-spacing: .02em; }
+.part-card__foot { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: auto; padding-top: 14px; }
+.part-card__gain { font-family: "Sora", sans-serif; font-weight: 800; font-size: 1.15rem; color: var(--accent); }
+.part-card__cta { padding: 9px 16px; font-size: .72rem; }
+@media (max-width: 520px) { .parts-grid { grid-template-columns: 1fr; } }
+
 /* ---------- PRODUCT GRID ---------- */
 .prod-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
 .prod-card {

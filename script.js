@@ -280,6 +280,40 @@ function initStageTilt() {
 }
 
 /* =========================================================
+   PARTS & UPGRADES — add products here (drop the image in Asset/products/)
+   ========================================================= */
+const PRODUCTS = [
+  {
+    brand: "VRSF", name: "N55 Catted Downpipe", tag: "Catless · High-flow",
+    fit: "Fits BMW 1–4 Series · N55", models: "M135i · M235i · M2 · 335i · 435i",
+    gain: "+20–25 hp", img: "Asset/products/n55-downpipe.webp"
+  }
+];
+
+function renderProducts() {
+  const grid = document.getElementById("partsGrid");
+  if (!grid) return;
+  grid.innerHTML = PRODUCTS.map(p => `
+    <article class="part-card reveal">
+      <div class="part-card__media">
+        <span class="part-card__stripe" aria-hidden="true"></span>
+        ${p.tag ? `<span class="part-card__tag">${p.tag}</span>` : ""}
+        <img class="part-card__img" src="${p.img}" alt="${p.brand} ${p.name}" loading="lazy" onerror="this.remove()" />
+      </div>
+      <div class="part-card__body">
+        ${p.brand ? `<span class="part-card__brand">${p.brand}</span>` : ""}
+        <h3 class="part-card__name">${p.name}</h3>
+        <p class="part-card__fit">${p.fit}</p>
+        ${p.models ? `<p class="part-card__models">${p.models}</p>` : ""}
+        <div class="part-card__foot">
+          ${p.gain ? `<span class="part-card__gain">${p.gain}</span>` : "<span></span>"}
+          <a href="#contact" class="btn btn--ghost part-card__cta">Enquire</a>
+        </div>
+      </div>
+    </article>`).join("");
+}
+
+/* =========================================================
    GOOGLE REVIEWS  —  EDIT THIS to point at your business.
    • reviewsUrl: your Google listing / "see all reviews" link
    • writeUrl:   direct "write a review" link (needs your Place ID)
@@ -475,6 +509,8 @@ const I18N = {
     "tuning.lead": "Staged power packages for your build — dyno-developed and street-reliable. Pick your level.",
     "tuning.note": "Gains vary by model, fuel and supporting mods. Book a consultation for a build tailored to your car.",
     "brands.label": "BRANDS WE OFFER",
+    "parts.eyebrow": "PERFORMANCE PARTS", "parts.title": "PARTS & UPGRADES",
+    "parts.lead": "Hand-picked bolt-ons for more power and a sharper drive.",
     "reviews.title": "FROM THE GARAGE", "reviews.lead": "Real customer reviews — see them all on Google.",
     "reviews.count": "Reviews on Google", "reviews.readall": "Read all reviews on Google", "reviews.write": "Write a review",
     "book.eyebrow": "VISIT THE GARAGE", "book.title": "BOOK AN APPOINTMENT",
@@ -510,6 +546,8 @@ const I18N = {
     "tuning.lead": "แพ็กเกจเพิ่มพลังแบบเป็นขั้นสำหรับรถของคุณ พัฒนาบนไดโน่ ขับใช้งานจริงได้ — เลือกระดับของคุณ",
     "tuning.note": "ผลลัพธ์แตกต่างกันตามรุ่นรถ เชื้อเพลิง และอุปกรณ์เสริม ปรึกษาเราเพื่อจัดสเปกให้เหมาะกับรถของคุณ",
     "brands.label": "แบรนด์ที่เราจำหน่าย",
+    "parts.eyebrow": "อะไหล่สมรรถนะ", "parts.title": "อะไหล่ & ของแต่ง",
+    "parts.lead": "อะไหล่บอลต์ออนคัดสรร เพิ่มพลังและการขับขี่ที่ดีขึ้น",
     "reviews.title": "เสียงจากลูกค้า", "reviews.lead": "รีวิวจริงจากลูกค้า — ดูทั้งหมดบน Google",
     "reviews.count": "รีวิวบน Google", "reviews.readall": "อ่านรีวิวทั้งหมดบน Google", "reviews.write": "เขียนรีวิว",
     "book.eyebrow": "เยี่ยมชมอู่ของเรา", "book.title": "จองคิวนัดหมาย",
@@ -577,6 +615,7 @@ document.addEventListener("DOMContentLoaded", () => {
   renderCars();
   renderCategories();
   renderStages();
+  renderProducts();
   initStagesSlider();
   initStageTilt();
   initNav();
