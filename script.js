@@ -198,15 +198,15 @@ function initSectionFade() {
    Drop Asset/tuning/stage1.webp · stage2.webp · stage3.webp for the M-style images.
    ========================================================= */
 const STAGES = [
-  { n: "01", label: "Stage 1", name: "ECU Software",   power: "~435",     unit: "HP",  featured: false,
-    img: "Asset/tuning/stage1.webp", gain: "+75 HP · +100 Nm over stock",
-    feats: ["Custom dyno ECU remap", "No hardware — fully reversible", "Factory smoothness & economy", "98 RON pump fuel"] },
-  { n: "02", label: "Stage 2", name: "Bolt-On Package", power: "~510",     unit: "HP",  featured: true,
-    img: "Asset/tuning/stage2.webp", gain: "+150 HP over stock",
-    feats: ["High-flow intake", "Catless downpipe + cat-back exhaust", "Uprated charge pipe", "Stage 2 calibration · 98 RON"] },
-  { n: "03", label: "Stage 3", name: "Turbo Upgrade",   power: "550–700",  unit: "WHP", featured: false,
-    img: "Asset/tuning/stage3.webp", gain: "Built for big power",
-    feats: ["Upgraded turbo (e.g. PURE 800)", "Uprated intercooler / heat exchanger", "Fueling upgrade + flex-fuel (E85)", "Forged internals for max output"] }
+  { n: "01", label: "Stage 1", name: "ECU Software", featured: false,
+    img: "Asset/tuning/stage1.webp", gain: "+15–20%", gainLabel: "more power & torque",
+    feats: ["Custom dyno ECU remap", "No hardware — fully reversible", "Factory smoothness & economy", "Pump-fuel safe"] },
+  { n: "02", label: "Stage 2", name: "Bolt-On Package", featured: true,
+    img: "Asset/tuning/stage2.webp", gain: "+30–40%", gainLabel: "more power",
+    feats: ["High-flow intake", "Catless downpipe + cat-back exhaust", "Uprated charge pipe", "Stage 2 calibration"] },
+  { n: "03", label: "Stage 3", name: "Turbo Upgrade", featured: false,
+    img: "Asset/tuning/stage3.webp", gain: "2×+", gainLabel: "maximum power",
+    feats: ["Upgraded turbocharger", "Uprated intercooler & cooling", "Fueling upgrade + flex-fuel ready", "Built engine for max output"] }
 ];
 
 function renderStages() {
@@ -224,8 +224,7 @@ function renderStages() {
       <div class="stage__body">
         <span class="stage__label">${s.label}</span>
         <h3 class="stage__name">${s.name}</h3>
-        <div class="stage__power"><strong>${s.power}</strong><span>${s.unit}</span></div>
-        <p class="stage__gain">${s.gain}</p>
+        <div class="stage__gain"><strong>${s.gain}</strong><span>${s.gainLabel}</span></div>
         <ul class="stage__list">${s.feats.map(f => `<li>${f}</li>`).join("")}</ul>
         <a href="#contact" class="btn ${s.featured ? "btn--primary" : "btn--ghost"} stage__cta">Enquire</a>
       </div>
@@ -472,9 +471,9 @@ const I18N = {
     "props.fit.t": "Dealer-Level Coding", "props.fit.d": "Unlock 20+ hidden functions",
     "props.support.t": "Dyno-Proven Tuning", "props.support.d": "Real, reliable power gains",
     "props.secure.t": "Expert Technicians", "props.secure.d": "Talk to real specialists",
-    "tuning.eyebrow": "BMW B58 PERFORMANCE TUNING", "tuning.title": "TUNING STAGES",
-    "tuning.lead": "Staged power packages for the BMW B58 (M40i · 340i · 440i). Dyno-developed and street-reliable — pick your level.",
-    "tuning.note": "Figures are typical B58 results and vary by model, fuel and supporting mods. Book a consultation for a build tailored to your car.",
+    "tuning.eyebrow": "PERFORMANCE TUNING", "tuning.title": "TUNING STAGES",
+    "tuning.lead": "Staged power packages for your build — dyno-developed and street-reliable. Pick your level.",
+    "tuning.note": "Gains vary by model, fuel and supporting mods. Book a consultation for a build tailored to your car.",
     "brands.label": "BRANDS WE OFFER",
     "reviews.title": "FROM THE GARAGE", "reviews.lead": "Real customer reviews — see them all on Google.",
     "reviews.count": "Reviews on Google", "reviews.readall": "Read all reviews on Google", "reviews.write": "Write a review",
@@ -507,9 +506,9 @@ const I18N = {
     "props.fit.t": "โค้ดดิ้งระดับศูนย์", "props.fit.d": "ปลดล็อก 20+ ฟังก์ชันซ่อน",
     "props.support.t": "จูนพิสูจน์บนไดโน่", "props.support.d": "เพิ่มแรงม้าจริง ขับได้ทุกวัน",
     "props.secure.t": "ช่างผู้เชี่ยวชาญ", "props.secure.d": "ปรึกษาช่างตัวจริง",
-    "tuning.eyebrow": "การจูนสมรรถนะ BMW B58", "tuning.title": "ระดับการจูน",
-    "tuning.lead": "แพ็กเกจเพิ่มพลังสำหรับ BMW B58 (M40i · 340i · 440i) พัฒนาบนไดโน่ ขับใช้งานจริงได้ — เลือกระดับของคุณ",
-    "tuning.note": "ตัวเลขเป็นผลลัพธ์ทั่วไปของ B58 และอาจต่างกันตามรุ่น เชื้อเพลิง และอุปกรณ์เสริม ปรึกษาเราเพื่อจัดสเปกให้เหมาะกับรถของคุณ",
+    "tuning.eyebrow": "การจูนสมรรถนะ", "tuning.title": "ระดับการจูน",
+    "tuning.lead": "แพ็กเกจเพิ่มพลังแบบเป็นขั้นสำหรับรถของคุณ พัฒนาบนไดโน่ ขับใช้งานจริงได้ — เลือกระดับของคุณ",
+    "tuning.note": "ผลลัพธ์แตกต่างกันตามรุ่นรถ เชื้อเพลิง และอุปกรณ์เสริม ปรึกษาเราเพื่อจัดสเปกให้เหมาะกับรถของคุณ",
     "brands.label": "แบรนด์ที่เราจำหน่าย",
     "reviews.title": "เสียงจากลูกค้า", "reviews.lead": "รีวิวจริงจากลูกค้า — ดูทั้งหมดบน Google",
     "reviews.count": "รีวิวบน Google", "reviews.readall": "อ่านรีวิวทั้งหมดบน Google", "reviews.write": "เขียนรีวิว",
