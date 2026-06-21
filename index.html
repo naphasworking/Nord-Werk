@@ -12,7 +12,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@300;400;500;600&family=Noto+Sans+Thai:wght@300;400;500&display=swap" />
-  <link rel="stylesheet" href="style.css?v=10" />
+  <link rel="stylesheet" href="style.css?v=11" />
 </head>
 <body>
 
@@ -185,6 +185,12 @@
       <p class="section__lead" data-i18n="tuning.lead">Staged power packages for your build — dyno-developed and street-reliable. Pick your level.</p>
     </div>
 
+    <!-- Official tuning partner -->
+    <div class="tuning-partner reveal">
+      <span class="tuning-partner__by" data-i18n="tuning.partner">Calibrated by our tuning partner</span>
+      <img class="tuning-partner__logo" src="Asset/partners/tuneup.webp" alt="Tune Up — tuning partner" loading="lazy" />
+    </div>
+
     <div class="stages-slider">
       <button class="stages-nav stages-nav--prev" id="stagesPrev" aria-label="Previous stage">‹</button>
       <div class="stages-track" id="stagesTrack">
@@ -195,7 +201,19 @@
     </div>
     <div class="stages-dots" id="stagesDots"></div>
 
-    <p class="stages__note reveal" data-i18n="tuning.note">Gains vary by model, fuel and supporting mods. Book a consultation for a build tailored to your car.</p>
+    <p class="stages__note reveal" data-i18n="tuning.note">Gains vary by model, fuel and supporting mods. Track, race &amp; bespoke builds on custom quote — book a consultation for a build tailored to your car.</p>
+
+    <!-- Featured builds — real results from tuning partner Tune Up -->
+    <div class="builds reveal">
+      <div class="builds__head">
+        <h3 class="builds__title" data-i18n="builds.title">FEATURED BUILDS</h3>
+        <p class="builds__lead" data-i18n="builds.lead">Real dyno-proven results from our tuning partner.</p>
+      </div>
+      <div class="builds-marquee">
+        <!-- cards render (twice, for a seamless loop) from the BUILDS array in script.js -->
+        <div class="builds-row" id="buildsTrack"></div>
+      </div>
+    </div>
   </section>
 
   <!-- ===================== PARTS & UPGRADES ===================== -->
@@ -320,6 +338,6 @@
     </div>
   </footer>
 
-  <script src="script.js?v=10"></script>
+  <script src="script.js?v=11"></script>
 </body>
 </html>

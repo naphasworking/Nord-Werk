@@ -198,16 +198,53 @@ function initSectionFade() {
    Drop Asset/tuning/stage1.webp · stage2.webp · stage3.webp for the M-style images.
    ========================================================= */
 const STAGES = [
-  { n: "01", label: "Stage 1", name: "ECU Software", featured: false,
-    img: "Asset/tuning/stage1.webp", gain: "+15–20%", gainLabel: "more power & torque",
-    feats: ["Custom dyno ECU remap", "No hardware — fully reversible", "Factory smoothness & economy", "Pump-fuel safe"] },
-  { n: "02", label: "Stage 2", name: "Bolt-On Package", featured: true,
-    img: "Asset/tuning/stage2.webp", gain: "+30–40%", gainLabel: "more power",
-    feats: ["High-flow intake", "Catless downpipe + cat-back exhaust", "Uprated charge pipe", "Stage 2 calibration"] },
-  { n: "03", label: "Stage 3", name: "Turbo Upgrade", featured: false,
-    img: "Asset/tuning/stage3.webp", gain: "2×+", gainLabel: "maximum power",
-    feats: ["Upgraded turbocharger", "Uprated intercooler & cooling", "Fueling upgrade + flex-fuel ready", "Built engine for max output"] }
+  { n: "01", label: "Stage 1", name: "Custom ECU Tune", featured: false,
+    img: "Asset/tuning/stage1.webp", gain: "+15–20%", gainLabel: "more power & torque", priceTHB: 26000,
+    feats: ["Log-based custom calibration", "Bootmod3 / MG Flasher platform", "For stock & lightly modified cars", "Pump-fuel safe · fully reversible"] },
+  { n: "02", label: "Stage 2", name: "Bolt-On Tune", featured: true,
+    img: "Asset/tuning/stage2.webp", gain: "+30–40%", gainLabel: "more power", priceTHB: 26000,
+    feats: ["Tuned for downpipe + intake", "Log-based custom calibration", "Sharper throttle & faster spool", "Strong, daily-reliable power"] },
+  { n: "03", label: "Stage 3", name: "Big-Turbo / Hybrid", featured: false,
+    img: "Asset/tuning/stage3.webp", gain: "2×+", gainLabel: "maximum power", priceTHB: 39000,
+    feats: ["Upgraded & hybrid turbo setups", "Plug-in hybrid (PHEV) specialist", "Flex-fuel / ethanol-blend ready", "Maximum safe power"] }
 ];
+
+/* Featured builds — real results from tuning partner Tune Up (model · stage · whp · torque/time).
+   Photos live in Asset/builds/. Edit/reorder freely; pairing of photo↔spec is approximate. */
+const BUILDS = [
+  { img: "Asset/builds/build-05.webp", car: "BMW G20 330e", stage: "Stage 3", power: "550 whp", sub: "B48TU · 8.03s (100–200)" },
+  { img: "Asset/builds/build-02.webp", car: "BMW G30 530e", stage: "Stage 3", power: "532 whp", sub: "B48TU · 8.3s (100–200)" },
+  { img: "Asset/builds/build-06.webp", car: "BMW G20 330e", stage: "Stage 3", power: "540 whp", sub: "B48TU · 8.25s (100–200)" },
+  { img: "Asset/builds/build-07.webp", car: "BMW G20 330e", stage: "Stage 3", power: "492 whp", sub: "B48TU · 752 Nm" },
+  { img: "Asset/builds/build-01.webp", car: "BMW G20 330e", stage: "Stage 2", power: "473 whp", sub: "B48TU · 843 Nm" },
+  { img: "Asset/builds/build-08.webp", car: "BMW G20 330e", stage: "Stage 2", power: "462 whp", sub: "B48TU · 823 Nm" },
+  { img: "Asset/builds/build-10.webp", car: "BMW G20 330e", stage: "Stage 2", power: "438 whp", sub: "B48TU · 802 Nm" },
+  { img: "Asset/builds/build-09.webp", car: "BMW F30 330e", stage: "Stage 2", power: "408 whp", sub: "B48 · 607 Nm" },
+  { img: "Asset/builds/build-03.webp", car: "BMW G22 430i", stage: "Stage 2", power: "328 whp", sub: "B48TU · 538 Nm" },
+  { img: "Asset/builds/build-11.webp", car: "BMW F30 320i", stage: "Stage 2", power: "287 whp", sub: "B48 · 451 Nm" }
+];
+
+function renderBuilds() {
+  const track = document.getElementById("buildsTrack");
+  if (!track) return;
+  const card = (b) => `
+    <article class="build-card">
+      <div class="build-card__media">
+        <img class="build-card__photo" src="${b.img}" alt="${b.car} — ${b.stage}" loading="lazy" onerror="this.closest('.build-card').style.display='none'" />
+        <span class="build-card__stage">${b.stage}</span>
+        <img class="build-card__badge" src="Asset/partners/tuneup.webp" alt="Tune Up" loading="lazy" />
+      </div>
+      <div class="build-card__body">
+        <h4 class="build-card__car">${b.car}</h4>
+        <div class="build-card__spec">
+          <span class="build-card__power">${b.power}</span>
+          <span class="build-card__sub">${b.sub}</span>
+        </div>
+      </div>
+    </article>`;
+  // duplicate the list so the right-scrolling marquee loops seamlessly
+  track.innerHTML = BUILDS.map(card).join("") + BUILDS.map(card).join("");
+}
 
 function renderStages() {
   const track = document.getElementById("stagesTrack");
@@ -226,6 +263,7 @@ function renderStages() {
         <h3 class="stage__name">${s.name}</h3>
         <div class="stage__gain"><strong>${s.gain}</strong><span>${s.gainLabel}</span></div>
         <ul class="stage__list">${s.feats.map(f => `<li>${f}</li>`).join("")}</ul>
+        <div class="stage__price"><span class="stage__price__from" data-i18n="tuning.from">From</span><span class="stage__price__num" data-thb="${s.priceTHB}">฿${s.priceTHB.toLocaleString()}</span></div>
         <a href="#contact" class="btn ${s.featured ? "btn--primary" : "btn--ghost"} stage__cta">Enquire</a>
       </div>
     </article>`).join("");
@@ -537,7 +575,10 @@ const I18N = {
     "props.secure.t": "Expert Technicians", "props.secure.d": "Talk to real specialists",
     "tuning.eyebrow": "PERFORMANCE TUNING", "tuning.title": "TUNING STAGES",
     "tuning.lead": "Staged power packages for your build — dyno-developed and street-reliable. Pick your level.",
-    "tuning.note": "Gains vary by model, fuel and supporting mods. Book a consultation for a build tailored to your car.",
+    "tuning.partner": "Calibrated by our tuning partner",
+    "tuning.from": "From",
+    "tuning.note": "Gains vary by model, fuel and supporting mods. Track, race & bespoke builds on custom quote — book a consultation for a build tailored to your car.",
+    "builds.title": "FEATURED BUILDS", "builds.lead": "Real dyno-proven results from our tuning partner.",
     "brands.label": "BRANDS WE OFFER",
     "parts.eyebrow": "PERFORMANCE PARTS", "parts.title": "PARTS & UPGRADES",
     "parts.lead": "Hand-picked bolt-ons for more power and a sharper drive.",
@@ -575,7 +616,10 @@ const I18N = {
     "props.secure.t": "ช่างผู้เชี่ยวชาญ", "props.secure.d": "ปรึกษาช่างตัวจริง",
     "tuning.eyebrow": "การจูนสมรรถนะ", "tuning.title": "ระดับการจูน",
     "tuning.lead": "แพ็กเกจเพิ่มพลังแบบเป็นขั้นสำหรับรถของคุณ พัฒนาบนไดโน่ ขับใช้งานจริงได้ — เลือกระดับของคุณ",
-    "tuning.note": "ผลลัพธ์แตกต่างกันตามรุ่นรถ เชื้อเพลิง และอุปกรณ์เสริม ปรึกษาเราเพื่อจัดสเปกให้เหมาะกับรถของคุณ",
+    "tuning.partner": "จูนโดยพาร์ทเนอร์จูนของเรา",
+    "tuning.from": "เริ่มต้น",
+    "tuning.note": "ผลลัพธ์แตกต่างกันตามรุ่นรถ เชื้อเพลิง และอุปกรณ์เสริม งานสนาม แข่ง และงานสั่งทำพิเศษ ประเมินราคาเฉพาะคัน — ปรึกษาเราเพื่อจัดสเปกให้เหมาะกับรถของคุณ",
+    "builds.title": "ผลงานเด่น", "builds.lead": "ผลลัพธ์จริงที่พิสูจน์บนไดโน่ จากพาร์ทเนอร์จูนของเรา",
     "brands.label": "แบรนด์ที่เราจำหน่าย",
     "parts.eyebrow": "อะไหล่สมรรถนะ", "parts.title": "อะไหล่ & ของแต่ง",
     "parts.lead": "อะไหล่บอลต์ออนคัดสรร เพิ่มพลังและการขับขี่ที่ดีขึ้น",
@@ -646,6 +690,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initCountdown();
   renderCategories();
   renderStages();
+  renderBuilds();
   renderPartsFilter();
   renderProducts();
   initStagesSlider();

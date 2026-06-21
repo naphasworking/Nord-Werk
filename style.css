@@ -527,7 +527,16 @@ html[lang="th"] .hero__loc { letter-spacing: .06em; }
 .stage__list { list-style: none; display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px; }
 .stage__list li { position: relative; padding-left: 20px; color: var(--muted); font-size: .83rem; line-height: 1.3; }
 .stage__list li::before { content: "▸"; position: absolute; left: 0; color: var(--accent); }
+.stage__price { display: flex; align-items: baseline; gap: 7px; margin: 2px 0 14px; }
+.stage__price__from { color: var(--muted); font-size: .68rem; letter-spacing: .14em; text-transform: uppercase; font-weight: 600; }
+.stage__price__num { font-family: "Sora", sans-serif; font-weight: 800; font-size: 1.45rem; color: var(--text); }
+.stage--featured .stage__price__num { color: #fff; }
 .stage__cta { margin-top: auto; width: 100%; padding: 11px 22px; font-size: .74rem; }
+
+/* official tuning partner badge */
+.tuning-partner { display: flex; flex-direction: column; align-items: center; gap: 9px; margin: 2px auto 30px; }
+.tuning-partner__by { color: var(--steel-2); font-size: .66rem; letter-spacing: .2em; text-transform: uppercase; font-weight: 700; }
+.tuning-partner__logo { height: 36px; width: auto; opacity: .96; }
 
 /* arrows hidden — swipe on mobile, full 3-up grid on desktop */
 .stages-nav { display: none; }
@@ -538,6 +547,28 @@ html[lang="th"] .hero__loc { letter-spacing: .06em; }
 .stages-dots button.is-active { background: var(--accent); transform: scale(1.3); }
 
 .stages__note { text-align: center; color: var(--muted); font-size: .82rem; margin: 22px auto 0; max-width: 660px; }
+
+/* ---------- FEATURED BUILDS (right-scrolling marquee) ---------- */
+.builds { margin-top: 62px; }
+.builds__head { text-align: center; margin-bottom: 24px; }
+.builds__title { font-family: "Sora", sans-serif; font-weight: 800; font-size: clamp(1.35rem, 3.4vw, 2rem); letter-spacing: .04em; }
+.builds__lead { color: var(--muted); margin-top: 7px; font-size: .92rem; }
+.builds-marquee { overflow: hidden; -webkit-mask-image: linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent); mask-image: linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent); }
+.builds-row { display: flex; gap: 18px; width: max-content; animation: svcScroll 80s linear infinite; will-change: transform; }
+.builds-marquee:hover .builds-row { animation-play-state: paused; }
+.build-card { flex: 0 0 300px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+.build-card__media { position: relative; aspect-ratio: 16 / 10; overflow: hidden; border-bottom: 1px solid var(--border); }
+.build-card__photo { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .5s var(--ease); }
+.build-card:hover .build-card__photo { transform: scale(1.05); }
+.build-card__stage { position: absolute; top: 10px; left: 10px; background: var(--accent); color: #fff; font-family: "Sora", sans-serif; font-weight: 700; font-size: .58rem; letter-spacing: .08em; text-transform: uppercase; padding: 4px 9px; border-radius: 999px; }
+.build-card__badge { position: absolute; right: 10px; bottom: 9px; height: 15px; width: auto; opacity: .92; filter: drop-shadow(0 2px 5px rgba(0,0,0,.7)); }
+.build-card__body { padding: 12px 14px 14px; }
+.build-card__car { font-family: "Sora", sans-serif; font-weight: 700; font-size: 1rem; }
+.build-card__spec { display: flex; align-items: baseline; gap: 9px; margin-top: 4px; flex-wrap: wrap; }
+.build-card__power { font-family: "Sora", sans-serif; font-weight: 800; color: var(--accent); font-size: 1.05rem; }
+.build-card__sub { color: var(--muted); font-size: .76rem; }
+@media (prefers-reduced-motion: reduce) { .builds-row { animation: none; } }
+@media (max-width: 520px) { .build-card { flex-basis: 240px; } }
 
 /* DESKTOP: show all three compact cards in one row — no scrolling */
 @media (min-width: 900px) {
