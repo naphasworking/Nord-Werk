@@ -371,30 +371,51 @@ function partCardHTML(p) {
     </a>`;
 }
 
-/* Render parts into two right-scrolling marquee rows. Each row repeats its
-   cards enough times (even count) so the loop is seamless even with few items. */
+/* Render parts into a manual swipe slider (like Tuning Stages) — no auto-move. */
 function renderProducts(filter) {
   if (filter) PARTS_FILTER = filter;
-  const row1 = document.getElementById("partsRow1");
-  const row2 = document.getElementById("partsRow2");
-  if (!row1 || !row2) return;
+  const track = document.getElementById("partsTrack");
+  if (!track) return;
   const list = PARTS_FILTER === "all" ? PRODUCTS : PRODUCTS.filter(p => (p.fits || []).includes(PARTS_FILTER));
   const empty = document.getElementById("partsEmpty");
-  const marquee = document.getElementById("partsMarquee");
+  const slider = document.querySelector(".parts-slider");
   if (empty) empty.hidden = list.length > 0;
-  if (marquee) marquee.hidden = list.length === 0;
-
-  const fillRow = (items) => {
-    if (!items.length) return "";
-    const copies = 2 * Math.max(1, Math.ceil(6 / items.length));   // even → seamless -50% loop
-    return items.map(partCardHTML).join("").repeat(copies);
-  };
-  // split across two rows; with a single item, the 2nd row mirrors it
-  const r1 = list.filter((_, i) => i % 2 === 0);
-  const r2 = list.filter((_, i) => i % 2 === 1);
-  row1.innerHTML = fillRow(r1);
-  row2.innerHTML = fillRow(r2.length ? r2 : r1);
+  if (slider) slider.hidden = list.length === 0;
+  track.innerHTML = list.map(partCardHTML).join("");
   if (typeof applyLang === "function") applyLang();
+  initPartsSlider();
+}
+
+/* Dots + scroll-snap sync for the parts slider (mirrors initStagesSlider). */
+function initPartsSlider() {
+  const track = document.getElementById("partsTrack");
+  const dotsWrap = document.getElementById("partsDots");
+  if (!track) return;
+  const cards = [...track.querySelectorAll(".part-card")];
+  const step = () => (cards[0] ? cards[0].offsetWidth + 16 : 1);
+  if (dotsWrap) {
+    dotsWrap.innerHTML = cards.length > 1
+      ? cards.map((_, i) => `<button aria-label="Go to part ${i + 1}"${i === 0 ? ' class="is-active"' : ""}></button>`).join("")
+      : "";
+    [...dotsWrap.querySelectorAll("button")].forEach((d, i) =>
+      d.addEventListener("click", () => track.scrollTo({ left: i * step(), behavior: "smooth" })));
+  }
+  // attach the scroll->dot sync once; it re-queries live so it survives re-renders
+  if (!track.dataset.bound) {
+    track.dataset.bound = "1";
+    let raf;
+    track.addEventListener("scroll", () => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => {
+        const c = [...track.querySelectorAll(".part-card")];
+        const dw = document.getElementById("partsDots");
+        if (!c.length || !dw) return;
+        const st = c[0].offsetWidth + 16;
+        const idx = Math.max(0, Math.min(c.length - 1, Math.round(track.scrollLeft / st)));
+        [...dw.querySelectorAll("button")].forEach((d, i) => d.classList.toggle("is-active", i === idx));
+      });
+    }, { passive: true });
+  }
 }
 
 /* =========================================================
