@@ -80,5 +80,23 @@ window.PRODUCTS = [
       "Mono-tube upside-down gas-pressure design",
       "TÜV-certified · made in Germany"
     ]
+  },
+  {
+    slug: "csf-s58-heat-exchanger",
+    brand: "CSF",
+    name: "S58 Front-Mount Heat Exchanger",
+    tag: "Cooling · S58",
+    fit: "Fits BMW M2 · M3 · M4 · S58 (G8x)",
+    models: "G80/G81 M3 · G82/G83 M4 · G87 M2",
+    priceTHB: 37300,            // ≈ r44performance.com £828.00 reference price
+    img: "Asset/products/csf-s58-heat-exchanger.webp",
+    fits: ["bmw-3", "bmw-4"],
+    desc: "CSF's front-mount heat exchanger replaces the factory unit with a 2-row, 42 mm all-aluminium core to keep S58 coolant and intake temperatures in check during hard driving. Plug-and-play fit with CNC brackets, OEM-style quick connects and rock guards — so the M2/M3/M4 holds peak power lap after lap.",
+    features: [
+      "2-row 42 mm all-aluminium core (B-Tube)",
+      "Lower coolant & intake temps under load",
+      "Plug & play · CNC brackets, OEM quick-connects",
+      "Includes upper & lower rock guards"
+    ]
   }
 ];
