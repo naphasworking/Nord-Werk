@@ -62,5 +62,23 @@ window.PRODUCTS = [
       "Mono-tube upside-down gas-pressure design",
       "Triple-C corrosion-resistant coating"
     ]
+  },
+  {
+    slug: "bilstein-b12-prokit",
+    brand: "Bilstein",
+    name: "B12 Pro-Kit Suspension",
+    tag: "Lowering · Non-EDC",
+    fit: "Fits BMW M135i · M140i · M235i · M240i (Non-EDC)",
+    models: "F20/F21 M135i · M140i · F22/F23 M235i · M240i",
+    priceTHB: 52300,            // ≈ r44performance.com £1,162.80 reference price
+    img: "Asset/products/bilstein-b12-prokit.webp",
+    fits: [],                   // fits 1 & 2 Series (not in the Shop-by-Car list) → shows under "All cars"
+    desc: "Bilstein's B12 Pro-Kit pairs B8 sport dampers with Eibach Pro-Kit progressive springs for a sharper fast-road setup. It lowers the car up to 40 mm, trims body roll and tightens cornering response while keeping everyday ride comfort — German-made and TÜV-certified.",
+    features: [
+      "Bilstein B8 dampers + Eibach Pro-Kit springs",
+      "Lowers up to 40 mm",
+      "Mono-tube upside-down gas-pressure design",
+      "TÜV-certified · made in Germany"
+    ]
   }
 ];
