@@ -286,15 +286,45 @@ const PRODUCTS = [
   {
     brand: "VRSF", name: "N55 Catted Downpipe", tag: "Catless · High-flow",
     fit: "Fits BMW 1–4 Series · N55", models: "M135i · M235i · M2 · 335i · 435i",
-    gain: "+20–25 hp", img: "Asset/products/n55-downpipe.webp"
+    gain: "+20–25 hp", img: "Asset/products/n55-downpipe.webp",
+    fits: ["bmw-3", "bmw-4"]   // car slugs (from CARS) this part fits
   }
 ];
 
-function renderProducts() {
+/* "Shop by Car" filter chips — reads the CMS-managed data/cars.json,
+   falls back to the built-in CARS list (e.g. on file:// where fetch is blocked). */
+let PARTS_FILTER = "all";
+async function renderPartsFilter() {
+  const wrap = document.getElementById("partsFilter");
+  if (!wrap) return;
+  let cars = CARS;
+  try {
+    const res = await fetch("data/cars.json", { cache: "no-store" });
+    if (res.ok) {
+      const data = await res.json();
+      if (data && Array.isArray(data.cars) && data.cars.length) cars = data.cars;
+    }
+  } catch (e) { /* offline / local file — use the built-in fallback */ }
+  wrap.innerHTML = '<button class="part-chip is-active" data-car="all" data-i18n="parts.all">All</button>'
+    + cars.map(c => `<button class="part-chip" data-car="${c.slug}">${c.name}</button>`).join("");
+  if (typeof applyLang === "function") applyLang();   // translate the "All" chip
+  wrap.addEventListener("click", (e) => {
+    const btn = e.target.closest(".part-chip");
+    if (!btn) return;
+    wrap.querySelectorAll(".part-chip").forEach(b => b.classList.toggle("is-active", b === btn));
+    renderProducts(btn.getAttribute("data-car"));
+  });
+}
+
+function renderProducts(filter) {
+  if (filter) PARTS_FILTER = filter;
   const grid = document.getElementById("partsGrid");
   if (!grid) return;
-  grid.innerHTML = PRODUCTS.map(p => `
-    <article class="part-card reveal">
+  const list = PARTS_FILTER === "all" ? PRODUCTS : PRODUCTS.filter(p => (p.fits || []).includes(PARTS_FILTER));
+  const empty = document.getElementById("partsEmpty");
+  if (empty) empty.hidden = list.length > 0;
+  grid.innerHTML = list.map(p => `
+    <article class="part-card">
       <div class="part-card__media">
         <span class="part-card__stripe" aria-hidden="true"></span>
         ${p.tag ? `<span class="part-card__tag">${p.tag}</span>` : ""}
@@ -489,7 +519,7 @@ function initCountdown() {
    ========================================================= */
 const I18N = {
   en: {
-    "nav.services": "Services", "nav.cars": "Cars", "nav.brands": "Brands",
+    "nav.services": "Services", "nav.cars": "Cars", "nav.parts": "Parts", "nav.brands": "Brands",
     "nav.tuning": "Tuning Stages", "nav.reviews": "Reviews",
     "hero.loc": "Pattaya, Thailand",
     "hero.coming": "COMING<br>SOON",
@@ -511,6 +541,7 @@ const I18N = {
     "brands.label": "BRANDS WE OFFER",
     "parts.eyebrow": "PERFORMANCE PARTS", "parts.title": "PARTS & UPGRADES",
     "parts.lead": "Hand-picked bolt-ons for more power and a sharper drive.",
+    "parts.all": "All cars", "parts.empty": "No parts listed for this model yet — get in touch.",
     "reviews.title": "FROM THE GARAGE", "reviews.lead": "Real customer reviews — see them all on Google.",
     "reviews.count": "Reviews on Google", "reviews.readall": "Read all reviews on Google", "reviews.write": "Write a review",
     "book.eyebrow": "VISIT THE GARAGE", "book.title": "BOOK AN APPOINTMENT",
@@ -526,7 +557,7 @@ const I18N = {
     "footer.shop": "Shop", "footer.tuning": "Tuning", "footer.support": "Support", "footer.contact": "Contact"
   },
   th: {
-    "nav.services": "บริการ", "nav.cars": "รถยนต์", "nav.brands": "แบรนด์",
+    "nav.services": "บริการ", "nav.cars": "รถยนต์", "nav.parts": "อะไหล่", "nav.brands": "แบรนด์",
     "nav.tuning": "ระดับการจูน", "nav.reviews": "รีวิว",
     "hero.loc": "พัทยา ประเทศไทย",
     "hero.coming": "เปิดให้บริการ<br>เร็ว ๆ นี้",
@@ -548,6 +579,7 @@ const I18N = {
     "brands.label": "แบรนด์ที่เราจำหน่าย",
     "parts.eyebrow": "อะไหล่สมรรถนะ", "parts.title": "อะไหล่ & ของแต่ง",
     "parts.lead": "อะไหล่บอลต์ออนคัดสรร เพิ่มพลังและการขับขี่ที่ดีขึ้น",
+    "parts.all": "ทุกรุ่น", "parts.empty": "ยังไม่มีอะไหล่สำหรับรุ่นนี้ — ติดต่อเราได้เลย",
     "reviews.title": "เสียงจากลูกค้า", "reviews.lead": "รีวิวจริงจากลูกค้า — ดูทั้งหมดบน Google",
     "reviews.count": "รีวิวบน Google", "reviews.readall": "อ่านรีวิวทั้งหมดบน Google", "reviews.write": "เขียนรีวิว",
     "book.eyebrow": "เยี่ยมชมอู่ของเรา", "book.title": "จองคิวนัดหมาย",
@@ -612,9 +644,9 @@ function initLangCurrency() {
 document.addEventListener("DOMContentLoaded", () => {
   initHeroVideo();
   initCountdown();
-  renderCars();
   renderCategories();
   renderStages();
+  renderPartsFilter();
   renderProducts();
   initStagesSlider();
   initStageTilt();

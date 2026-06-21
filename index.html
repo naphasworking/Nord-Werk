@@ -12,7 +12,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@300;400;500;600&family=Noto+Sans+Thai:wght@300;400;500&display=swap" />
-  <link rel="stylesheet" href="style.css?v=9" />
+  <link rel="stylesheet" href="style.css?v=10" />
 </head>
 <body>
 
@@ -25,7 +25,7 @@
 
       <nav class="nav__links" id="navLinks">
         <a href="#categories" data-i18n="nav.services">Services</a>
-        <a href="#featured" data-i18n="nav.cars">Cars</a>
+        <a href="#parts" data-i18n="nav.parts">Parts</a>
         <a href="#brands" data-i18n="nav.brands">Brands</a>
         <a href="#tuning" data-i18n="nav.tuning">Tuning Stages</a>
         <a href="#reviews" data-i18n="nav.reviews">Reviews</a>
@@ -157,22 +157,6 @@
     </div>
   </section>
 
-  <!-- ===================== FEATURED PRODUCTS ===================== -->
-  <section class="section section--alt" id="featured">
-    <div class="section__head reveal">
-      <h2 class="section__title" data-i18n="cars.title">SHOP BY CAR</h2>
-      <p class="section__lead" data-i18n="cars.lead">Find parts, coding and tuning built for your exact BMW or Mercedes.</p>
-    </div>
-
-    <!-- Cards render from the CARS array in script.js.
-         Drop a photo at Asset/cars/<slug>.webp to set each car's image. -->
-    <div class="car-grid" id="carGrid"></div>
-
-    <div class="section__more reveal">
-      <a href="#contact" class="btn btn--ghost" data-i18n="cars.cta">Don't see your model? Get in touch</a>
-    </div>
-  </section>
-
   <!-- ===================== VALUE PROPS ===================== -->
   <section class="props">
     <div class="props__item reveal">
@@ -221,8 +205,13 @@
       <h2 class="section__title" data-i18n="parts.title">PARTS &amp; UPGRADES</h2>
       <p class="section__lead" data-i18n="parts.lead">Hand-picked bolt-ons for more power and a sharper drive.</p>
     </div>
+
+    <!-- Shop by Car: filter the parts by model (chips render from CARS in script.js) -->
+    <div class="parts-filter" id="partsFilter" role="tablist" aria-label="Filter parts by car"></div>
+
     <!-- cards render from the PRODUCTS array in script.js -->
     <div class="parts-grid" id="partsGrid"></div>
+    <p class="parts-empty" id="partsEmpty" data-i18n="parts.empty" hidden>No parts listed for this model yet — get in touch.</p>
   </section>
 
   <!-- ===================== BRANDS MARQUEE ===================== -->
@@ -307,7 +296,7 @@
         <div class="footer__col">
           <h5 data-i18n="footer.explore">Explore</h5>
           <a href="#categories" data-i18n="nav.services">Services</a>
-          <a href="#featured" data-i18n="nav.cars">Shop by Car</a>
+          <a href="#parts" data-i18n="nav.parts">Parts</a>
           <a href="#tuning" data-i18n="nav.tuning">Tuning Stages</a>
           <a href="#reviews" data-i18n="nav.reviews">Reviews</a>
         </div>
@@ -331,6 +320,6 @@
     </div>
   </footer>
 
-  <script src="script.js?v=9"></script>
+  <script src="script.js?v=10"></script>
 </body>
 </html>
