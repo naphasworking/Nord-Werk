@@ -535,9 +535,18 @@ html[lang="th"] .hero__loc { letter-spacing: .06em; }
 .stage__cta { margin-top: auto; width: 100%; padding: 9px 18px; font-size: .72rem; }
 
 /* official tuning partner badge */
-.tuning-partner { display: flex; flex-direction: column; align-items: center; gap: 9px; margin: 2px auto 30px; }
+.tuning-partner { display: flex; flex-direction: column; align-items: center; gap: 9px; margin: 2px auto 18px; }
 .tuning-partner__by { color: var(--steel-2); font-size: .66rem; letter-spacing: .2em; text-transform: uppercase; font-weight: 700; }
 .tuning-partner__logo { height: 36px; width: auto; opacity: .96; }
+
+/* tuning platforms (bootmod3 · MG Flasher) */
+.tuning-platforms { display: flex; flex-direction: column; align-items: center; gap: 12px; margin: 0 auto 30px; }
+.tuning-platforms__label { color: var(--steel-2); font-size: .66rem; letter-spacing: .2em; text-transform: uppercase; font-weight: 700; }
+.tuning-platforms__logos { display: flex; align-items: center; gap: 22px; }
+.tuning-platforms__logo { height: 44px; width: auto; opacity: .95; transition: opacity .25s, transform .25s var(--ease); }
+.tuning-platforms__logo--app { height: 50px; border-radius: 12px; }
+.tuning-platforms__logo:hover { opacity: 1; transform: translateY(-2px); }
+.tuning-platforms__sep { width: 1px; height: 34px; background: var(--border); }
 
 /* arrows hidden — swipe on mobile, full 3-up grid on desktop */
 .stages-nav { display: none; }
