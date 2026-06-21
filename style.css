@@ -567,26 +567,26 @@ html[lang="th"] .hero__loc { letter-spacing: .06em; }
 .stages__note { text-align: center; color: var(--muted); font-size: .82rem; margin: 22px auto 0; max-width: 660px; }
 
 /* ---------- FEATURED BUILDS (right-scrolling marquee) ---------- */
-.builds { margin-top: 62px; }
-.builds__head { text-align: center; margin-bottom: 24px; }
-.builds__title { font-family: "Sora", sans-serif; font-weight: 800; font-size: clamp(1.35rem, 3.4vw, 2rem); letter-spacing: .04em; }
-.builds__lead { color: var(--muted); margin-top: 7px; font-size: .92rem; }
+.builds { margin-top: 42px; }
+.builds__head { text-align: center; margin-bottom: 16px; }
+.builds__title { font-family: "Sora", sans-serif; font-weight: 800; font-size: clamp(1.2rem, 3vw, 1.65rem); letter-spacing: .04em; }
+.builds__lead { color: var(--muted); margin-top: 5px; font-size: .85rem; }
 .builds-marquee { overflow: hidden; -webkit-mask-image: linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent); mask-image: linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent); }
-.builds-row { display: flex; gap: 18px; width: max-content; animation: svcScroll 80s linear infinite; will-change: transform; }
+.builds-row { display: flex; gap: 14px; width: max-content; animation: svcScroll 80s linear infinite; will-change: transform; }
 .builds-marquee:hover .builds-row { animation-play-state: paused; }
-.build-card { flex: 0 0 300px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
-.build-card__media { position: relative; aspect-ratio: 16 / 10; overflow: hidden; border-bottom: 1px solid var(--border); }
+.build-card { flex: 0 0 248px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+.build-card__media { position: relative; aspect-ratio: 16 / 9; overflow: hidden; border-bottom: 1px solid var(--border); }
 .build-card__photo { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .5s var(--ease); }
 .build-card:hover .build-card__photo { transform: scale(1.05); }
-.build-card__stage { position: absolute; top: 10px; left: 10px; background: var(--accent); color: #fff; font-family: "Sora", sans-serif; font-weight: 700; font-size: .58rem; letter-spacing: .08em; text-transform: uppercase; padding: 4px 9px; border-radius: 999px; }
-.build-card__badge { position: absolute; right: 10px; bottom: 9px; height: 15px; width: auto; opacity: .92; filter: drop-shadow(0 2px 5px rgba(0,0,0,.7)); }
-.build-card__body { padding: 12px 14px 14px; }
-.build-card__car { font-family: "Sora", sans-serif; font-weight: 700; font-size: 1rem; }
-.build-card__spec { display: flex; align-items: baseline; gap: 9px; margin-top: 4px; flex-wrap: wrap; }
-.build-card__power { font-family: "Sora", sans-serif; font-weight: 800; color: var(--accent); font-size: 1.05rem; }
-.build-card__sub { color: var(--muted); font-size: .76rem; }
+.build-card__stage { position: absolute; top: 9px; left: 9px; background: var(--accent); color: #fff; font-family: "Sora", sans-serif; font-weight: 700; font-size: .54rem; letter-spacing: .08em; text-transform: uppercase; padding: 3px 8px; border-radius: 999px; }
+.build-card__badge { position: absolute; right: 9px; bottom: 8px; height: 13px; width: auto; opacity: .92; filter: drop-shadow(0 2px 5px rgba(0,0,0,.7)); }
+.build-card__body { padding: 9px 12px 11px; }
+.build-card__car { font-family: "Sora", sans-serif; font-weight: 700; font-size: .9rem; }
+.build-card__spec { display: flex; align-items: baseline; gap: 8px; margin-top: 3px; flex-wrap: wrap; }
+.build-card__power { font-family: "Sora", sans-serif; font-weight: 800; color: var(--accent); font-size: .95rem; }
+.build-card__sub { color: var(--muted); font-size: .72rem; }
 @media (prefers-reduced-motion: reduce) { .builds-row { animation: none; } }
-@media (max-width: 520px) { .build-card { flex-basis: 240px; } }
+@media (max-width: 520px) { .build-card { flex-basis: 210px; } }
 
 /* DESKTOP: show all three compact cards in one row — no scrolling */
 @media (min-width: 900px) {
