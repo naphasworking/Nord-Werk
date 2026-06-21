@@ -421,26 +421,24 @@ html[lang="th"] .hero__loc { letter-spacing: .06em; }
 .part-card__gain { font-family: "Sora", sans-serif; font-weight: 800; font-size: 1.15rem; color: var(--accent); }
 .part-card__cta { padding: 9px 16px; font-size: .72rem; }
 
-/* Featured Parts — manual swipe slider with dots (mirrors Tuning Stages, no auto-move) */
+/* Featured Parts — 2-row manual swipe slider with dots (no auto-move).
+   Cards flow into 2 rows forming columns; swipe horizontally through columns. */
 .parts-slider { position: relative; }
 .parts-slider[hidden] { display: none; }
 .parts-track {
-  display: flex; gap: 16px; overflow-x: auto; scroll-snap-type: x mandatory;
-  scroll-behavior: smooth; padding: 8px 2px 16px; -webkit-overflow-scrolling: touch; scrollbar-width: none;
+  display: grid; grid-auto-flow: column; grid-template-rows: repeat(2, auto);
+  grid-auto-columns: min(80vw, 300px); gap: 16px;
+  overflow-x: auto; scroll-snap-type: x mandatory; scroll-behavior: smooth;
+  padding: 8px 2px 16px; -webkit-overflow-scrolling: touch; scrollbar-width: none;
+  width: fit-content; max-width: 100%; margin: 0 auto;   /* centered when few, scrolls when many */
 }
 .parts-track::-webkit-scrollbar { display: none; }
-.parts-track .part-card { flex: 0 0 auto; width: min(80vw, 300px); scroll-snap-align: center; }  /* same size as a stage card */
-.parts-track .part-card__media { aspect-ratio: auto; height: 160px; }
-.parts-dots { display: flex; gap: 9px; justify-content: center; margin-top: 4px; }
+.parts-track .part-card { scroll-snap-align: center; }
+.parts-track .part-card__media { aspect-ratio: auto; height: 150px; }
+.parts-dots { display: flex; gap: 9px; justify-content: center; margin-top: 6px; }
 .parts-dots:empty { display: none; }
 .parts-dots button { width: 9px; height: 9px; border-radius: 50%; border: 0; background: #34343c; cursor: pointer; padding: 0; transition: background .25s, transform .25s; }
 .parts-dots button.is-active { background: var(--accent); transform: scale(1.3); }
-/* desktop: lay the cards out centered (no scroll), hide the dots */
-@media (min-width: 900px) {
-  .parts-track { flex-wrap: wrap; justify-content: center; overflow: visible; scroll-snap-type: none; padding: 6px 0 0; }
-  .parts-track .part-card { width: 320px; }
-  .parts-dots { display: none; }
-}
 
 /* ---------- PRODUCT DETAIL PAGE (product.html) ---------- */
 .pd-back { color: var(--steel-2); font-size: .82rem; font-weight: 600; letter-spacing: .02em; }

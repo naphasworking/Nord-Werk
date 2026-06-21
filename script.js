@@ -386,16 +386,18 @@ function renderProducts(filter) {
   initPartsSlider();
 }
 
-/* Dots + scroll-snap sync for the parts slider (mirrors initStagesSlider). */
+/* Dots + scroll-snap sync for the 2-row parts slider. Cards fill 2 rows, so each
+   horizontal step is a COLUMN of 2 cards; one dot per column. */
 function initPartsSlider() {
   const track = document.getElementById("partsTrack");
   const dotsWrap = document.getElementById("partsDots");
   if (!track) return;
   const cards = [...track.querySelectorAll(".part-card")];
+  const columns = Math.ceil(cards.length / 2);
   const step = () => (cards[0] ? cards[0].offsetWidth + 16 : 1);
   if (dotsWrap) {
-    dotsWrap.innerHTML = cards.length > 1
-      ? cards.map((_, i) => `<button aria-label="Go to part ${i + 1}"${i === 0 ? ' class="is-active"' : ""}></button>`).join("")
+    dotsWrap.innerHTML = columns > 1
+      ? Array.from({ length: columns }, (_, i) => `<button aria-label="Go to group ${i + 1}"${i === 0 ? ' class="is-active"' : ""}></button>`).join("")
       : "";
     [...dotsWrap.querySelectorAll("button")].forEach((d, i) =>
       d.addEventListener("click", () => track.scrollTo({ left: i * step(), behavior: "smooth" })));
@@ -411,7 +413,7 @@ function initPartsSlider() {
         const dw = document.getElementById("partsDots");
         if (!c.length || !dw) return;
         const st = c[0].offsetWidth + 16;
-        const idx = Math.max(0, Math.min(c.length - 1, Math.round(track.scrollLeft / st)));
+        const idx = Math.max(0, Math.round(track.scrollLeft / st));
         [...dw.querySelectorAll("button")].forEach((d, i) => d.classList.toggle("is-active", i === idx));
       });
     }, { passive: true });
