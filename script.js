@@ -477,7 +477,7 @@ function initBookingForm() {
 
   form.addEventListener("submit", (e) => {
     e.preventDefault();
-    const d = { name: val("bkName"), phone: val("bkPhone"), service: val("bkService"), date: val("bkDate"), time: val("bkTime") };
+    const d = { name: val("bkName"), phone: val("bkPhone"), date: val("bkDate"), time: val("bkTime") };
 
     if (!d.name || !d.phone || !d.date || !d.time) {
       show("Please fill in your name, mobile number, date and time.", "err");
@@ -492,7 +492,6 @@ function initBookingForm() {
       "New appointment request — Nord Werk",
       "Name: " + d.name,
       "Mobile: " + d.phone,
-      d.service ? "Service: " + d.service : "",
       "Date: " + d.date,
       "Time: " + d.time
     ].filter(Boolean).join("\n");
