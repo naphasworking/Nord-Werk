@@ -406,13 +406,9 @@ html[lang="th"] .hero__loc { letter-spacing: .06em; }
 .part-card:hover .part-card__cta { border-color: var(--accent); color: var(--accent); }
 .part-card__media {
   position: relative; aspect-ratio: 16 / 9; display: grid; place-items: center; overflow: hidden;
-  border-bottom: 1px solid var(--border);
-  background:
-    radial-gradient(120% 90% at 70% 18%, rgba(44,166,224,.14), transparent 60%),
-    radial-gradient(120% 90% at 25% 95%, rgba(231,34,46,.18), transparent 60%),
-    linear-gradient(145deg, #1d1d24, #121216);
+  border-bottom: 1px solid var(--border); background: #fff;
 }
-.part-card__img { width: 88%; height: 88%; object-fit: contain; z-index: 1; transition: transform .5s var(--ease); }
+.part-card__img { width: 100%; height: 100%; object-fit: contain; z-index: 1; transition: transform .5s var(--ease); }
 .part-card:hover .part-card__img { transform: scale(1.06); }
 .part-card__stripe { position: absolute; left: 0; right: 0; top: 0; height: 3px; z-index: 2; background: linear-gradient(90deg, var(--m-light) 0 33.33%, var(--m-dark) 33.33% 66.66%, var(--m-red) 66.66% 100%); }
 .part-card__tag { position: absolute; top: 12px; right: 12px; z-index: 3; background: var(--accent); color: #fff; font-family: "Sora", sans-serif; font-weight: 700; font-size: .58rem; letter-spacing: .07em; text-transform: uppercase; padding: 4px 9px; border-radius: 999px; }
@@ -440,14 +436,10 @@ html[lang="th"] .hero__loc { letter-spacing: .06em; }
 
 .pd-media {
   position: relative; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden;
-  aspect-ratio: 4 / 3; display: grid; place-items: center;
-  background:
-    radial-gradient(120% 90% at 70% 18%, rgba(44,166,224,.14), transparent 60%),
-    radial-gradient(120% 90% at 25% 95%, rgba(231,34,46,.18), transparent 60%),
-    linear-gradient(145deg, #1d1d24, #121216);
+  aspect-ratio: 4 / 3; display: grid; place-items: center; background: #fff;
 }
 .pd-media__stripe { position: absolute; left: 0; right: 0; top: 0; height: 4px; z-index: 2; background: linear-gradient(90deg, var(--m-light) 0 33.33%, var(--m-dark) 33.33% 66.66%, var(--m-red) 66.66% 100%); }
-.pd-media__img { width: 90%; height: 90%; object-fit: contain; }
+.pd-media__img { width: 100%; height: 100%; object-fit: contain; }
 
 .pd-brand { color: var(--steel-2); font-size: .74rem; letter-spacing: .16em; text-transform: uppercase; font-weight: 700; }
 .pd-name { font-family: "Sora", sans-serif; font-weight: 800; font-size: clamp(1.5rem, 4vw, 2.3rem); line-height: 1.1; margin-top: 6px; }
