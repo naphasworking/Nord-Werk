@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@300;400;500;600&family=Noto+Sans+Thai:wght@300;400;500&display=swap" />
-  <link rel="stylesheet" href="style.css?v=26" />
+  <link rel="stylesheet" href="style.css?v=27" />
 </head>
 <body>
 
@@ -44,6 +44,7 @@
         <div class="pd-info">
           <span class="pd-brand" id="pdBrand"></span>
           <h1 class="pd-name" id="pdName">—</h1>
+          <div class="pd-price" id="pdPriceWrap" hidden><span class="pd-price__num" id="pdPrice"></span></div>
           <p class="pd-fit" id="pdFit"></p>
 
           <div class="pd-gain" id="pdGainWrap" hidden>
@@ -66,7 +67,7 @@
             <a href="index.html#parts" class="btn btn--ghost" data-i18n="pd.more">More parts</a>
           </div>
 
-          <p class="pd-note" data-i18n="pd.note">Genuine part fitted &amp; coded at our Pattaya workshop. Price on enquiry.</p>
+          <p class="pd-note" data-i18n="pd.note">Genuine part professionally fitted &amp; coded at our Pattaya workshop.</p>
         </div>
       </div>
     </div>
@@ -77,7 +78,7 @@
     <a href="index.html#parts" data-i18n="pd.back">All parts</a>
   </footer>
 
-  <script src="products.js?v=26"></script>
+  <script src="products.js?v=27"></script>
   <script>
     (function () {
       var T = {
@@ -85,18 +86,29 @@
           "pd.back": "All parts", "pd.parts": "Featured Parts", "pd.gain": "Power gain",
           "pd.gain.note": "with a supporting tune", "pd.models": "Fits these models",
           "pd.enquire": "Enquire & book fitting", "pd.more": "More parts",
-          "pd.note": "Genuine part fitted & coded at our Pattaya workshop. Price on enquiry.",
+          "pd.note": "Genuine part professionally fitted & coded at our Pattaya workshop.",
           "pd.notfound": "Sorry, we couldn't find that part."
         },
         th: {
           "pd.back": "อะไหล่ทั้งหมด", "pd.parts": "อะไหล่แนะนำ", "pd.gain": "แรงม้าที่เพิ่ม",
           "pd.gain.note": "เมื่อจูนร่วมด้วย", "pd.models": "รองรับรุ่นเหล่านี้",
           "pd.enquire": "สอบถาม & นัดติดตั้ง", "pd.more": "อะไหล่อื่น ๆ",
-          "pd.note": "ติดตั้งและโค้ดดิ้งอะไหล่แท้ที่อู่ของเราในพัทยา · สอบถามราคา",
+          "pd.note": "ติดตั้งและโค้ดดิ้งอะไหล่แท้อย่างมืออาชีพที่อู่ของเราในพัทยา",
           "pd.notfound": "ขออภัย ไม่พบอะไหล่ชิ้นนี้"
         }
       };
       var LANG = localStorage.getItem("nw_lang") === "th" ? "th" : "en";
+
+      // currency (mirrors script.js CURRENCIES so the price matches the homepage selector)
+      var CUR = {
+        THB: { s: "฿", r: 1, dp: 0 }, USD: { s: "$", r: 0.028, dp: 2 }, CNY: { s: "¥", r: 0.20, dp: 2 },
+        EUR: { s: "€", r: 0.026, dp: 2 }, RUB: { s: "₽", r: 2.5, dp: 0 }
+      };
+      var CURRENCY = CUR[localStorage.getItem("nw_cur")] ? localStorage.getItem("nw_cur") : "THB";
+      function fmtPrice(thb) {
+        var c = CUR[CURRENCY] || CUR.THB;
+        return c.s + (thb * c.r).toLocaleString("en-US", { minimumFractionDigits: c.dp, maximumFractionDigits: c.dp });
+      }
 
       function applyChrome() {
         document.documentElement.lang = LANG;
@@ -127,6 +139,7 @@
       set("pdCrumb", P.name);
       set("pdBrand", P.brand);
       set("pdName", P.name);
+      if (P.priceTHB) { set("pdPrice", fmtPrice(P.priceTHB)); document.getElementById("pdPriceWrap").hidden = false; }
       set("pdFit", P.fit);
       if (P.gain) { set("pdGain", P.gain); document.getElementById("pdGainWrap").hidden = false; }
       set("pdDesc", P.desc);

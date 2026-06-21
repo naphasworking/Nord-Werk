@@ -365,7 +365,9 @@ function partCardHTML(p) {
         <p class="part-card__fit">${p.fit}</p>
         ${p.models ? `<p class="part-card__models">${p.models}</p>` : ""}
         <div class="part-card__foot">
-          ${p.gain ? `<span class="part-card__gain">${p.gain}</span>` : "<span></span>"}
+          ${p.priceTHB
+            ? `<span class="part-card__price" data-thb="${p.priceTHB}">฿${p.priceTHB.toLocaleString()}</span>`
+            : (p.gain ? `<span class="part-card__gain">${p.gain}</span>` : "<span></span>")}
           <span class="btn btn--ghost part-card__cta" data-i18n="parts.view">View details</span>
         </div>
       </div>

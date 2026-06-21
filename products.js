@@ -15,6 +15,7 @@ window.PRODUCTS = [
     fit: "Fits BMW 1–4 Series · N55",
     models: "M135i · M235i · M2 · 335i · 435i",
     gain: "+20–25 hp",
+    priceTHB: 22500,            // ≈ r44performance.com £499.99 reference price
     img: "Asset/products/n55-downpipe.webp",
     fits: ["bmw-3", "bmw-4"],
     desc: "A high-flow catless downpipe for the BMW N55. Replacing the restrictive factory catalytic converter cuts exhaust backpressure for faster turbo spool, a sharper note and stronger mid-range — ideal alongside a Stage 2 tune.",
@@ -33,6 +34,7 @@ window.PRODUCTS = [
     fit: "Fits 2016+ BMW B58 · M240i · 340i · 440i · 540i · 740i",
     models: "M240i · 340i · 440i · 540i · 740i (xDrive)",
     gain: "+25–30 hp",
+    priceTHB: 26100,            // ≈ r44performance.com £579.99 reference price
     img: "Asset/products/b58-downpipe.webp",
     fits: ["bmw-3", "bmw-4", "bmw-5"],
     desc: "Handcrafted from TIG-welded 4.5″ 304-grade stainless steel, the VRSF B58 sports downpipe swaps the restrictive factory cat for a 200-cell high-flow race cat — slashing backpressure for faster spool and a sharper exhaust note. Fits RHD & LHD without modification and works with the stock or an aftermarket catback. Pairs with an ECU tune for 25–30 hp gains.",
