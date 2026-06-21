@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Part — Nord Werk Automotive</title>
+  <meta name="description" content="Performance part details — Nord Werk Automotive, BMW & BENZ tuning and parts in Pattaya, Thailand." />
+  <link rel="icon" type="image/png" href="Asset/Logo/logo-mark.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@300;400;500;600&family=Noto+Sans+Thai:wght@300;400;500&display=swap" />
+  <link rel="stylesheet" href="style.css?v=21" />
+</head>
+<body>
+
+  <!-- ===================== NAV ===================== -->
+  <header class="nav scrolled" id="nav">
+    <div class="nav__inner">
+      <a href="index.html" class="nav__logo" aria-label="Nord Werk Automotive home">
+        <img class="nav__logo-img" src="Asset/Logo/logo-mark.png" alt="Nord Werk Automotive" width="50" height="34" /><span class="nav__logo-word">NORD WERK<small>AUTOMOTIVE</small></span>
+      </a>
+      <div class="nav__actions">
+        <a href="index.html#parts" class="pd-back"><span aria-hidden="true">←</span> <span data-i18n="pd.back">All parts</span></a>
+        <button class="lang-toggle" id="langToggle" aria-label="Switch language">ไทย</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===================== PRODUCT DETAIL ===================== -->
+  <main class="product-page">
+    <div class="pd-wrap">
+      <nav class="pd-crumbs" aria-label="Breadcrumb">
+        <a href="index.html">Nord Werk</a> <span>/</span>
+        <a href="index.html#parts" data-i18n="pd.parts">Featured Parts</a> <span>/</span>
+        <span id="pdCrumb" class="pd-crumbs__current">—</span>
+      </nav>
+
+      <div class="pd-grid" id="pdGrid">
+        <div class="pd-media">
+          <span class="pd-media__stripe" aria-hidden="true"></span>
+          <img class="pd-media__img" id="pdImg" alt="" />
+        </div>
+
+        <div class="pd-info">
+          <span class="pd-brand" id="pdBrand"></span>
+          <h1 class="pd-name" id="pdName">—</h1>
+          <p class="pd-fit" id="pdFit"></p>
+
+          <div class="pd-gain" id="pdGainWrap" hidden>
+            <span class="pd-gain__label" data-i18n="pd.gain">Power gain</span>
+            <strong class="pd-gain__num" id="pdGain"></strong>
+            <span class="pd-gain__note" data-i18n="pd.gain.note">with a supporting tune</span>
+          </div>
+
+          <p class="pd-desc" id="pdDesc"></p>
+
+          <ul class="pd-features" id="pdFeatures"></ul>
+
+          <div class="pd-models" id="pdModelsWrap" hidden>
+            <span class="pd-models__label" data-i18n="pd.models">Fits these models</span>
+            <p class="pd-models__list" id="pdModels"></p>
+          </div>
+
+          <div class="pd-cta">
+            <a href="index.html#contact" class="btn btn--primary" data-i18n="pd.enquire">Enquire &amp; book fitting</a>
+            <a href="index.html#parts" class="btn btn--ghost" data-i18n="pd.more">More parts</a>
+          </div>
+
+          <p class="pd-note" data-i18n="pd.note">Genuine part fitted &amp; coded at our Pattaya workshop. Price on enquiry.</p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="pd-foot">
+    <span>© 2026 NORD WERK. All rights reserved.</span>
+    <a href="index.html#parts" data-i18n="pd.back">All parts</a>
+  </footer>
+
+  <script src="products.js?v=21"></script>
+  <script>
+    (function () {
+      var T = {
+        en: {
+          "pd.back": "All parts", "pd.parts": "Featured Parts", "pd.gain": "Power gain",
+          "pd.gain.note": "with a supporting tune", "pd.models": "Fits these models",
+          "pd.enquire": "Enquire & book fitting", "pd.more": "More parts",
+          "pd.note": "Genuine part fitted & coded at our Pattaya workshop. Price on enquiry.",
+          "pd.notfound": "Sorry, we couldn't find that part."
+        },
+        th: {
+          "pd.back": "อะไหล่ทั้งหมด", "pd.parts": "อะไหล่แนะนำ", "pd.gain": "แรงม้าที่เพิ่ม",
+          "pd.gain.note": "เมื่อจูนร่วมด้วย", "pd.models": "รองรับรุ่นเหล่านี้",
+          "pd.enquire": "สอบถาม & นัดติดตั้ง", "pd.more": "อะไหล่อื่น ๆ",
+          "pd.note": "ติดตั้งและโค้ดดิ้งอะไหล่แท้ที่อู่ของเราในพัทยา · สอบถามราคา",
+          "pd.notfound": "ขออภัย ไม่พบอะไหล่ชิ้นนี้"
+        }
+      };
+      var LANG = localStorage.getItem("nw_lang") === "th" ? "th" : "en";
+
+      function applyChrome() {
+        document.documentElement.lang = LANG;
+        document.querySelectorAll("[data-i18n]").forEach(function (el) {
+          var k = el.getAttribute("data-i18n");
+          if (T[LANG][k]) el.textContent = T[LANG][k];
+        });
+        var lt = document.getElementById("langToggle");
+        if (lt) lt.textContent = LANG === "en" ? "ไทย" : "ENG";
+      }
+
+      var slug = new URLSearchParams(location.search).get("p");
+      var P = (window.PRODUCTS || []).filter(function (x) { return x.slug === slug; })[0];
+
+      if (!P) {
+        applyChrome();
+        document.getElementById("pdName").textContent = T[LANG]["pd.notfound"];
+        document.getElementById("pdGrid").classList.add("pd-grid--missing");
+        return;
+      }
+
+      document.title = P.brand + " " + P.name + " — Nord Werk";
+      var set = function (id, v) { var el = document.getElementById(id); if (el) el.textContent = v || ""; };
+      var img = document.getElementById("pdImg");
+      img.onerror = function () { img.style.display = "none"; };
+      img.alt = P.brand + " " + P.name;
+      img.src = P.img;
+      set("pdCrumb", P.name);
+      set("pdBrand", P.brand);
+      set("pdName", P.name);
+      set("pdFit", P.fit);
+      if (P.gain) { set("pdGain", P.gain); document.getElementById("pdGainWrap").hidden = false; }
+      set("pdDesc", P.desc);
+      if (P.models) { set("pdModels", P.models); document.getElementById("pdModelsWrap").hidden = false; }
+      var ul = document.getElementById("pdFeatures");
+      ul.innerHTML = (P.features || []).map(function (f) { return "<li>" + f + "</li>"; }).join("");
+
+      applyChrome();
+
+      var lt = document.getElementById("langToggle");
+      if (lt) lt.addEventListener("click", function () {
+        LANG = LANG === "en" ? "th" : "en";
+        localStorage.setItem("nw_lang", LANG);
+        applyChrome();
+      });
+    })();
+  </script>
+</body>
+</html>

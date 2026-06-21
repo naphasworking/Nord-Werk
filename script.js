@@ -320,16 +320,10 @@ function initStageTilt() {
 }
 
 /* =========================================================
-   PARTS & UPGRADES — add products here (drop the image in Asset/products/)
+   FEATURED PARTS — products live in products.js (window.PRODUCTS),
+   shared with the product detail pages (product.html).
    ========================================================= */
-const PRODUCTS = [
-  {
-    brand: "VRSF", name: "N55 Catted Downpipe", tag: "Catless · High-flow",
-    fit: "Fits BMW 1–4 Series · N55", models: "M135i · M235i · M2 · 335i · 435i",
-    gain: "+20–25 hp", img: "Asset/products/n55-downpipe.webp",
-    fits: ["bmw-3", "bmw-4"]   // car slugs (from CARS) this part fits
-  }
-];
+const PRODUCTS = window.PRODUCTS || [];
 
 /* "Shop by Car" filter chips — reads the CMS-managed data/cars.json,
    falls back to the built-in CARS list (e.g. on file:// where fetch is blocked). */
@@ -364,7 +358,7 @@ function renderProducts(filter) {
   const empty = document.getElementById("partsEmpty");
   if (empty) empty.hidden = list.length > 0;
   grid.innerHTML = list.map(p => `
-    <article class="part-card">
+    <a class="part-card" href="product.html?p=${encodeURIComponent(p.slug)}" aria-label="${p.brand} ${p.name}">
       <div class="part-card__media">
         <span class="part-card__stripe" aria-hidden="true"></span>
         ${p.tag ? `<span class="part-card__tag">${p.tag}</span>` : ""}
@@ -377,10 +371,11 @@ function renderProducts(filter) {
         ${p.models ? `<p class="part-card__models">${p.models}</p>` : ""}
         <div class="part-card__foot">
           ${p.gain ? `<span class="part-card__gain">${p.gain}</span>` : "<span></span>"}
-          <a href="#contact" class="btn btn--ghost part-card__cta">Enquire</a>
+          <span class="btn btn--ghost part-card__cta" data-i18n="parts.view">View details</span>
         </div>
       </div>
-    </article>`).join("");
+    </a>`).join("");
+  if (typeof applyLang === "function") applyLang();
 }
 
 /* =========================================================
@@ -586,6 +581,7 @@ const I18N = {
     "parts.eyebrow": "PERFORMANCE PARTS", "parts.title": "FEATURED PARTS",
     "parts.lead": "Hand-picked bolt-ons for more power and a sharper drive.",
     "parts.all": "All cars", "parts.empty": "No parts listed for this model yet — get in touch.",
+    "parts.view": "View details",
     "reviews.title": "FROM THE GARAGE", "reviews.lead": "Real customer reviews — see them all on Google.",
     "reviews.count": "Reviews on Google", "reviews.readall": "Read all reviews on Google", "reviews.write": "Write a review",
     "book.eyebrow": "VISIT THE GARAGE", "book.title": "BOOK AN APPOINTMENT",
@@ -629,6 +625,7 @@ const I18N = {
     "parts.eyebrow": "อะไหล่สมรรถนะ", "parts.title": "อะไหล่แนะนำ",
     "parts.lead": "อะไหล่บอลต์ออนคัดสรร เพิ่มพลังและการขับขี่ที่ดีขึ้น",
     "parts.all": "ทุกรุ่น", "parts.empty": "ยังไม่มีอะไหล่สำหรับรุ่นนี้ — ติดต่อเราได้เลย",
+    "parts.view": "ดูรายละเอียด",
     "reviews.title": "เสียงจากลูกค้า", "reviews.lead": "รีวิวจริงจากลูกค้า — ดูทั้งหมดบน Google",
     "reviews.count": "รีวิวบน Google", "reviews.readall": "อ่านรีวิวทั้งหมดบน Google", "reviews.write": "เขียนรีวิว",
     "book.eyebrow": "เยี่ยมชมอู่ของเรา", "book.title": "จองคิวนัดหมาย",

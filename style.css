@@ -400,8 +400,10 @@ html[lang="th"] .hero__loc { letter-spacing: .06em; }
 .part-card {
   background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden;
   display: flex; flex-direction: column; transition: transform .3s var(--ease), border-color .3s, box-shadow .3s;
+  color: inherit; text-decoration: none;
 }
 .part-card:hover { transform: translateY(-5px); border-color: #3a3a42; box-shadow: 0 24px 50px -24px #000; }
+.part-card:hover .part-card__cta { border-color: var(--accent); color: var(--accent); }
 .part-card__media {
   position: relative; aspect-ratio: 16 / 9; display: grid; place-items: center; overflow: hidden;
   border-bottom: 1px solid var(--border);
@@ -423,6 +425,53 @@ html[lang="th"] .hero__loc { letter-spacing: .06em; }
 .part-card__gain { font-family: "Sora", sans-serif; font-weight: 800; font-size: 1.15rem; color: var(--accent); }
 .part-card__cta { padding: 9px 16px; font-size: .72rem; }
 @media (max-width: 520px) { .parts-grid { grid-template-columns: 1fr; } }
+
+/* ---------- PRODUCT DETAIL PAGE (product.html) ---------- */
+.pd-back { color: var(--steel-2); font-size: .82rem; font-weight: 600; letter-spacing: .02em; }
+.pd-back:hover { color: var(--accent); }
+.product-page { padding: 120px 24px 70px; }
+.pd-wrap { max-width: 1040px; margin: 0 auto; }
+.pd-crumbs { font-size: .78rem; color: var(--muted); margin-bottom: 22px; display: flex; gap: 7px; flex-wrap: wrap; }
+.pd-crumbs a { color: var(--steel-2); }
+.pd-crumbs a:hover { color: var(--accent); }
+.pd-crumbs__current { color: var(--text); }
+.pd-grid { display: grid; grid-template-columns: 1.05fr 1fr; gap: 40px; align-items: start; }
+.pd-grid--missing { display: block; text-align: center; padding: 40px 0; }
+
+.pd-media {
+  position: relative; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden;
+  aspect-ratio: 4 / 3; display: grid; place-items: center;
+  background:
+    radial-gradient(120% 90% at 70% 18%, rgba(44,166,224,.14), transparent 60%),
+    radial-gradient(120% 90% at 25% 95%, rgba(231,34,46,.18), transparent 60%),
+    linear-gradient(145deg, #1d1d24, #121216);
+}
+.pd-media__stripe { position: absolute; left: 0; right: 0; top: 0; height: 4px; z-index: 2; background: linear-gradient(90deg, var(--m-light) 0 33.33%, var(--m-dark) 33.33% 66.66%, var(--m-red) 66.66% 100%); }
+.pd-media__img { width: 90%; height: 90%; object-fit: contain; }
+
+.pd-brand { color: var(--steel-2); font-size: .74rem; letter-spacing: .16em; text-transform: uppercase; font-weight: 700; }
+.pd-name { font-family: "Sora", sans-serif; font-weight: 800; font-size: clamp(1.5rem, 4vw, 2.3rem); line-height: 1.1; margin-top: 6px; }
+.pd-fit { color: var(--text); margin-top: 12px; font-size: .95rem; }
+.pd-gain { display: flex; align-items: baseline; gap: 9px; flex-wrap: wrap; margin: 18px 0; }
+.pd-gain__label { color: var(--muted); font-size: .68rem; letter-spacing: .14em; text-transform: uppercase; font-weight: 600; }
+.pd-gain__num { font-family: "Sora", sans-serif; font-weight: 800; font-size: 1.8rem; color: var(--accent); line-height: 1; }
+.pd-gain__note { color: var(--muted); font-size: .8rem; }
+.pd-desc { color: var(--muted); line-height: 1.7; font-size: .95rem; }
+.pd-features { list-style: none; margin: 18px 0; display: flex; flex-direction: column; gap: 8px; }
+.pd-features li { position: relative; padding-left: 22px; color: var(--text); font-size: .9rem; line-height: 1.4; }
+.pd-features li::before { content: "▸"; position: absolute; left: 0; color: var(--accent); }
+.pd-models { margin: 16px 0 4px; }
+.pd-models__label { display: block; color: var(--muted); font-size: .68rem; letter-spacing: .14em; text-transform: uppercase; font-weight: 600; margin-bottom: 5px; }
+.pd-models__list { color: var(--text); font-size: .9rem; }
+.pd-cta { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 26px; }
+.pd-note { color: var(--muted); font-size: .8rem; margin-top: 16px; }
+.pd-foot { display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap; max-width: 1040px; margin: 0 auto; padding: 22px 24px 40px; border-top: 1px solid var(--border); color: var(--muted); font-size: .8rem; }
+.pd-foot a { color: var(--steel-2); }
+.pd-foot a:hover { color: var(--accent); }
+@media (max-width: 760px) {
+  .pd-grid { grid-template-columns: 1fr; gap: 26px; }
+  .product-page { padding: 100px 20px 60px; }
+}
 
 /* ---------- PRODUCT GRID ---------- */
 .prod-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
