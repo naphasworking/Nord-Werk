@@ -98,5 +98,23 @@ window.PRODUCTS = [
       "Plug & play · CNC brackets, OEM quick-connects",
       "Includes upper & lower rock guards"
     ]
+  },
+  {
+    slug: "mst-n55-intake",
+    brand: "MST",
+    name: "N55 Performance Intake Kit",
+    tag: "Intake · Induction",
+    fit: "Fits BMW 1–4 Series · M2 · N55",
+    models: "M135i · M235i · 335i · 435i · M2 (F2x/F3x)",
+    priceTHB: 20100,            // ≈ r44performance.com £446.99 reference price
+    img: "Asset/products/mst-n55-intake.webp",
+    fits: ["bmw-3", "bmw-4"],
+    desc: "MST's N55 intake swaps the restrictive airbox for a CNC-machined aluminium pipe, a high-flow nanofibre dry filter and a laser-cut heat shield — boosting airflow, throttle response and induction sound. Dyno-proven at +12.7 bhp / +19.8 Nm on a 335i.",
+    features: [
+      "Nanofibre dry high-flow filter",
+      "CNC aluminium intake pipe + MAF housing",
+      "Laser-cut powder-coated heat shield",
+      "+12.7 bhp / +19.8 Nm (335i, dyno)"
+    ]
   }
 ];
