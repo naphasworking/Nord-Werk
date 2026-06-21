@@ -12,7 +12,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@300;400;500;600&family=Noto+Sans+Thai:wght@300;400;500&display=swap" />
-  <link rel="stylesheet" href="style.css?v=15" />
+  <link rel="stylesheet" href="style.css?v=16" />
 </head>
 <body>
 
@@ -185,19 +185,19 @@
       <p class="section__lead" data-i18n="tuning.lead">Staged power packages for your build — dyno-developed and street-reliable. Pick your level.</p>
     </div>
 
-    <!-- Official tuning partner -->
-    <div class="tuning-partner reveal">
-      <span class="tuning-partner__by" data-i18n="tuning.partner">Calibrated by our tuning partner</span>
-      <img class="tuning-partner__logo" src="Asset/partners/tuneup.webp" alt="Tune Up — tuning partner" loading="lazy" />
-    </div>
-
-    <!-- Tuning platforms -->
-    <div class="tuning-platforms reveal">
-      <span class="tuning-platforms__label" data-i18n="tuning.platforms">Platforms</span>
-      <div class="tuning-platforms__logos">
-        <img class="tuning-platforms__logo tuning-platforms__logo--app" src="Asset/partners/bootmod3.webp" alt="bootmod3" loading="lazy" />
-        <span class="tuning-platforms__sep" aria-hidden="true"></span>
-        <img class="tuning-platforms__logo" src="Asset/partners/mgflasher.webp" alt="MG Flasher" loading="lazy" />
+    <!-- Tuning partner + platforms (one compact credibility bar) -->
+    <div class="tuning-cred reveal">
+      <div class="tuning-cred__col">
+        <span class="tuning-cred__label" data-i18n="tuning.partner.short">Tuning partner</span>
+        <img class="tuning-cred__partner" src="Asset/partners/tuneup.webp" alt="Tune Up — tuning partner" loading="lazy" />
+      </div>
+      <span class="tuning-cred__divider" aria-hidden="true"></span>
+      <div class="tuning-cred__col">
+        <span class="tuning-cred__label" data-i18n="tuning.platforms">Platforms</span>
+        <div class="tuning-cred__plats">
+          <img class="tuning-cred__plat tuning-cred__plat--app" src="Asset/partners/bootmod3.webp" alt="bootmod3" loading="lazy" />
+          <img class="tuning-cred__plat" src="Asset/partners/mgflasher.webp" alt="MG Flasher" loading="lazy" />
+        </div>
       </div>
     </div>
 
@@ -348,6 +348,6 @@
     </div>
   </footer>
 
-  <script src="script.js?v=15"></script>
+  <script src="script.js?v=16"></script>
 </body>
 </html>
