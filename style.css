@@ -373,23 +373,22 @@ html[lang="th"] .hero__loc { letter-spacing: .06em; }
 @media (max-width: 520px) { .car-grid { grid-auto-columns: 66vw; } }   /* peek the next card */
 
 /* ---------- PARTS & UPGRADES ---------- */
-/* Shop-by-Car filter chips */
+/* Shop-by-Car filter dropdown */
 .parts-filter {
-  display: flex; flex-wrap: wrap; justify-content: center; gap: 10px;
-  max-width: 880px; margin: 0 auto 30px;
+  display: flex; align-items: center; justify-content: center; gap: 11px;
+  flex-wrap: wrap; margin: 0 auto 30px;
 }
-.part-chip {
-  appearance: none; cursor: pointer; font-family: "Sora", sans-serif; font-weight: 600;
-  font-size: .82rem; letter-spacing: .01em; color: var(--text);
-  background: var(--surface); border: 1px solid var(--border); border-radius: 999px;
-  padding: 9px 16px; transition: color .25s, background .25s, border-color .25s, transform .25s var(--ease);
+.parts-filter__label {
+  color: var(--muted); font-size: .68rem; letter-spacing: .16em; text-transform: uppercase; font-weight: 700;
 }
-.part-chip:hover { border-color: #3a3a42; transform: translateY(-2px); }
-.part-chip.is-active {
-  color: #fff; border-color: transparent;
-  background: linear-gradient(135deg, var(--m-dark), var(--accent));
-  box-shadow: 0 10px 24px -12px var(--accent);
+.parts-filter__select {
+  cursor: pointer; font-family: "Sora", sans-serif; font-weight: 600; font-size: .9rem;
+  color: var(--text); background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 10px 16px; min-width: 220px; color-scheme: dark;
+  transition: border-color .25s, box-shadow .25s;
 }
+.parts-filter__select:hover { border-color: #3a3a42; }
+.parts-filter__select:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(231,34,46,.18); }
 .parts-empty {
   max-width: 540px; margin: 8px auto 0; text-align: center; color: var(--muted);
   font-size: .92rem; padding: 26px 18px; border: 1px dashed var(--border); border-radius: var(--radius);

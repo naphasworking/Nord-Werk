@@ -339,15 +339,16 @@ async function renderPartsFilter() {
       if (data && Array.isArray(data.cars) && data.cars.length) cars = data.cars;
     }
   } catch (e) { /* offline / local file — use the built-in fallback */ }
-  wrap.innerHTML = '<button class="part-chip is-active" data-car="all" data-i18n="parts.all">All</button>'
-    + cars.map(c => `<button class="part-chip" data-car="${c.slug}">${c.name}</button>`).join("");
-  if (typeof applyLang === "function") applyLang();   // translate the "All" chip
-  wrap.addEventListener("click", (e) => {
-    const btn = e.target.closest(".part-chip");
-    if (!btn) return;
-    wrap.querySelectorAll(".part-chip").forEach(b => b.classList.toggle("is-active", b === btn));
-    renderProducts(btn.getAttribute("data-car"));
-  });
+  wrap.innerHTML = `
+    <label class="parts-filter__label" for="partsFilterSelect" data-i18n="parts.filter">Shop by car</label>
+    <select class="parts-filter__select" id="partsFilterSelect" aria-label="Filter parts by car">
+      <option value="all" data-i18n="parts.all">All cars</option>
+      ${cars.map(c => `<option value="${c.slug}">${c.name}</option>`).join("")}
+    </select>`;
+  if (typeof applyLang === "function") applyLang();   // translate the label + "All cars" option
+  const sel = document.getElementById("partsFilterSelect");
+  sel.value = PARTS_FILTER;
+  sel.addEventListener("change", () => renderProducts(sel.value));
 }
 
 function partCardHTML(p) {
@@ -623,7 +624,7 @@ const I18N = {
     "parts.eyebrow": "PERFORMANCE PARTS", "parts.title": "FEATURED PARTS",
     "parts.lead": "Hand-picked bolt-ons for more power and a sharper drive.",
     "parts.all": "All cars", "parts.empty": "No parts listed for this model yet — get in touch.",
-    "parts.view": "View details",
+    "parts.view": "View details", "parts.filter": "Shop by car",
     "reviews.title": "FROM THE GARAGE", "reviews.lead": "Real customer reviews — see them all on Google.",
     "reviews.count": "Reviews on Google", "reviews.readall": "Read all reviews on Google", "reviews.write": "Write a review",
     "book.eyebrow": "VISIT THE GARAGE", "book.title": "BOOK AN APPOINTMENT",
@@ -667,7 +668,7 @@ const I18N = {
     "parts.eyebrow": "อะไหล่สมรรถนะ", "parts.title": "อะไหล่แนะนำ",
     "parts.lead": "อะไหล่บอลต์ออนคัดสรร เพิ่มพลังและการขับขี่ที่ดีขึ้น",
     "parts.all": "ทุกรุ่น", "parts.empty": "ยังไม่มีอะไหล่สำหรับรุ่นนี้ — ติดต่อเราได้เลย",
-    "parts.view": "ดูรายละเอียด",
+    "parts.view": "ดูรายละเอียด", "parts.filter": "เลือกตามรถ",
     "reviews.title": "เสียงจากลูกค้า", "reviews.lead": "รีวิวจริงจากลูกค้า — ดูทั้งหมดบน Google",
     "reviews.count": "รีวิวบน Google", "reviews.readall": "อ่านรีวิวทั้งหมดบน Google", "reviews.write": "เขียนรีวิว",
     "book.eyebrow": "เยี่ยมชมอู่ของเรา", "book.title": "จองคิวนัดหมาย",
