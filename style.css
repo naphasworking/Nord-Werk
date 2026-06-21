@@ -465,6 +465,7 @@ html[lang="th"] .hero__loc { letter-spacing: .06em; }
 .pd-price__num { font-family: "Sora", sans-serif; font-weight: 800; font-size: 1.8rem; color: var(--text); }
 .pd-fit { color: var(--text); margin-top: 12px; font-size: .95rem; }
 .pd-gain { display: flex; align-items: baseline; gap: 9px; flex-wrap: wrap; margin: 18px 0; }
+[hidden] { display: none !important; }   /* ensure the hidden attribute wins over display rules */
 .pd-gain__label { color: var(--muted); font-size: .68rem; letter-spacing: .14em; text-transform: uppercase; font-weight: 600; }
 .pd-gain__num { font-family: "Sora", sans-serif; font-weight: 800; font-size: 1.8rem; color: var(--accent); line-height: 1; }
 .pd-gain__note { color: var(--muted); font-size: .8rem; }

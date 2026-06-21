@@ -44,5 +44,23 @@ window.PRODUCTS = [
       "Faster spool & sharper exhaust response",
       "Fits RHD & LHD · stock or aftermarket catback"
     ]
+  },
+  {
+    slug: "bilstein-b16-damptronic-coilover",
+    brand: "Bilstein",
+    name: "B16 Damptronic Coilover Kit",
+    tag: "Coilovers · EDC",
+    fit: "Fits BMW 1–4 Series · F20 / F22 / F30 / F32 (with EDC)",
+    models: "F20/F21 · F22/F23 · F30/F31/F34 · F32/F33/F36",
+    priceTHB: 108000,            // ≈ r44performance.com £2,405.16 reference price
+    img: "Asset/products/bilstein-b16-coilover.webp",
+    fits: ["bmw-3", "bmw-4"],
+    desc: "A motorsport-developed B16 coilover system that works with BMW's factory electronic dampers (EDC). Height-adjustable with roughly 30–50 mm of lowering and a 20 mm fine-tuning range at each axle, it sharpens handling and stance while keeping adaptive ride comfort.",
+    features: [
+      "Works with factory EDC / adaptive dampers",
+      "≈30–50 mm lowering · 20 mm adjustment per axle",
+      "Mono-tube upside-down gas-pressure design",
+      "Triple-C corrosion-resistant coating"
+    ]
   }
 ];
