@@ -534,6 +534,16 @@ html[lang="th"] .hero__loc { letter-spacing: .06em; }
 .stage--featured .stage__price__num { color: #fff; }
 .stage__cta { margin-top: auto; width: 100%; padding: 9px 18px; font-size: .72rem; }
 
+/* bootmod3 authorized dealer badge */
+.authorized {
+  display: flex; align-items: center; gap: 9px; width: fit-content; max-width: 100%;
+  margin: 0 auto 18px; padding: 7px 16px 7px 8px;
+  background: var(--surface); border: 1px solid var(--border); border-radius: 999px;
+  box-shadow: 0 10px 26px -18px #000;
+}
+.authorized__icon { height: 26px; width: 26px; border-radius: 7px; flex-shrink: 0; }
+.authorized__text { font-family: "Sora", sans-serif; font-weight: 700; font-size: .82rem; color: var(--text); }
+
 /* tuning partner + platforms — one compact credibility bar */
 .tuning-cred { display: flex; align-items: center; justify-content: center; gap: 28px; flex-wrap: wrap; margin: 4px auto 28px; }
 .tuning-cred__col { display: flex; flex-direction: column; align-items: center; gap: 9px; }
