@@ -470,7 +470,7 @@ html[lang="th"] .hero__loc { letter-spacing: .06em; }
 .stages-track::-webkit-scrollbar { display: none; }
 
 .stage {
-  position: relative; flex: 0 0 auto; width: min(82vw, 320px); scroll-snap-align: center;
+  position: relative; flex: 0 0 auto; width: min(80vw, 300px); scroll-snap-align: center;
   background: var(--surface); border: 1px solid var(--border); border-radius: 12px; overflow: hidden;
   display: flex; flex-direction: column; transform-style: preserve-3d; will-change: transform;
   transition: transform .25s var(--ease), border-color .3s, box-shadow .3s;
@@ -480,7 +480,7 @@ html[lang="th"] .hero__loc { letter-spacing: .06em; }
 
 /* media block — the M-style image (or themed placeholder) */
 .stage__media {
-  position: relative; height: 144px; overflow: hidden; display: grid; place-items: center;
+  position: relative; height: 112px; overflow: hidden; display: grid; place-items: center;
   background:
     radial-gradient(120% 90% at 72% 18%, rgba(44,166,224,.18), transparent 60%),
     radial-gradient(120% 90% at 22% 92%, rgba(231,34,46,.24), transparent 60%),
@@ -490,7 +490,7 @@ html[lang="th"] .hero__loc { letter-spacing: .06em; }
 .stage:hover .stage__img { transform: scale(1.06); }
 .stage__num {
   position: relative; z-index: 2; font-family: "Sora", sans-serif; font-weight: 800;
-  font-size: 4rem; line-height: 1; color: rgba(255,255,255,.10); text-shadow: 0 2px 26px rgba(0,0,0,.5);
+  font-size: 3.1rem; line-height: 1; color: rgba(255,255,255,.10); text-shadow: 0 2px 26px rgba(0,0,0,.5);
 }
 .stage__badge {
   position: absolute; top: 14px; right: 14px; z-index: 4; background: var(--accent); color: #fff;
@@ -518,20 +518,21 @@ html[lang="th"] .hero__loc { letter-spacing: .06em; }
 .stage:hover .stage__glow { opacity: 1; }
 
 /* body */
-.stage__body { padding: 18px 20px 20px; display: flex; flex-direction: column; flex: 1; }
-.stage__label { font-family: "Sora", sans-serif; font-weight: 700; font-size: .66rem; letter-spacing: .2em; text-transform: uppercase; color: var(--steel-2); }
-.stage__name { font-size: 1.18rem; font-weight: 800; margin-top: 4px; }
-.stage__gain { display: flex; align-items: baseline; gap: 8px; margin: 9px 0 14px; flex-wrap: wrap; }
-.stage__gain strong { font-family: "Sora", sans-serif; font-weight: 800; font-size: 2rem; line-height: 1; color: var(--accent); }
-.stage__gain span { color: var(--muted); font-size: .84rem; }
-.stage__list { list-style: none; display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px; }
-.stage__list li { position: relative; padding-left: 20px; color: var(--muted); font-size: .83rem; line-height: 1.3; }
+.stage__body { padding: 13px 15px 15px; display: flex; flex-direction: column; flex: 1; }
+.stage__label { font-family: "Sora", sans-serif; font-weight: 700; font-size: .64rem; letter-spacing: .2em; text-transform: uppercase; color: var(--steel-2); }
+.stage__name { font-size: 1.04rem; font-weight: 800; margin-top: 2px; }
+.stage__gain { display: flex; align-items: baseline; gap: 7px; margin: 5px 0 8px; flex-wrap: wrap; }
+.stage__gain strong { font-family: "Sora", sans-serif; font-weight: 800; font-size: 1.6rem; line-height: 1; color: var(--accent); }
+.stage__gain span { color: var(--muted); font-size: .79rem; }
+.stage__list { list-style: none; display: flex; flex-direction: column; gap: 4px; margin-bottom: 10px; }
+.stage__list li { position: relative; padding-left: 18px; color: var(--muted); font-size: .78rem; line-height: 1.28; }
 .stage__list li::before { content: "▸"; position: absolute; left: 0; color: var(--accent); }
-.stage__price { display: flex; align-items: baseline; gap: 7px; margin: 2px 0 14px; }
-.stage__price__from { color: var(--muted); font-size: .68rem; letter-spacing: .14em; text-transform: uppercase; font-weight: 600; }
-.stage__price__num { font-family: "Sora", sans-serif; font-weight: 800; font-size: 1.45rem; color: var(--text); }
+.stage__price { display: flex; align-items: baseline; gap: 7px; margin: 0 0 9px; }
+.stage__price__from { color: var(--muted); font-size: .66rem; letter-spacing: .14em; text-transform: uppercase; font-weight: 600; }
+.stage__price__num { font-family: "Sora", sans-serif; font-weight: 800; font-size: 1.28rem; color: var(--text); }
+.stage__price--quote .stage__price__num { font-size: 1.02rem; color: var(--steel-2); }
 .stage--featured .stage__price__num { color: #fff; }
-.stage__cta { margin-top: auto; width: 100%; padding: 11px 22px; font-size: .74rem; }
+.stage__cta { margin-top: auto; width: 100%; padding: 9px 18px; font-size: .72rem; }
 
 /* official tuning partner badge */
 .tuning-partner { display: flex; flex-direction: column; align-items: center; gap: 9px; margin: 2px auto 30px; }

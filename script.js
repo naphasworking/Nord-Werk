@@ -202,10 +202,10 @@ const STAGES = [
     img: "Asset/tuning/stage1.webp", gain: "+15–20%", gainLabel: "more power & torque", priceTHB: 26000,
     feats: ["Log-based custom calibration", "Bootmod3 / MG Flasher platform", "For stock & lightly modified cars", "Pump-fuel safe · fully reversible"] },
   { n: "02", label: "Stage 2", name: "Bolt-On Tune", featured: true,
-    img: "Asset/tuning/stage2.webp", gain: "+30–40%", gainLabel: "more power", priceTHB: 26000,
+    img: "Asset/tuning/stage2.webp", gain: "+30–40%", gainLabel: "more power", priceTHB: 39000,
     feats: ["Tuned for downpipe + intake", "Log-based custom calibration", "Sharper throttle & faster spool", "Strong, daily-reliable power"] },
-  { n: "03", label: "Stage 3", name: "Big-Turbo / Hybrid", featured: false,
-    img: "Asset/tuning/stage3.webp", gain: "2×+", gainLabel: "maximum power", priceTHB: 39000,
+  { n: "03", label: "Stage 3+", name: "Big-Turbo / Hybrid", featured: false,
+    img: "Asset/tuning/stage3.webp", gain: "2×+", gainLabel: "maximum power", quote: true,
     feats: ["Upgraded & hybrid turbo setups", "Plug-in hybrid (PHEV) specialist", "Flex-fuel / ethanol-blend ready", "Maximum safe power"] }
 ];
 
@@ -263,7 +263,9 @@ function renderStages() {
         <h3 class="stage__name">${s.name}</h3>
         <div class="stage__gain"><strong>${s.gain}</strong><span>${s.gainLabel}</span></div>
         <ul class="stage__list">${s.feats.map(f => `<li>${f}</li>`).join("")}</ul>
-        <div class="stage__price"><span class="stage__price__from" data-i18n="tuning.from">From</span><span class="stage__price__num" data-thb="${s.priceTHB}">฿${s.priceTHB.toLocaleString()}</span></div>
+        ${s.quote
+          ? `<div class="stage__price stage__price--quote"><span class="stage__price__num" data-i18n="tuning.quote">Get a quote</span></div>`
+          : `<div class="stage__price"><span class="stage__price__from" data-i18n="tuning.from">From</span><span class="stage__price__num" data-thb="${s.priceTHB}">฿${s.priceTHB.toLocaleString()}</span></div>`}
         <a href="#contact" class="btn ${s.featured ? "btn--primary" : "btn--ghost"} stage__cta">Enquire</a>
       </div>
     </article>`).join("");
@@ -576,7 +578,7 @@ const I18N = {
     "tuning.eyebrow": "PERFORMANCE TUNING", "tuning.title": "TUNING STAGES",
     "tuning.lead": "Staged power packages for your build — dyno-developed and street-reliable. Pick your level.",
     "tuning.partner": "Calibrated by our tuning partner",
-    "tuning.from": "From",
+    "tuning.from": "From", "tuning.quote": "Get a quote",
     "tuning.note": "Gains vary by model, fuel and supporting mods. Track, race & bespoke builds on custom quote — book a consultation for a build tailored to your car.",
     "builds.title": "FEATURED BUILDS", "builds.lead": "Real dyno-proven results from our tuning partner.",
     "brands.label": "BRANDS WE OFFER",
@@ -617,7 +619,7 @@ const I18N = {
     "tuning.eyebrow": "การจูนสมรรถนะ", "tuning.title": "ระดับการจูน",
     "tuning.lead": "แพ็กเกจเพิ่มพลังแบบเป็นขั้นสำหรับรถของคุณ พัฒนาบนไดโน่ ขับใช้งานจริงได้ — เลือกระดับของคุณ",
     "tuning.partner": "จูนโดยพาร์ทเนอร์จูนของเรา",
-    "tuning.from": "เริ่มต้น",
+    "tuning.from": "เริ่มต้น", "tuning.quote": "ขอใบเสนอราคา",
     "tuning.note": "ผลลัพธ์แตกต่างกันตามรุ่นรถ เชื้อเพลิง และอุปกรณ์เสริม งานสนาม แข่ง และงานสั่งทำพิเศษ ประเมินราคาเฉพาะคัน — ปรึกษาเราเพื่อจัดสเปกให้เหมาะกับรถของคุณ",
     "builds.title": "ผลงานเด่น", "builds.lead": "ผลลัพธ์จริงที่พิสูจน์บนไดโน่ จากพาร์ทเนอร์จูนของเรา",
     "brands.label": "แบรนด์ที่เราจำหน่าย",
