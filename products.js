@@ -116,5 +116,23 @@ window.PRODUCTS = [
       "Laser-cut powder-coated heat shield",
       "+12.7 bhp / +19.8 Nm (335i, dyno)"
     ]
+  },
+  {
+    slug: "mmr-n55-intercooler",
+    brand: "MMR",
+    name: "N55 Performance Intercooler",
+    tag: "Intercooler · N55",
+    fit: "Fits BMW 1–4 Series · N55 (F2x/F3x)",
+    models: "M135i · M235i · 335i · 435i (non-cabrio)",
+    priceTHB: 35400,            // ≈ r44performance.com £786.23 reference price
+    img: "Asset/products/mmr-n55-intercooler.webp",
+    fits: ["bmw-3", "bmw-4"],
+    desc: "An MMR bar-and-plate stepped-core intercooler that gives the N55 around 70% more frontal area and 90% more internal volume than stock — slashing charge-air temperatures for consistent power on hot days and hard runs, with minimal pressure drop. Direct fit, no modification required.",
+    features: [
+      "520 × 215 × 145 mm bar-and-plate stepped core",
+      "~70% larger frontal area than OE",
+      "~90% more internal volume than OE",
+      "Direct fit · anti-corrosive coating"
+    ]
   }
 ];
