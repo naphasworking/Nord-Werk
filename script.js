@@ -350,14 +350,8 @@ async function renderPartsFilter() {
   });
 }
 
-function renderProducts(filter) {
-  if (filter) PARTS_FILTER = filter;
-  const grid = document.getElementById("partsGrid");
-  if (!grid) return;
-  const list = PARTS_FILTER === "all" ? PRODUCTS : PRODUCTS.filter(p => (p.fits || []).includes(PARTS_FILTER));
-  const empty = document.getElementById("partsEmpty");
-  if (empty) empty.hidden = list.length > 0;
-  grid.innerHTML = list.map(p => `
+function partCardHTML(p) {
+  return `
     <a class="part-card" href="product.html?p=${encodeURIComponent(p.slug)}" aria-label="${p.brand} ${p.name}">
       <div class="part-card__media">
         <span class="part-card__stripe" aria-hidden="true"></span>
@@ -374,7 +368,32 @@ function renderProducts(filter) {
           <span class="btn btn--ghost part-card__cta" data-i18n="parts.view">View details</span>
         </div>
       </div>
-    </a>`).join("");
+    </a>`;
+}
+
+/* Render parts into two right-scrolling marquee rows. Each row repeats its
+   cards enough times (even count) so the loop is seamless even with few items. */
+function renderProducts(filter) {
+  if (filter) PARTS_FILTER = filter;
+  const row1 = document.getElementById("partsRow1");
+  const row2 = document.getElementById("partsRow2");
+  if (!row1 || !row2) return;
+  const list = PARTS_FILTER === "all" ? PRODUCTS : PRODUCTS.filter(p => (p.fits || []).includes(PARTS_FILTER));
+  const empty = document.getElementById("partsEmpty");
+  const marquee = document.getElementById("partsMarquee");
+  if (empty) empty.hidden = list.length > 0;
+  if (marquee) marquee.hidden = list.length === 0;
+
+  const fillRow = (items) => {
+    if (!items.length) return "";
+    const copies = 2 * Math.max(1, Math.ceil(6 / items.length));   // even → seamless -50% loop
+    return items.map(partCardHTML).join("").repeat(copies);
+  };
+  // split across two rows; with a single item, the 2nd row mirrors it
+  const r1 = list.filter((_, i) => i % 2 === 0);
+  const r2 = list.filter((_, i) => i % 2 === 1);
+  row1.innerHTML = fillRow(r1);
+  row2.innerHTML = fillRow(r2.length ? r2 : r1);
   if (typeof applyLang === "function") applyLang();
 }
 

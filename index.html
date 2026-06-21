@@ -12,7 +12,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@300;400;500;600&family=Noto+Sans+Thai:wght@300;400;500&display=swap" />
-  <link rel="stylesheet" href="style.css?v=22" />
+  <link rel="stylesheet" href="style.css?v=23" />
 </head>
 <body>
 
@@ -231,8 +231,11 @@
     <!-- Shop by Car: filter the parts by model (chips render from CARS in script.js) -->
     <div class="parts-filter" id="partsFilter" role="tablist" aria-label="Filter parts by car"></div>
 
-    <!-- cards render from the PRODUCTS array in script.js -->
-    <div class="parts-grid" id="partsGrid"></div>
+    <!-- two right-scrolling rows render from products.js -->
+    <div class="parts-marquee" id="partsMarquee">
+      <div class="parts-row" id="partsRow1"></div>
+      <div class="parts-row parts-row--2" id="partsRow2"></div>
+    </div>
     <p class="parts-empty" id="partsEmpty" data-i18n="parts.empty" hidden>No parts listed for this model yet — get in touch.</p>
   </section>
 
@@ -342,7 +345,7 @@
     </div>
   </footer>
 
-  <script src="products.js?v=22"></script>
-  <script src="script.js?v=22"></script>
+  <script src="products.js?v=23"></script>
+  <script src="script.js?v=23"></script>
 </body>
 </html>
