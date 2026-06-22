@@ -840,7 +840,9 @@ html[lang="th"] .hero__loc { letter-spacing: .06em; }
   .hero__stats { gap: 28px; }
 }
 @media (max-width: 520px) {
-  .cat-grid, .prod-grid, .footer__cols { grid-template-columns: 1fr; }
+  .cat-grid, .prod-grid { grid-template-columns: 1fr; }
+  /* keep footer Explore + Visit Us side by side on mobile (brand stays full width) */
+  .footer__cols { grid-template-columns: 1fr 1fr; gap: 20px; }
   .props { grid-template-columns: repeat(2, minmax(0, 1fr)); }   /* keep value props 2×2 on mobile */
   .props__item { flex-direction: column; align-items: flex-start; padding: 16px 14px; gap: 8px; min-width: 0; }
   .props__item > div { min-width: 0; width: 100%; }   /* fill the cell so text wraps instead of overflowing */
