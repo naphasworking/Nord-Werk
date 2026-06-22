@@ -136,3 +136,78 @@ window.PRODUCTS = [
     ]
   }
 ];
+
+/* =====================================================================
+   GOOGLE SHEET SOURCE  (no-code: add a row → it shows on the live site)
+
+   1. Make a Google Sheet with this header row (exact names, any order):
+        slug, brand, name, tag, fit, models, priceTHB, gain, img, fits, desc, features
+      (see parts-template.csv — import it to start from the current list).
+      • fits / features: separate values with a | (pipe), e.g.  bmw-3|bmw-4
+      • img: a full https:// image URL, OR a file in Asset/products/
+        (a bare filename like "n55-downpipe.webp" is looked up there).
+   2. File → Share → Publish to web → pick the sheet → Comma-separated (.csv) → Publish.
+   3. Paste that published CSV URL between the quotes below.
+   Leave it "" to use the built-in list above (offline / fallback).
+   ===================================================================== */
+window.NW_SHEET_CSV = "";
+
+/* Tiny CSV parser — handles quotes, commas and newlines inside fields. */
+function nwParseCSV(text) {
+  text = text.replace(/^﻿/, "").replace(/\r\n?/g, "\n");
+  const rows = []; let row = [], field = "", inQ = false;
+  for (let i = 0; i < text.length; i++) {
+    const c = text[i];
+    if (inQ) {
+      if (c === '"') { if (text[i + 1] === '"') { field += '"'; i++; } else inQ = false; }
+      else field += c;
+    } else if (c === '"') inQ = true;
+    else if (c === ",") { row.push(field); field = ""; }
+    else if (c === "\n") { row.push(field); rows.push(row); row = []; field = ""; }
+    else field += c;
+  }
+  if (field.length || row.length) { row.push(field); rows.push(row); }
+  return rows;
+}
+
+/* Returns the product list: from the Google Sheet if configured & reachable,
+   otherwise the built-in window.PRODUCTS above. Used by index.html + product.html. */
+window.loadProducts = async function () {
+  const url = window.NW_SHEET_CSV;
+  if (!url) return window.PRODUCTS;
+  try {
+    const res = await fetch(url, { cache: "no-store" });
+    if (!res.ok) throw new Error("sheet " + res.status);
+    const rows = nwParseCSV(await res.text());
+    if (rows.length < 2) throw new Error("empty sheet");
+    const head = rows[0].map(h => h.trim().toLowerCase());
+    const at = (name) => head.indexOf(name);
+    const ci = {
+      slug: at("slug"), brand: at("brand"), name: at("name"), tag: at("tag"),
+      fit: at("fit"), models: at("models"), price: at("pricethb"), gain: at("gain"),
+      img: at("img"), fits: at("fits"), desc: at("desc"), features: at("features")
+    };
+    const cell = (r, i) => (i >= 0 && r[i] != null ? String(r[i]).trim() : "");
+    const split = (s) => s ? s.split(/[|,]/).map(x => x.trim()).filter(Boolean) : [];
+    const list = rows.slice(1)
+      .filter(r => r.some(c => c && c.trim()))
+      .map(r => {
+        let img = cell(r, ci.img);
+        if (img && !/^https?:\/\//i.test(img) && !img.includes("/")) img = "Asset/products/" + img;
+        const price = parseInt(cell(r, ci.price).replace(/[^\d]/g, ""), 10);
+        return {
+          slug: cell(r, ci.slug), brand: cell(r, ci.brand), name: cell(r, ci.name),
+          tag: cell(r, ci.tag), fit: cell(r, ci.fit), models: cell(r, ci.models),
+          priceTHB: isNaN(price) ? undefined : price,
+          gain: cell(r, ci.gain) || undefined,
+          img: img, fits: split(cell(r, ci.fits)),
+          desc: cell(r, ci.desc), features: split(cell(r, ci.features))
+        };
+      })
+      .filter(p => p.slug && p.name);
+    return list.length ? list : window.PRODUCTS;
+  } catch (e) {
+    console.warn("Parts: using built-in list (sheet unavailable):", e.message);
+    return window.PRODUCTS;
+  }
+};

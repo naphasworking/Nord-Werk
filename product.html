@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@300;400;500;600&family=Noto+Sans+Thai:wght@300;400;500&display=swap" />
-  <link rel="stylesheet" href="style.css?v=33" />
+  <link rel="stylesheet" href="style.css?v=34" />
 </head>
 <body>
 
@@ -78,7 +78,7 @@
     <a href="index.html#parts" data-i18n="pd.back">All parts</a>
   </footer>
 
-  <script src="products.js?v=33"></script>
+  <script src="products.js?v=34"></script>
   <script>
     (function () {
       var T = {
@@ -121,33 +121,41 @@
       }
 
       var slug = new URLSearchParams(location.search).get("p");
-      var P = (window.PRODUCTS || []).filter(function (x) { return x.slug === slug; })[0];
+      var set = function (id, v) { var el = document.getElementById(id); if (el) el.textContent = v || ""; };
 
-      if (!P) {
+      function renderProduct(P) {
+        if (!P) {
+          document.getElementById("pdName").textContent = T[LANG]["pd.notfound"];
+          document.getElementById("pdGrid").classList.add("pd-grid--missing");
+          applyChrome();
+          return;
+        }
+        document.title = P.brand + " " + P.name + " — Nord Werk";
+        var img = document.getElementById("pdImg");
+        img.onerror = function () { img.style.display = "none"; };
+        img.alt = P.brand + " " + P.name;
+        img.src = P.img;
+        set("pdCrumb", P.name);
+        set("pdBrand", P.brand);
+        set("pdName", P.name);
+        if (P.priceTHB) { set("pdPrice", fmtPrice(P.priceTHB)); document.getElementById("pdPriceWrap").hidden = false; }
+        set("pdFit", P.fit);
+        if (P.gain) { set("pdGain", P.gain); document.getElementById("pdGainWrap").hidden = false; }
+        set("pdDesc", P.desc);
+        if (P.models) { set("pdModels", P.models); document.getElementById("pdModelsWrap").hidden = false; }
+        var ul = document.getElementById("pdFeatures");
+        ul.innerHTML = (P.features || []).map(function (f) { return "<li>" + f + "</li>"; }).join("");
         applyChrome();
-        document.getElementById("pdName").textContent = T[LANG]["pd.notfound"];
-        document.getElementById("pdGrid").classList.add("pd-grid--missing");
-        return;
       }
 
-      document.title = P.brand + " " + P.name + " — Nord Werk";
-      var set = function (id, v) { var el = document.getElementById(id); if (el) el.textContent = v || ""; };
-      var img = document.getElementById("pdImg");
-      img.onerror = function () { img.style.display = "none"; };
-      img.alt = P.brand + " " + P.name;
-      img.src = P.img;
-      set("pdCrumb", P.name);
-      set("pdBrand", P.brand);
-      set("pdName", P.name);
-      if (P.priceTHB) { set("pdPrice", fmtPrice(P.priceTHB)); document.getElementById("pdPriceWrap").hidden = false; }
-      set("pdFit", P.fit);
-      if (P.gain) { set("pdGain", P.gain); document.getElementById("pdGainWrap").hidden = false; }
-      set("pdDesc", P.desc);
-      if (P.models) { set("pdModels", P.models); document.getElementById("pdModelsWrap").hidden = false; }
-      var ul = document.getElementById("pdFeatures");
-      ul.innerHTML = (P.features || []).map(function (f) { return "<li>" + f + "</li>"; }).join("");
+      // load from the Google Sheet (or built-in list), then render the matching product
+      var loader = (typeof window.loadProducts === "function")
+        ? window.loadProducts() : Promise.resolve(window.PRODUCTS || []);
+      loader.then(function (list) {
+        renderProduct((list || []).filter(function (x) { return x.slug === slug; })[0]);
+      });
 
-      applyChrome();
+      applyChrome();   // translate the static labels right away
 
       var lt = document.getElementById("langToggle");
       if (lt) lt.addEventListener("click", function () {

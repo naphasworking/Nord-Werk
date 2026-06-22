@@ -323,7 +323,7 @@ function initStageTilt() {
    FEATURED PARTS — products live in products.js (window.PRODUCTS),
    shared with the product detail pages (product.html).
    ========================================================= */
-const PRODUCTS = window.PRODUCTS || [];
+let PRODUCTS = window.PRODUCTS || [];
 
 /* "Shop by Car" filter chips — reads the CMS-managed data/cars.json,
    falls back to the built-in CARS list (e.g. on file:// where fetch is blocked). */
@@ -739,7 +739,13 @@ document.addEventListener("DOMContentLoaded", () => {
   renderStages();
   renderBuilds();
   renderPartsFilter();
-  renderProducts();
+  renderProducts();   // immediate render with the built-in list…
+  // …then swap in the Google Sheet list (if configured) once it loads
+  if (typeof window.loadProducts === "function") {
+    window.loadProducts().then(list => {
+      if (list && list.length) { PRODUCTS = list; renderProducts(); }
+    });
+  }
   initStagesSlider();
   initStageTilt();
   initNav();
