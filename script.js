@@ -501,10 +501,9 @@ function initLiveReviews() {
    ========================================================= */
 const BOOKING = {
   whatsapp: "",
-  // Save bookings to your Google Sheet: deploy the Apps Script in
-  // appointments.gs as a Web App and paste its /exec URL here.
-  // Full steps in BOOKINGS-VIA-GOOGLE-SHEET.md.
-  endpoint: ""
+  // Google Apps Script Web App that appends each booking to the sheet
+  // (code in appointments.gs · setup in BOOKINGS-VIA-GOOGLE-SHEET.md).
+  endpoint: "https://script.google.com/macros/s/AKfycbxCJM_K6ByHzWMdFf48wAU68sijaDa9LX-8q3_bHlfh8fVmPXdEpi9htzXj7F_qAemRBQ/exec"
 };
 
 function initBookingForm() {
