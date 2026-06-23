@@ -501,6 +501,9 @@ function initLiveReviews() {
    ========================================================= */
 const BOOKING = {
   whatsapp: "",
+  // Save bookings to your Google Sheet: deploy the Apps Script in
+  // appointments.gs as a Web App and paste its /exec URL here.
+  // Full steps in BOOKINGS-VIA-GOOGLE-SHEET.md.
   endpoint: ""
 };
 
@@ -544,9 +547,15 @@ function initBookingForm() {
     } else if (BOOKING.endpoint) {
       const body = new FormData();
       Object.entries(d).forEach(([k, v]) => body.append(k, v));
-      fetch(BOOKING.endpoint, { method: "POST", body })
+      const btn = form.querySelector('[type="submit"]');
+      if (btn) btn.disabled = true;
+      show(LANG === "th" ? "กำลังส่ง…" : "Sending…", "");
+      // no-cors: Google Apps Script returns an opaque response, but the row is
+      // still appended; we confirm optimistically and only fail on a network error.
+      fetch(BOOKING.endpoint, { method: "POST", mode: "no-cors", body })
         .then(() => { show(done, "ok"); form.reset(); })
-        .catch(() => show("Sorry, something went wrong — please call or message us instead.", "err"));
+        .catch(() => show("Sorry, something went wrong — please call or message us instead.", "err"))
+        .finally(() => { if (btn) btn.disabled = false; });
     } else {
       show(done, "ok");
       form.reset();
