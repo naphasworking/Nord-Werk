@@ -480,15 +480,29 @@ function initLiveReviews() {
   widget.id = "featurable-" + id;
   widget.setAttribute("data-featurable-async", "");
   host.appendChild(widget);
-  const s = document.createElement("script");
-  s.src = "https://featurable.com/assets/bundle.js";
-  s.defer = true;
-  document.body.appendChild(s);
-  // hide the sample cards + static badge — the live widget shows the real rating
-  const fallback = document.getElementById("reviewsFallback");
-  if (fallback) fallback.style.display = "none";
-  const badge = document.getElementById("gReviewsBadge");
-  if (badge) badge.style.display = "none";
+  // Load the third-party widget only when the reviews section is near the
+  // viewport — keeps featurable.com/bundle.js off the initial page load.
+  const loadWidget = () => {
+    if (document.getElementById("featurableBundle")) return;
+    const s = document.createElement("script");
+    s.id = "featurableBundle";
+    s.src = "https://featurable.com/assets/bundle.js";
+    s.defer = true;
+    document.body.appendChild(s);
+    // hide the sample cards + static badge — the live widget shows the real rating
+    const fallback = document.getElementById("reviewsFallback");
+    if (fallback) fallback.style.display = "none";
+    const badge = document.getElementById("gReviewsBadge");
+    if (badge) badge.style.display = "none";
+  };
+  if ("IntersectionObserver" in window) {
+    const io = new IntersectionObserver((entries, obs) => {
+      if (entries.some(e => e.isIntersecting)) { loadWidget(); obs.disconnect(); }
+    }, { rootMargin: "600px" });
+    io.observe(host);
+  } else {
+    loadWidget();
+  }
 }
 
 /* =========================================================
@@ -571,8 +585,13 @@ function initHeroVideo() {
   const seekStart = () => { try { v.currentTime = HERO_VIDEO_START; } catch (e) {} };
   v.addEventListener("loadedmetadata", seekStart);
   v.addEventListener("ended", () => { seekStart(); v.play().catch(() => {}); });
-  const p = v.play();
-  if (p && p.catch) p.catch(() => {});   // ignore autoplay rejection
+  // Keep the heavy MP4 OFF the critical path: the lightweight poster shows
+  // immediately; the video only loads + plays after the page is ready.
+  // Skipped entirely for users who prefer reduced motion (poster stays).
+  if (window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const start = () => { v.preload = "auto"; const p = v.play(); if (p && p.catch) p.catch(() => {}); };
+  if (document.readyState === "complete") setTimeout(start, 500);
+  else window.addEventListener("load", () => setTimeout(start, 500), { once: true });
 }
 
 /* ---- "Coming soon" countdown to opening day (25 July 2026) ---- */
