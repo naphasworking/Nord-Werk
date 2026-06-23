@@ -150,7 +150,7 @@ window.PRODUCTS = [
    3. Paste that published CSV URL between the quotes below.
    Leave it "" to use the built-in list above (offline / fallback).
    ===================================================================== */
-window.NW_SHEET_CSV = "";
+window.NW_SHEET_CSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSAq6AdgLtzfzpfVJoeks6jq9bOy8pPmH6Gm7i24d45LvWNjZqE4EqP1C_RodBkk951ESSLlNrPVXtc/pub?gid=1247987573&single=true&output=csv";
 
 /* Tiny CSV parser — handles quotes, commas and newlines inside fields. */
 function nwParseCSV(text) {
@@ -188,7 +188,8 @@ window.loadProducts = async function () {
       img: at("img"), fits: at("fits"), desc: at("desc"), features: at("features")
     };
     const cell = (r, i) => (i >= 0 && r[i] != null ? String(r[i]).trim() : "");
-    const split = (s) => s ? s.split(/[|,]/).map(x => x.trim()).filter(Boolean) : [];
+    const splitSlugs = (s) => s ? s.split(/[|,]/).map(x => x.trim()).filter(Boolean) : [];  // car ids (no commas inside)
+    const splitParts = (s) => s ? s.split("|").map(x => x.trim()).filter(Boolean) : [];      // features: pipe only (may contain commas)
     const list = rows.slice(1)
       .filter(r => r.some(c => c && c.trim()))
       .map(r => {
@@ -200,8 +201,8 @@ window.loadProducts = async function () {
           tag: cell(r, ci.tag), fit: cell(r, ci.fit), models: cell(r, ci.models),
           priceTHB: isNaN(price) ? undefined : price,
           gain: cell(r, ci.gain) || undefined,
-          img: img, fits: split(cell(r, ci.fits)),
-          desc: cell(r, ci.desc), features: split(cell(r, ci.features))
+          img: img, fits: splitSlugs(cell(r, ci.fits)),
+          desc: cell(r, ci.desc), features: splitParts(cell(r, ci.features))
         };
       })
       .filter(p => p.slug && p.name);
