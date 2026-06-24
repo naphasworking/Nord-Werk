@@ -772,6 +772,13 @@ html[lang="th"] .hero__loc { letter-spacing: .06em; }
 .footer__cols { display: grid; grid-template-columns: 1.6fr 1fr 1fr; gap: 28px; align-content: start; }
 .footer__addr { display: flex; align-items: flex-start; gap: 7px; margin-top: 16px; color: var(--muted); font-size: .86rem; line-height: 1.5; max-width: 320px; }
 .footer__addr svg { width: 15px; height: 15px; color: var(--accent); flex-shrink: 0; margin-top: 2px; }
+.footer__phone { display: inline-flex; align-items: center; gap: 8px; margin-top: 12px; color: var(--text); font-family: "Sora", sans-serif; font-weight: 700; font-size: .96rem; letter-spacing: .02em; transition: color .2s; }
+.footer__phone svg { width: 16px; height: 16px; color: var(--accent); flex-shrink: 0; }
+.footer__phone:hover { color: var(--accent); }
+.footer__social { display: flex; gap: 10px; margin-top: 16px; }
+.footer__social a { display: grid; place-items: center; width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--border); color: var(--muted); transition: color .2s, border-color .2s, transform .2s var(--ease), background .2s; }
+.footer__social a:hover { color: #fff; border-color: transparent; background: #1877f2; transform: translateY(-2px); }
+.footer__social svg { width: 18px; height: 18px; }
 /* location map tucked into the footer's right side */
 .footer__map { border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; min-height: 230px; }
 .footer__map iframe {
