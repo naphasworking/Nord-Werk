@@ -777,8 +777,21 @@ html[lang="th"] .hero__loc { letter-spacing: .06em; }
 .footer__phone:hover { color: var(--accent); }
 .footer__social { display: flex; gap: 10px; margin-top: 16px; }
 .footer__social a { display: grid; place-items: center; width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--border); color: var(--muted); transition: color .2s, border-color .2s, transform .2s var(--ease), background .2s; }
-.footer__social a:hover { color: #fff; border-color: transparent; background: #1877f2; transform: translateY(-2px); }
+.footer__social a:hover { color: #fff; border-color: transparent; transform: translateY(-2px); }
+.footer__social a.is-fb:hover { background: #1877f2; }
+.footer__social a.is-line:hover { background: #06c755; }
+.footer__social a.is-wa:hover { background: #25d366; }
 .footer__social svg { width: 18px; height: 18px; }
+
+/* LINE QR — desktop only, compact */
+.footer__qr { display: none; }
+@media (min-width: 768px) {
+  .footer__qr { display: flex; align-items: center; gap: 12px; margin-top: 18px; }
+  .footer__qr-box { background: #fff; padding: 6px; border-radius: 10px; line-height: 0; flex-shrink: 0; }
+  .footer__qr-box img { width: 88px; height: 88px; display: block; }
+  .footer__qr-cap { color: var(--muted); font-size: .8rem; line-height: 1.45; max-width: 110px; }
+  .footer__qr-cap strong { color: #06c755; font-weight: 700; }
+}
 /* location map tucked into the footer's right side */
 .footer__map { border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; min-height: 230px; }
 .footer__map iframe {
