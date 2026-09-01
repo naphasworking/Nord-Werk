@@ -925,3 +925,7 @@ html[lang="th"] .faq__item > p { line-height: 2; }
   .faq__item { padding: 0 16px; }
   .faq__item summary h3 { font-size: .94rem; }
 }
+
+/* Opening hours — "open 7 days" is a differentiator locally, so give it a little weight */
+.cta-band__hours { color: var(--text); font-weight: 500; }
+.footer__hours svg { color: var(--accent); }
