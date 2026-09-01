@@ -449,6 +449,107 @@ const FEATURABLE = {
   widgetId: "728bc4c2-6394-4136-870f-0ab9846ca0ad"
 };
 
+/* =========================================================
+   FACEBOOK PAGE FEED
+   Shows the page's recent posts via Facebook's official Page Plugin.
+
+   The SDK is ~300KB, so it is NOT loaded on page load — it is injected the
+   first time the section scrolls into view. If it never renders (ad blockers
+   and privacy browsers routinely block connect.facebook.net, and it is
+   unreachable from some networks) we reveal the static card instead of
+   leaving the visitor staring at an empty box.
+
+   Note: embedded posts live in a Facebook-owned iframe, so this content is
+   NOT indexed by Google and adds nothing to the site's own rankings. It is
+   here for social proof — to show the shop is active.
+   ========================================================= */
+const FACEBOOK_PAGE = "https://www.facebook.com/nordwerkauto";
+
+function initFacebookFeed() {
+  const host  = document.getElementById("fbFeed");
+  const frame = document.getElementById("fbFeedFrame");
+  if (!host || !frame) return;
+
+  let started = false, lastWidth = 0;
+
+  // The Page Plugin only accepts 180-500px; match the container so it never overflows.
+  const widthFor = () => {
+    const w = Math.floor(frame.getBoundingClientRect().width);
+    return Math.max(180, Math.min(500, w || 500));
+  };
+
+  const fail = () => host.classList.add("fbfeed--unavailable");
+
+  function buildPlugin() {
+    const el = document.createElement("div");
+    el.className = "fb-page";
+    lastWidth = widthFor();
+    const attrs = {
+      "data-href": FACEBOOK_PAGE,
+      "data-tabs": "timeline",
+      "data-width": String(lastWidth),
+      "data-height": "640",
+      "data-small-header": "false",
+      "data-adapt-container-width": "true",
+      "data-hide-cover": "false",
+      "data-show-facepile": "true"
+    };
+    Object.keys(attrs).forEach(k => el.setAttribute(k, attrs[k]));
+    return el;
+  }
+
+  function start() {
+    if (started) return;
+    started = true;
+
+    frame.appendChild(buildPlugin());
+
+    if (!document.getElementById("fb-root")) {
+      const root = document.createElement("div");
+      root.id = "fb-root";
+      document.body.insertBefore(root, document.body.firstChild);
+    }
+
+    const s = document.createElement("script");
+    s.async = true;
+    s.defer = true;
+    s.crossOrigin = "anonymous";
+    // Locale follows the site language so the embed's own chrome matches.
+    s.src = "https://connect.facebook.net/" + (LANG === "th" ? "th_TH" : "en_US") +
+            "/sdk.js#xfbml=1&version=v21.0";
+    s.onerror = fail;
+    document.body.appendChild(s);
+
+    // Belt and braces: onerror does not fire when a blocker returns an empty
+    // 200, so also check that an iframe actually materialised.
+    setTimeout(() => { if (!frame.querySelector("iframe")) fail(); }, 6000);
+  }
+
+  // Re-render on a real width change (orientation flip, desktop resize) —
+  // the plugin bakes its width in at parse time and will not reflow itself.
+  let resizeTimer;
+  window.addEventListener("resize", () => {
+    if (!started || host.classList.contains("fbfeed--unavailable")) return;
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => {
+      if (Math.abs(widthFor() - lastWidth) < 40) return;
+      if (!window.FB || !window.FB.XFBML) return;
+      frame.innerHTML = "";
+      frame.appendChild(buildPlugin());
+      window.FB.XFBML.parse(frame);
+    }, 250);
+  });
+
+  if ("IntersectionObserver" in window) {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { start(); io.disconnect(); } });
+    }, { rootMargin: "300px" });
+    io.observe(host);
+  } else {
+    start();
+  }
+}
+
 function initGoogleReviews() {
   const setHref = (id, url) => { const el = document.getElementById(id); if (el && url) el.href = url; };
   const writeUrl = GOOGLE.placeId
@@ -658,6 +759,10 @@ const I18N = {
     "reviews.count": "Reviews on Google", "reviews.readall": "Read all reviews on Google", "reviews.write": "Write a review",
     "faq.title": "COMMON QUESTIONS", "faq.lead": "BMW & Benz owners in Pattaya ask us these most often.",
     "hours.line": "Mon – Sat · 10:00 – 19:00",
+    "social.title": "FROM THE WORKSHOP",
+    "social.lead": "Fresh builds, coding jobs and shop updates — straight from our Facebook page.",
+    "social.fallback": "See our latest builds, coding jobs and shop updates on Facebook.",
+    "social.follow": "Follow us on Facebook ↗", "social.line": "Add us on LINE ↗",
     "book.eyebrow": "VISIT THE GARAGE", "book.title": "BOOK AN APPOINTMENT",
     "book.desc": "Reserve a slot at our Pattaya workshop — coding, tuning, diagnostics or service. We'll confirm your booking shortly.",
     "book.name": "Name", "book.name.ph": "Your name", "book.phone": "Mobile number",
@@ -704,6 +809,10 @@ const I18N = {
     "reviews.count": "รีวิวบน Google", "reviews.readall": "อ่านรีวิวทั้งหมดบน Google", "reviews.write": "เขียนรีวิว",
     "faq.title": "คำถามที่พบบ่อย", "faq.lead": "คำถามที่ลูกค้า BMW และ Benz ในพัทยาถามเราบ่อยที่สุด",
     "hours.line": "จันทร์ – เสาร์ · 10:00 – 19:00 น.",
+    "social.title": "อัปเดตจากอู่",
+    "social.lead": "ผลงาน งานโค้ดดิ้ง และข่าวสารล่าสุด — จากเพจ Facebook ของเราโดยตรง",
+    "social.fallback": "ดูผลงานล่าสุด งานโค้ดดิ้ง และข่าวสารจากอู่ได้ที่เพจ Facebook ของเรา",
+    "social.follow": "ติดตามเราบน Facebook ↗", "social.line": "เพิ่มเพื่อนทาง LINE ↗",
     "book.eyebrow": "เยี่ยมชมอู่ของเรา", "book.title": "จองคิวนัดหมาย",
     "book.desc": "จองคิวที่อู่ของเราในพัทยา — โค้ดดิ้ง จูน วิเคราะห์ปัญหา หรือซ่อมบำรุง เราจะยืนยันการจองให้เร็วที่สุด",
     "book.name": "ชื่อ", "book.name.ph": "ชื่อของคุณ", "book.phone": "เบอร์โทรศัพท์",
@@ -791,6 +900,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initNav();
   initGoogleReviews();
   initLiveReviews();
+  initFacebookFeed();
   initBookingForm();
   initReveal();
   initSectionFade();

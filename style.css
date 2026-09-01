@@ -929,3 +929,42 @@ html[lang="th"] .faq__item > p { line-height: 2; }
 /* Opening hours — "open 7 days" is a differentiator locally, so give it a little weight */
 .cta-band__hours { color: var(--text); font-weight: 500; }
 .footer__hours svg { color: var(--accent); }
+
+/* =========================================================
+   FACEBOOK FEED
+   The embed is injected on scroll, so the frame reserves its
+   height up front — otherwise the page jumps when it lands.
+   ========================================================= */
+.fbfeed__wrap {
+  position: relative; max-width: 500px; margin: 0 auto;
+  min-height: 640px; display: flex; align-items: center; justify-content: center;
+}
+.fbfeed__frame {
+  width: 100%; border-radius: var(--radius); overflow: hidden;
+  background: var(--surface); border: 1px solid var(--border);
+  min-height: 640px;
+}
+/* Facebook's iframe is a fixed white block; centre it and let it own its height */
+.fbfeed__frame .fb-page,
+.fbfeed__frame .fb-page span,
+.fbfeed__frame iframe { display: block !important; width: 100% !important; }
+
+/* Fallback card — only revealed when the SDK fails to render */
+.fbfeed__fallback {
+  position: absolute; inset: 0; display: none; flex-direction: column;
+  align-items: center; justify-content: center; gap: 14px; padding: 32px 24px;
+  text-align: center; background: var(--surface);
+  border: 1px solid var(--border); border-radius: var(--radius);
+}
+.fbfeed__fallback svg { width: 40px; height: 40px; color: var(--steel-2); }
+.fbfeed__fallback p { margin: 0; color: var(--muted); line-height: 1.7; max-width: 34ch; }
+.fbfeed--unavailable .fbfeed__frame { display: none; }
+.fbfeed--unavailable .fbfeed__fallback { display: flex; }
+
+.fbfeed__cta {
+  display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin-top: 28px;
+}
+@media (max-width: 560px) {
+  .fbfeed__wrap, .fbfeed__frame { min-height: 560px; }
+  .fbfeed__cta .btn { width: 100%; max-width: 320px; }
+}

@@ -48,7 +48,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@300;400;500;600&family=Noto+Sans+Thai:wght@300;400;500&display=swap" media="print" onload="this.media='all'" />
   <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@300;400;500;600&family=Noto+Sans+Thai:wght@300;400;500&display=swap" /></noscript>
-  <link rel="stylesheet" href="style.css?v=40" />
+  <link rel="stylesheet" href="style.css?v=41" />
 
   <!-- Local business structured data (helps the Google local pack) -->
   <script type="application/ld+json">
@@ -459,6 +459,34 @@
     </div>
   </section>
 
+  <!-- ===================== FACEBOOK FEED =====================
+       The Page Plugin is injected by initFacebookFeed() only once this section
+       scrolls into view — the SDK is ~300KB and would otherwise land on every
+       page load. The frame keeps a reserved height so nothing shifts (CLS) when
+       the embed finally appears, and if the SDK is blocked the static card
+       underneath is revealed instead of leaving an empty box. -->
+  <section class="section fbfeed" id="social">
+    <div class="section__head reveal">
+      <h2 class="section__title" data-i18n="social.title">FROM THE WORKSHOP</h2>
+      <p class="section__lead" data-i18n="social.lead">Fresh builds, coding jobs and shop updates — straight from our Facebook page.</p>
+    </div>
+
+    <div class="fbfeed__wrap reveal" id="fbFeed">
+      <div class="fbfeed__frame" id="fbFeedFrame"></div>
+
+      <!-- Shown when the SDK is unavailable (ad blockers routinely block it) -->
+      <div class="fbfeed__fallback" id="fbFeedFallback">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M24 12.07C24 5.4 18.63 0 12 0S0 5.4 0 12.07c0 6 4.39 10.97 10.13 11.87v-8.4H7.08v-3.47h3.05V9.41c0-3.02 1.79-4.69 4.53-4.69 1.31 0 2.68.24 2.68.24v2.97h-1.51c-1.49 0-1.95.93-1.95 1.88v2.26h3.32l-.53 3.47h-2.79v8.4C19.61 23.04 24 18.07 24 12.07z"/></svg>
+        <p data-i18n="social.fallback">See our latest builds, coding jobs and shop updates on Facebook.</p>
+      </div>
+    </div>
+
+    <div class="fbfeed__cta reveal">
+      <a class="btn btn--primary" href="https://www.facebook.com/nordwerkauto" target="_blank" rel="noopener" data-i18n="social.follow">Follow us on Facebook ↗</a>
+      <a class="btn btn--ghost" href="https://lin.ee/yfhXIx4" target="_blank" rel="noopener" data-i18n="social.line">Add us on LINE ↗</a>
+    </div>
+  </section>
+
   <!-- ===================== FAQ =====================
        Visible answers that mirror the FAQPage JSON-LD in the document head. Google requires the
        marked-up Q&A to be present on the page, and this is also the main block of
@@ -559,7 +587,7 @@
     </div>
   </footer>
 
-  <script defer src="products.js?v=40"></script>
-  <script defer src="script.js?v=40"></script>
+  <script defer src="products.js?v=41"></script>
+  <script defer src="script.js?v=41"></script>
 </body>
 </html>
