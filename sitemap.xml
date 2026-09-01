@@ -2,42 +2,43 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://nordwerkauto.com/</loc>
-    <lastmod>2026-06-23</lastmod>
+    <lastmod>2026-09-01</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://nordwerkauto.com/product.html?p=vrsf-n55-downpipe</loc>
-    <lastmod>2026-06-23</lastmod>
+    <lastmod>2026-09-01</lastmod>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://nordwerkauto.com/product.html?p=vrsf-b58-downpipe</loc>
-    <lastmod>2026-06-23</lastmod>
+    <lastmod>2026-09-01</lastmod>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://nordwerkauto.com/product.html?p=bilstein-b16-damptronic-coilover</loc>
-    <lastmod>2026-06-23</lastmod>
+    <lastmod>2026-09-01</lastmod>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://nordwerkauto.com/product.html?p=bilstein-b12-prokit</loc>
-    <lastmod>2026-06-23</lastmod>
+    <lastmod>2026-09-01</lastmod>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://nordwerkauto.com/product.html?p=csf-s58-heat-exchanger</loc>
-    <lastmod>2026-06-23</lastmod>
+    <lastmod>2026-09-01</lastmod>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://nordwerkauto.com/product.html?p=mst-n55-intake</loc>
-    <lastmod>2026-06-23</lastmod>
+    <lastmod>2026-09-01</lastmod>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://nordwerkauto.com/product.html?p=mmr-n55-intercooler</loc>
-    <lastmod>2026-06-23</lastmod>
+    <lastmod>2026-09-01</lastmod>
     <priority>0.7</priority>
   </url>
 </urlset>

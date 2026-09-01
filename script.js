@@ -656,6 +656,7 @@ const I18N = {
     "parts.view": "View details", "parts.filter": "Shop by car",
     "reviews.title": "FROM THE GARAGE", "reviews.lead": "Real customer reviews — see them all on Google.",
     "reviews.count": "Reviews on Google", "reviews.readall": "Read all reviews on Google", "reviews.write": "Write a review",
+    "faq.title": "COMMON QUESTIONS", "faq.lead": "BMW & Benz owners in Pattaya ask us these most often.",
     "book.eyebrow": "VISIT THE GARAGE", "book.title": "BOOK AN APPOINTMENT",
     "book.desc": "Reserve a slot at our Pattaya workshop — coding, tuning, diagnostics or service. We'll confirm your booking shortly.",
     "book.name": "Name", "book.name.ph": "Your name", "book.phone": "Mobile number",
@@ -700,6 +701,7 @@ const I18N = {
     "parts.view": "ดูรายละเอียด", "parts.filter": "เลือกตามรถ",
     "reviews.title": "เสียงจากลูกค้า", "reviews.lead": "รีวิวจริงจากลูกค้า — ดูทั้งหมดบน Google",
     "reviews.count": "รีวิวบน Google", "reviews.readall": "อ่านรีวิวทั้งหมดบน Google", "reviews.write": "เขียนรีวิว",
+    "faq.title": "คำถามที่พบบ่อย", "faq.lead": "คำถามที่ลูกค้า BMW และ Benz ในพัทยาถามเราบ่อยที่สุด",
     "book.eyebrow": "เยี่ยมชมอู่ของเรา", "book.title": "จองคิวนัดหมาย",
     "book.desc": "จองคิวที่อู่ของเราในพัทยา — โค้ดดิ้ง จูน วิเคราะห์ปัญหา หรือซ่อมบำรุง เราจะยืนยันการจองให้เร็วที่สุด",
     "book.name": "ชื่อ", "book.name.ph": "ชื่อของคุณ", "book.phone": "เบอร์โทรศัพท์",
@@ -713,7 +715,16 @@ const I18N = {
     "footer.shop": "ช็อป", "footer.tuning": "จูน", "footer.support": "ช่วยเหลือ", "footer.contact": "ติดต่อเรา"
   }
 };
-let LANG = localStorage.getItem("nw_lang") || "en";   // English on first load
+/* Language on first load: honour a saved choice, otherwise follow the browser.
+   Most of our search traffic is Thai ("อู่ bmw ใกล้ฉัน" and friends), so a Thai
+   visitor should not land on an English page and bounce. */
+function detectLang() {
+  const saved = localStorage.getItem("nw_lang");
+  if (saved === "th" || saved === "en") return saved;
+  const prefs = navigator.languages || [navigator.language || ""];
+  return prefs.some(l => String(l).toLowerCase().startsWith("th")) ? "th" : "en";
+}
+let LANG = detectLang();
 function t(key) { return (I18N[LANG] && I18N[LANG][key]) != null ? I18N[LANG][key] : (I18N.en[key] != null ? I18N.en[key] : key); }
 function applyLang() {
   document.documentElement.lang = LANG;

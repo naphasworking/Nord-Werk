@@ -3,15 +3,21 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>BMW Performance Part — Nord Werk Automotive Pattaya</title>
-  <meta name="description" content="BMW &amp; European car performance part — tuning, downpipes, intercoolers, suspension and more, fitted at Nord Werk Automotive in Pattaya, Thailand." />
-  <meta name="robots" content="index, follow" />
+  <!-- Title/description/canonical are rewritten per-product by setProductSeo() below, from
+       the ?p= slug. Without that every part page shipped an identical snippet, which is why
+       they all sat mid-page with no clicks. -->
+  <title>อะไหล่แต่ง BMW ของแท้ ติดตั้งที่พัทยา | Nord Werk Automotive</title>
+  <meta name="description" content="อะไหล่แต่งรถยุโรปของแท้ — ดาวน์ไปป์ อินเตอร์คูลเลอร์ ช่วงล่าง โช้คอัพ พร้อมติดตั้งและจูนโดยช่างเฉพาะทาง BMW ที่พัทยา ☎ 082-672-4679" />
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large" />
   <meta name="theme-color" content="#0e0e12" />
+  <link rel="canonical" id="pdCanonical" href="https://nordwerkauto.com/product.html" />
   <meta property="og:type" content="product" />
   <meta property="og:site_name" content="Nord Werk Automotive" />
-  <meta property="og:title" content="BMW Performance Part — Nord Werk Automotive" />
-  <meta property="og:description" content="BMW &amp; European car performance parts fitted in Pattaya, Thailand." />
+  <meta property="og:title" content="อะไหล่แต่ง BMW ของแท้ ติดตั้งที่พัทยา — Nord Werk" />
+  <meta property="og:description" content="อะไหล่แต่งรถยุโรปของแท้ พร้อมติดตั้งและจูนโดยช่างเฉพาะทาง BMW ที่พัทยา" />
   <meta property="og:image" content="https://nordwerkauto.com/Asset/og-cover.jpg" />
+  <meta property="og:locale" content="th_TH" />
+  <meta property="og:locale:alternate" content="en_US" />
   <meta name="twitter:card" content="summary_large_image" />
   <link rel="icon" type="image/png" href="Asset/Logo/logo-mark.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -132,14 +138,88 @@
       var slug = new URLSearchParams(location.search).get("p");
       var set = function (id, v) { var el = document.getElementById(id); if (el) el.textContent = v || ""; };
 
+      /* ---------------------------------------------------------------
+         Per-product SEO. Every part page used to ship the same <title>
+         and description, so Google treated them as near-duplicates. This
+         gives each one a unique, Thailand-targeted snippet plus Product
+         and BreadcrumbList structured data.
+         --------------------------------------------------------------- */
+      function setMeta(sel, attr, val) {
+        var el = document.head.querySelector(sel);
+        if (el) el.setAttribute(attr, val);
+      }
+
+      function setProductSeo(P) {
+        var full  = P.brand + " " + P.name;
+        var url   = "https://nordwerkauto.com/product.html?p=" + P.slug;
+        var price = P.priceTHB ? "฿" + P.priceTHB.toLocaleString("en-US") + " " : "";
+
+        document.title = full + " ราคา " + price + "· ติดตั้งที่พัทยา | Nord Werk";
+
+        var desc = full + " — " + (P.fit || "อะไหล่แต่งรถยุโรป") + ". "
+                 + (price ? "ราคา " + price + "พร้อมติดตั้ง" : "สอบถามราคา")
+                 + (P.gain ? " · " + P.gain : "")
+                 + " ติดตั้งและจูนโดยช่างเฉพาะทาง BMW ที่พัทยา ☎ 082-672-4679";
+        desc = desc.slice(0, 300);
+
+        setMeta('meta[name="description"]', "content", desc);
+        setMeta('meta[property="og:title"]', "content", full + " — Nord Werk Pattaya");
+        setMeta('meta[property="og:description"]', "content", desc);
+        setMeta('meta[property="og:url"]', "content", url);
+        if (P.img) setMeta('meta[property="og:image"]', "content", "https://nordwerkauto.com/" + P.img);
+        var can = document.getElementById("pdCanonical");
+        if (can) can.setAttribute("href", url);
+
+        var ld = {
+          "@context": "https://schema.org",
+          "@type": "Product",
+          "name": full,
+          "brand": { "@type": "Brand", "name": P.brand },
+          "description": P.desc || desc,
+          "sku": P.slug,
+          "url": url,
+          "category": "Auto Parts",
+          "offers": {
+            "@type": "Offer",
+            "url": url,
+            "priceCurrency": "THB",
+            "availability": "https://schema.org/InStock",
+            "itemCondition": "https://schema.org/NewCondition",
+            "areaServed": { "@type": "Country", "name": "Thailand" },
+            "seller": { "@type": "AutoRepair", "name": "Nord Werk Automotive", "@id": "https://nordwerkauto.com/#garage" }
+          }
+        };
+        if (P.img) ld.image = "https://nordwerkauto.com/" + P.img;
+        if (P.priceTHB) ld.offers.price = String(P.priceTHB);
+
+        var crumbs = {
+          "@context": "https://schema.org",
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Nord Werk", "item": "https://nordwerkauto.com/" },
+            { "@type": "ListItem", "position": 2, "name": "Featured Parts", "item": "https://nordwerkauto.com/#parts" },
+            { "@type": "ListItem", "position": 3, "name": full }
+          ]
+        };
+
+        [ld, crumbs].forEach(function (obj) {
+          var s = document.createElement("script");
+          s.type = "application/ld+json";
+          s.textContent = JSON.stringify(obj);
+          document.head.appendChild(s);
+        });
+      }
+
       function renderProduct(P) {
         if (!P) {
           document.getElementById("pdName").textContent = T[LANG]["pd.notfound"];
           document.getElementById("pdGrid").classList.add("pd-grid--missing");
+          // Don't let Google index an empty "not found" page for a bad slug.
+          setMeta('meta[name="robots"]', "content", "noindex, follow");
           applyChrome();
           return;
         }
-        document.title = P.brand + " " + P.name + " — Nord Werk";
+        setProductSeo(P);
         var img = document.getElementById("pdImg");
         img.onerror = function () { img.style.display = "none"; };
         img.alt = P.brand + " " + P.name;
