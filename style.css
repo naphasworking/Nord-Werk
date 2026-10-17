@@ -1170,3 +1170,9 @@ html[lang="th"] .reviews-empty__msg { line-height: 2; }
   .rsum { padding: 12px 14px; gap: 12px; }
   .rsum__num { font-size: 1.45rem; }
 }
+
+/* Facebook's Page Plugin currently returns only the page header for this page
+   (name, followers, Follow, Share) — no timeline posts. Size the frame to what
+   actually arrives instead of reserving 440px of empty box. */
+.fbfeed__wrap, .fbfeed__frame { min-height: 212px; }
+@media (max-width: 560px) { .fbfeed__wrap, .fbfeed__frame { min-height: 212px; } }

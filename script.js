@@ -614,7 +614,8 @@ function initFacebookFeed() {
       "data-href": FACEBOOK_PAGE,
       "data-tabs": "timeline",
       "data-width": String(lastWidth),
-      "data-height": "440",
+      "data-height": "200",   // Facebook now serves this page header-only (no timeline) to
+                               // logged-out visitors; a taller frame was just empty space
       "data-small-header": "false",
       "data-adapt-container-width": "true",
       "data-hide-cover": "false",
@@ -788,22 +789,38 @@ function renderReviewCards(host, reviews) {
 }
 
 /* Fill the Google badge from live values (falls back to the GOOGLE config). */
+/* Live rating values, kept so a language switch can re-render the count. */
+let LIVE_RATING = null;
+
 function applyRatingBadge(rating, count) {
   const num   = document.getElementById("gRatingNum");
   const stars = document.getElementById("gRatingStars");
   const cnt   = document.getElementById("gRatingCount");
   const r = (rating != null && rating !== "") ? Number(rating) : Number(GOOGLE.rating);
   const c = (count  != null && count  !== "") ? Number(count)  : Number(GOOGLE.count);
+  if (!(isFinite(r) && r > 0)) return;
 
-  if (num && isFinite(r) && r > 0) num.textContent = r.toFixed(1);
-  if (stars && isFinite(r) && r > 0) {
+  LIVE_RATING = { r, c };
+
+  // initGoogleReviews() runs first and, finding GOOGLE.rating blank, sets these
+  // to display:none. Writing text into a hidden element shows nothing — which is
+  // exactly how the summary ended up reading only "Reviews on Google". Un-hide.
+  if (num)   { num.textContent = r.toFixed(1); num.style.display = ""; }
+  if (stars) {
     const full = Math.round(r);
     stars.textContent = "★★★★★".slice(0, full) + "☆☆☆☆☆".slice(0, 5 - full);
+    stars.style.display = "";
   }
   if (cnt && isFinite(c) && c > 0) {
     cnt.textContent = c + " " + t(c === 1 ? "reviews.one" : "reviews.many");
   }
 }
+
+// The count is JS-rendered, so it opts out of the [data-i18n] sweep (which used
+// to overwrite it back to the static label) and re-renders here instead.
+document.addEventListener("nw:langchange", () => {
+  if (LIVE_RATING) applyRatingBadge(LIVE_RATING.r, LIVE_RATING.c);
+});
 
 /* =========================================================
    APPOINTMENT BOOKING
