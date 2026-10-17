@@ -10,3 +10,8 @@ node_modules/
 # Gallery: untouched backups of the photos you dropped in. Kept on your
 # machine as a safety net, never published.
 Asset/service/_originals/
+
+# Pre-compression copy of the hero video (12.5MB). Kept locally as a safety
+# net; the committed hero.mp4 is the optimised one. The original is also
+# still in git history if it is ever needed.
+Asset/video/hero-original-backup.mp4

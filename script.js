@@ -881,7 +881,7 @@ const HERO_VIDEO_START = 3;   // seconds; set to 0 to loop from the very beginni
 
 /* Whether this visitor should download the hero loop at all.
 
-   Asset/video/hero.mp4 is ~13MB. Even deferred past load, that is a huge amount
+   Asset/video/hero.mp4 is ~2.3MB after re-encoding. Even deferred past load, that is a huge amount
    of bandwidth for decoration, and while it streams it competes with everything
    below the fold — it was starving the Facebook embed badly enough that the
    embed's own watchdog gave up and showed its fallback card.
@@ -892,7 +892,9 @@ const HERO_VIDEO_START = 3;   // seconds; set to 0 to loop from the very beginni
 function shouldLoadHeroVideo() {
   const mm = window.matchMedia ? window.matchMedia.bind(window) : null;
   if (mm && mm("(prefers-reduced-motion: reduce)").matches) return false;
-  if (mm && mm("(max-width: 900px)").matches) return false;          // phones & small tablets
+  // Phones were excluded while this file was 12.5MB. Re-encoded to 720p30 with
+  // the (never-audible) audio track stripped it is ~2.3MB, which is a fair
+  // post-load cost on a normal connection, so they get it back.
 
   const c = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
   if (c) {
