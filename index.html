@@ -48,7 +48,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@300;400;500;600&family=Noto+Sans+Thai:wght@300;400;500&display=swap" media="print" onload="this.media='all'" />
   <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@300;400;500;600&family=Noto+Sans+Thai:wght@300;400;500&display=swap" /></noscript>
-  <link rel="stylesheet" href="style.css?v=43" />
+  <link rel="stylesheet" href="style.css?v=44" />
 
   <!-- Local business structured data (helps the Google local pack) -->
   <script type="application/ld+json">
@@ -451,22 +451,13 @@
     <!-- Live Google reviews render here once FEATURABLE.widgetId is set in script.js -->
     <div id="liveReviews" class="live-reviews"></div>
 
-    <div class="reviews-grid" id="reviewsFallback">
-      <figure class="review reveal">
-        <div class="review__stars">★★★★★</div>
-        <blockquote>Stage 2 kit fit perfectly and the OTA tune woke the car up. Picked up 110whp on pump gas — insane value.</blockquote>
-        <figcaption>— Marcus T. · BMW M340i</figcaption>
-      </figure>
-      <figure class="review reveal">
-        <div class="review__stars">★★★★★</div>
-        <blockquote>Support actually knows cars. They sorted my fitment question in minutes and the parts shipped next day.</blockquote>
-        <figcaption>— Dana R. · GR Supra</figcaption>
-      </figure>
-      <figure class="review reveal">
-        <div class="review__stars">★★★★★</div>
-        <blockquote>Switching maps from my phone at the track is a game changer. Quality and finish are top tier.</blockquote>
-        <figcaption>— Kenji M. · Golf R</figcaption>
-      </figure>
+    <!-- Shown when Google has ratings but no written reviews yet. The three
+         invented testimonials that used to sit here came from the original
+         template — fabricated reviews have no place on a real business. -->
+    <div class="reviews-empty" id="reviewsEmpty" hidden>
+      <p class="reviews-empty__msg" data-i18n="reviews.empty">
+        Our customers rate us 5 stars on Google. Been in for a service or a tune? A few words from you helps other BMW and Benz owners in Pattaya find us.
+      </p>
     </div>
 
         <div class="reviews-cta">
@@ -600,7 +591,7 @@
     </div>
   </footer>
 
-  <script defer src="products.js?v=43"></script>
-  <script defer src="script.js?v=43"></script>
+  <script defer src="products.js?v=44"></script>
+  <script defer src="script.js?v=44"></script>
 </body>
 </html>

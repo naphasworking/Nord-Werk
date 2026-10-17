@@ -399,8 +399,12 @@ const GOOGLE = {
   reviewsUrl: "https://www.google.com/maps?cid=10396968605545080179",
   // Paste your Place ID to enable the one-click "write a review" dialog;
   // otherwise the button falls back to the listing above.
-  placeId: "",   // e.g. "ChIJ..."  — get it from Google's Place ID Finder
-  // Optional static numbers for the badge. Leave blank to just show "Reviews on Google".
+  // Recovered from the Featurable widget's profileUrl. With this set, "Write a
+  // review" opens Google's one-click review dialog instead of a Maps search —
+  // far fewer people drop out on the way.
+  placeId: "ChIJM9S7TkOVAjERcyVnetxzSZA",
+  // Fallback badge numbers only. The live rating/count are fetched from the
+  // Featurable API in initLiveReviews(), so these stay blank on purpose.
   rating: "",
   count: ""
 };
@@ -695,36 +699,87 @@ function initGoogleReviews() {
 }
 
 /* ---- Live Google reviews via Featurable (free, auto-syncing) ---- */
+/* Live Google reviews via Featurable.
+
+   We ask Featurable's API what it actually has BEFORE deciding what to show.
+   The previous version injected the widget script and immediately hid both the
+   sample cards and the rating badge — so whenever the widget had nothing to
+   render (or was blocked) the whole section collapsed to an empty space. It is
+   also pointless to pull a ~570KB bundle to render zero reviews.
+
+   Three outcomes:
+     reviews with text  -> load the widget, it renders them
+     ratings but no text -> badge + a short "leave us a review" line
+     API unreachable     -> badge keeps its static/!default label, nothing breaks
+*/
 function initLiveReviews() {
-  const id = (FEATURABLE.widgetId || "").trim();
+  const id   = (FEATURABLE.widgetId || "").trim();
   const host = document.getElementById("liveReviews");
-  if (!id || !host) return;                  // not configured → keep the sample cards
-  const widget = document.createElement("div");
-  widget.id = "featurable-" + id;
-  widget.setAttribute("data-featurable-async", "");
-  host.appendChild(widget);
-  // Load the third-party widget only when the reviews section is near the
-  // viewport — keeps featurable.com/bundle.js off the initial page load.
+  if (!id || !host) return;
+
+  // Canonical host — featurable.com/api/... 308-redirects here, so going direct
+  // saves a round trip. CORS is open to this origin on both.
+  const api = "https://api.featurable.com/v1/widgets/" + encodeURIComponent(id);
+
+  const showEmptyState = () => {
+    const empty = document.getElementById("reviewsEmpty");
+    if (empty) empty.hidden = false;
+  };
+
   const loadWidget = () => {
     if (document.getElementById("featurableBundle")) return;
+    const el = document.createElement("div");
+    el.id = "featurable-" + id;
+    el.setAttribute("data-featurable-async", "");
+    host.appendChild(el);
     const s = document.createElement("script");
     s.id = "featurableBundle";
     s.src = "https://featurable.com/assets/bundle.js";
     s.defer = true;
     document.body.appendChild(s);
-    // hide the sample cards + static badge — the live widget shows the real rating
-    const fallback = document.getElementById("reviewsFallback");
-    if (fallback) fallback.style.display = "none";
-    const badge = document.getElementById("gReviewsBadge");
-    if (badge) badge.style.display = "none";
   };
-  if ("IntersectionObserver" in window) {
-    const io = new IntersectionObserver((entries, obs) => {
-      if (entries.some(e => e.isIntersecting)) { loadWidget(); obs.disconnect(); }
-    }, { rootMargin: "600px" });
-    io.observe(host);
-  } else {
-    loadWidget();
+
+  fetch(api, { cache: "no-cache" })
+    .then(r => (r.ok ? r.json() : null))
+    .then(data => {
+      if (!data || !data.success) { showEmptyState(); return; }
+
+      // Real numbers straight from Google — no hand-maintained figures to go stale.
+      applyRatingBadge(data.averageRating, data.totalReviewCount);
+
+      const hasText = Array.isArray(data.reviews) && data.reviews.length > 0;
+      if (hasText) {
+        // Only defer-load the bundle when there is genuinely something to render.
+        if ("IntersectionObserver" in window) {
+          const io = new IntersectionObserver((entries, obs) => {
+            if (entries.some(e => e.isIntersecting)) { loadWidget(); obs.disconnect(); }
+          }, { rootMargin: "600px" });
+          io.observe(host);
+        } else {
+          loadWidget();
+        }
+      } else {
+        showEmptyState();
+      }
+    })
+    .catch(() => { showEmptyState(); });
+}
+
+/* Fill the Google badge from live values (falls back to the GOOGLE config). */
+function applyRatingBadge(rating, count) {
+  const num   = document.getElementById("gRatingNum");
+  const stars = document.getElementById("gRatingStars");
+  const cnt   = document.getElementById("gRatingCount");
+  const r = (rating != null && rating !== "") ? Number(rating) : Number(GOOGLE.rating);
+  const c = (count  != null && count  !== "") ? Number(count)  : Number(GOOGLE.count);
+
+  if (num && isFinite(r) && r > 0) num.textContent = r.toFixed(1);
+  if (stars && isFinite(r) && r > 0) {
+    const full = Math.round(r);
+    stars.textContent = "★★★★★".slice(0, full) + "☆☆☆☆☆".slice(0, 5 - full);
+  }
+  if (cnt && isFinite(c) && c > 0) {
+    cnt.textContent = c + " " + t(c === 1 ? "reviews.one" : "reviews.many");
   }
 }
 
@@ -879,6 +934,8 @@ const I18N = {
     "service.more": "Show all photos", "service.less": "Show fewer",
     "reviews.title": "FROM THE GARAGE", "reviews.lead": "What customers say on Google, and the latest from our Facebook page.",
     "reviews.count": "Reviews on Google", "reviews.readall": "Read all reviews on Google", "reviews.write": "Write a review",
+    "reviews.one": "review on Google", "reviews.many": "reviews on Google",
+    "reviews.empty": "Our customers rate us 5 stars on Google. Been in for a service or a tune? A few words from you helps other BMW and Benz owners in Pattaya find us.",
     "faq.title": "COMMON QUESTIONS", "faq.lead": "BMW & Benz owners in Pattaya ask us these most often.",
     "hours.line": "Mon – Sat · 10:00 – 19:00",
     "social.ghead": "Google reviews", "social.fbhead": "Latest from Facebook",
@@ -928,6 +985,8 @@ const I18N = {
     "service.more": "ดูรูปทั้งหมด", "service.less": "ย่อกลับ",
     "reviews.title": "เสียงจากลูกค้า", "reviews.lead": "รีวิวจากลูกค้าบน Google และอัปเดตล่าสุดจากเพจ Facebook ของเรา",
     "reviews.count": "รีวิวบน Google", "reviews.readall": "อ่านรีวิวทั้งหมดบน Google", "reviews.write": "เขียนรีวิว",
+    "reviews.one": "รีวิวบน Google", "reviews.many": "รีวิวบน Google",
+    "reviews.empty": "ลูกค้าให้คะแนนเรา 5 ดาวบน Google — ถ้าเคยใช้บริการเช็กระยะหรือจูนกับเรา ฝากรีวิวสั้น ๆ ช่วยให้เจ้าของรถ BMW และ Benz ในพัทยาเจอเราได้ง่ายขึ้น",
     "faq.title": "คำถามที่พบบ่อย", "faq.lead": "คำถามที่ลูกค้า BMW และ Benz ในพัทยาถามเราบ่อยที่สุด",
     "hours.line": "จันทร์ – เสาร์ · 10:00 – 19:00 น.",
     "social.ghead": "รีวิวบน Google", "social.fbhead": "อัปเดตล่าสุดจาก Facebook",

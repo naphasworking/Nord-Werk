@@ -1128,3 +1128,12 @@ html[lang="th"] .faq__item > p { line-height: 2; }
   .lb { animation: none; }
   .sgal__item, .sgal__item img, .sgal__cap { transition: none; }
 }
+
+/* Reviews empty state — Google has ratings but no written reviews yet */
+.reviews-empty {
+  background: var(--surface); border: 1px solid var(--border);
+  border-left: 3px solid var(--steel);
+  border-radius: var(--radius); padding: 18px 20px;
+}
+.reviews-empty__msg { margin: 0; color: var(--muted); line-height: 1.75; font-size: .93rem; }
+html[lang="th"] .reviews-empty__msg { line-height: 2; }
