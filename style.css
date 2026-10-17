@@ -221,6 +221,26 @@ h1,h2,h3,h4,h5 { font-family: "Sora", "Noto Sans Thai", "Inter", sans-serif; lin
 /* Thai needs looser line-height (tone marks) and no negative tracking */
 html[lang="th"] .hero__coming { font-size: clamp(2.3rem, 9.5vw, 5.8rem); line-height: 1.1; letter-spacing: 0; }
 html[lang="th"] .hero__sub { line-height: 1.75; }
+
+/* Phone call-to-action headline: small label, big number, short note.
+   The gradient sits on the number only so the two text lines stay solid. */
+.hero__coming--call { background: none; -webkit-text-fill-color: currentColor; color: var(--text); line-height: 1; }
+.hero__call { display: inline-flex; flex-direction: column; align-items: center; gap: 10px; color: inherit; text-decoration: none; }
+.hero__call-label, .hero__call-note {
+  font-size: clamp(.95rem, 2.4vw, 1.35rem); font-weight: 700; letter-spacing: .22em; color: var(--text);
+}
+.hero__call-label { color: var(--accent); }
+.hero__call-num {
+  font-size: clamp(2.3rem, 10vw, 6.4rem); line-height: .95; letter-spacing: -.02em; white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+  background: linear-gradient(180deg, #ffffff 0%, #dadade 52%, #83838c 100%);
+  -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; color: transparent;
+  transition: transform .25s var(--ease);
+}
+.hero__call:hover .hero__call-num { transform: scale(1.02); }
+.hero__call:focus-visible { outline: 2px solid var(--accent); outline-offset: 8px; border-radius: 8px; }
+html[lang="th"] .hero__coming--call { font-size: inherit; line-height: 1; }
+html[lang="th"] .hero__call-label, html[lang="th"] .hero__call-note { letter-spacing: .04em; line-height: 1.5; }
 html[lang="th"] .hero__loc { letter-spacing: .06em; }
 
 .countdown { display: flex; gap: 12px; margin-top: 26px; flex-wrap: wrap; }
