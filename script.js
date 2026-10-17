@@ -647,8 +647,18 @@ function initFacebookFeed() {
     document.body.appendChild(s);
 
     // Belt and braces: onerror does not fire when a blocker returns an empty
-    // 200, so also check that an iframe actually materialised.
-    setTimeout(() => { if (!frame.querySelector("iframe")) fail(); }, 6000);
+    // 200, so also confirm an iframe actually materialised.
+    //
+    // Poll rather than judging it dead on one check. A single 6s check was
+    // declaring failure on connections where the SDK was merely slow — the
+    // embed would have appeared a second later, but the fallback card had
+    // already replaced it. Give it 20s, and stop the moment it succeeds.
+    let waited = 0;
+    const poll = setInterval(() => {
+      waited += 1000;
+      if (frame.querySelector("iframe")) { clearInterval(poll); return; }
+      if (waited >= 20000) { clearInterval(poll); fail(); }
+    }, 1000);
   }
 
   // Re-render on a real width change (orientation flip, desktop resize) —
@@ -726,19 +736,6 @@ function initLiveReviews() {
     if (empty) empty.hidden = false;
   };
 
-  const loadWidget = () => {
-    if (document.getElementById("featurableBundle")) return;
-    const el = document.createElement("div");
-    el.id = "featurable-" + id;
-    el.setAttribute("data-featurable-async", "");
-    host.appendChild(el);
-    const s = document.createElement("script");
-    s.id = "featurableBundle";
-    s.src = "https://featurable.com/assets/bundle.js";
-    s.defer = true;
-    document.body.appendChild(s);
-  };
-
   fetch(api, { cache: "no-cache" })
     .then(r => (r.ok ? r.json() : null))
     .then(data => {
@@ -747,22 +744,47 @@ function initLiveReviews() {
       // Real numbers straight from Google — no hand-maintained figures to go stale.
       applyRatingBadge(data.averageRating, data.totalReviewCount);
 
-      const hasText = Array.isArray(data.reviews) && data.reviews.length > 0;
-      if (hasText) {
-        // Only defer-load the bundle when there is genuinely something to render.
-        if ("IntersectionObserver" in window) {
-          const io = new IntersectionObserver((entries, obs) => {
-            if (entries.some(e => e.isIntersecting)) { loadWidget(); obs.disconnect(); }
-          }, { rootMargin: "600px" });
-          io.observe(host);
-        } else {
-          loadWidget();
-        }
-      } else {
-        showEmptyState();
-      }
+      const reviews = Array.isArray(data.reviews) ? data.reviews : [];
+      if (reviews.length) renderReviewCards(host, reviews);
+      else showEmptyState();
     })
     .catch(() => { showEmptyState(); });
+}
+
+/* Render the review cards ourselves rather than loading Featurable's widget.
+   Their bundle is ~570KB and renders a fixed light-theme card, which fights a
+   dark page. We already have the JSON, so this costs nothing extra and matches
+   the site. Field names are probed defensively — the API has used more than one
+   shape for reviewer/rating/text over time. */
+function renderReviewCards(host, reviews) {
+  const pick = (o, keys) => { for (const k of keys) if (o && o[k] != null && o[k] !== "") return o[k]; return ""; };
+
+  const STARS = { ONE: 1, TWO: 2, THREE: 3, FOUR: 4, FIVE: 5 };
+  const starsOf = (r) => {
+    const raw = pick(r, ["starRating", "rating", "stars", "score"]);
+    const n = typeof raw === "string" ? (STARS[raw.toUpperCase()] || Number(raw)) : Number(raw);
+    return isFinite(n) && n > 0 ? Math.min(5, Math.round(n)) : 5;
+  };
+
+  const html = reviews.map(r => {
+    const who  = pick(r.reviewer || r, ["displayName", "name", "author_name", "author"]) || "Google user";
+    const text = pick(r, ["comment", "text", "review", "content"]);
+    if (!text) return "";                       // star-only rating: nothing to show
+    const n = starsOf(r);
+    const photo = pick(r.reviewer || r, ["profilePhotoUrl", "profile_photo_url", "avatar"]);
+    return `
+      <figure class="review">
+        <div class="review__stars" aria-label="${n} out of 5">${"★".repeat(n)}${"☆".repeat(5 - n)}</div>
+        <blockquote>${esc(text)}</blockquote>
+        <figcaption>
+          ${photo ? `<img class="review__avatar" src="${esc(photo)}" alt="" loading="lazy" referrerpolicy="no-referrer" />` : ""}
+          <span>${esc(who)}</span>
+        </figcaption>
+      </figure>`;
+  }).join("");
+
+  if (!html.trim()) { const e = document.getElementById("reviewsEmpty"); if (e) e.hidden = false; return; }
+  host.innerHTML = `<div class="reviews-grid">${html}</div>`;
 }
 
 /* Fill the Google badge from live values (falls back to the GOOGLE config). */
@@ -856,6 +878,29 @@ function initBookingForm() {
 
 /* ---- Self-hosted looping hero video (muted, loops back to HERO_VIDEO_START) ---- */
 const HERO_VIDEO_START = 3;   // seconds; set to 0 to loop from the very beginning
+
+/* Whether this visitor should download the hero loop at all.
+
+   Asset/video/hero.mp4 is ~13MB. Even deferred past load, that is a huge amount
+   of bandwidth for decoration, and while it streams it competes with everything
+   below the fold — it was starving the Facebook embed badly enough that the
+   embed's own watchdog gave up and showed its fallback card.
+
+   Most of this site's traffic is mobile, where the poster (20KB) reads fine on
+   its own. So: desktop on a decent connection gets the video; everyone else
+   keeps the poster. */
+function shouldLoadHeroVideo() {
+  const mm = window.matchMedia ? window.matchMedia.bind(window) : null;
+  if (mm && mm("(prefers-reduced-motion: reduce)").matches) return false;
+  if (mm && mm("(max-width: 900px)").matches) return false;          // phones & small tablets
+
+  const c = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+  if (c) {
+    if (c.saveData) return false;                                     // user asked us not to
+    if (/2g|3g/.test(c.effectiveType || "")) return false;            // slow-2g, 2g, 3g
+  }
+  return true;
+}
 function initHeroVideo() {
   const v = document.getElementById("heroVideo");
   if (!v) return;
@@ -865,8 +910,7 @@ function initHeroVideo() {
   v.addEventListener("ended", () => { seekStart(); v.play().catch(() => {}); });
   // Keep the heavy MP4 OFF the critical path: the lightweight poster shows
   // immediately; the video only loads + plays after the page is ready.
-  // Skipped entirely for users who prefer reduced motion (poster stays).
-  if (window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  if (!shouldLoadHeroVideo()) return;           // poster stays, nothing downloaded
   const start = () => { v.preload = "auto"; const p = v.play(); if (p && p.catch) p.catch(() => {}); };
   if (document.readyState === "complete") setTimeout(start, 500);
   else window.addEventListener("load", () => setTimeout(start, 500), { once: true });

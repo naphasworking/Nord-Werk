@@ -1137,3 +1137,36 @@ html[lang="th"] .faq__item > p { line-height: 2; }
 }
 .reviews-empty__msg { margin: 0; color: var(--muted); line-height: 1.75; font-size: .93rem; }
 html[lang="th"] .reviews-empty__msg { line-height: 2; }
+
+/* =========================================================
+   GOOGLE REVIEW SUMMARY + CARDS
+   Rendered from the Featurable JSON by initLiveReviews(), so
+   these are our own elements and follow the site's dark theme
+   instead of a third-party light-theme widget.
+   ========================================================= */
+.rsum {
+  display: flex; align-items: center; gap: 14px;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 14px 18px; margin-bottom: 16px;
+  transition: border-color .25s var(--ease), transform .25s var(--ease);
+}
+.rsum:hover { border-color: var(--steel); transform: translateY(-1px); }
+.rsum:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.rsum__score { display: flex; flex-direction: column; gap: 2px; }
+.rsum__num {
+  font-family: "Sora", sans-serif; font-weight: 800; font-size: 1.65rem;
+  line-height: 1; color: var(--text); font-variant-numeric: tabular-nums;
+}
+.rsum__stars { color: #FBBC05; font-size: .82rem; letter-spacing: 2px; }
+.rsum__count { color: var(--muted); font-size: .84rem; line-height: 1.4; flex: 1; }
+.rsum__g { display: inline-flex; flex-shrink: 0; opacity: .9; }
+
+.review figcaption { display: flex; align-items: center; gap: 8px; }
+.review__avatar {
+  width: 26px; height: 26px; border-radius: 50%; object-fit: cover;
+  border: 1px solid var(--border); flex-shrink: 0;
+}
+@media (max-width: 440px) {
+  .rsum { padding: 12px 14px; gap: 12px; }
+  .rsum__num { font-size: 1.45rem; }
+}
