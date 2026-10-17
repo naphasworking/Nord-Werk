@@ -116,11 +116,22 @@ site's own dark design, and update by themselves.
 
 ## When it stops updating
 
-The Page token doesn't expire on a timer, but Facebook **does** cancel it if
-you change your Facebook password, lose admin on the page, or remove the app
-from your account. To fix: redo **steps 2–4**, then replace `FB_PAGE_TOKEN`
-in **Script Properties**. No redeploy needed, and the `/exec` URL stays the
-same.
+The Page token never expires, but Facebook only lets it **read** for about
+**90 days** ("Data Access Expires" in the debugger). It also stops if you
+change your Facebook password, lose admin on the page, or remove the app.
+The daily `healthCheck` (installed once with `installDailyCheck`) emails you
+the day it stops.
+
+**Renew (about 5 minutes):**
+1. Graph API Explorer → app **Nord Werk Website** → **Generate Access Token**
+   → *current Pages only* → tick **Nord Werk Pattaya**.
+2. Access Token Debugger → **Debug** → **Extend Access Token** → copy it.
+3. Explorer → paste it as the Access Token → **GET**
+   `612808455255055?fields=name,access_token` → copy `access_token`.
+   (`me/accounts` comes back empty for this app type — use the Page ID.)
+4. Apps Script → **Project Settings** → replace `FB_PAGE_TOKEN` → Save.
+
+No redeploy needed, and the `/exec` URL stays the same.
 
 If you ever edit the script code itself: **Deploy → Manage deployments →
 edit → New version**, so the same `/exec` URL keeps working.

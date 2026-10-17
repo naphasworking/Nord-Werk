@@ -594,7 +594,7 @@ const FACEBOOK_PAGE = "https://www.facebook.com/nordwerkauto";
    This is only ever a public /exec URL — the Facebook token stays inside the
    Apps Script and must never be pasted here; this repo is public. */
 const FB_FEED = {
-  endpoint: "",    // e.g. "https://script.google.com/macros/s/AKfyc.../exec"
+  endpoint: "https://script.google.com/macros/s/AKfycbwtw7EB-FWJ9o8ifHPnSKuJX5v424Y9AHDINQyqmJfeY_HtVn691MMRkxSzJ05Mjuyq/exec",
   show: 3          // posts to display
 };
 

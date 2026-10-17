@@ -18,7 +18,7 @@
  *     FB_PAGE_ID     the numeric Page id
  *     FB_PAGE_TOKEN  the never-expiring Page access token
  */
-var GRAPH_VERSION = "v23.0";   // Meta auto-upgrades calls once a version retires
+var GRAPH_VERSION = "v26.0";   // Meta auto-upgrades calls once a version retires
 var POST_LIMIT    = 6;         // how many recent posts to ask for
 var CACHE_SECONDS = 900;       // 15 min — the site never hits Facebook per page view
 var STALE_SECONDS = 21600;     // 6 h — the most CacheService will hold
@@ -96,4 +96,32 @@ function json_(s) {
 function testFeed() {
   CacheService.getScriptCache().removeAll(["feed"]);   // force a live fetch
   Logger.log(doGet().getContent());
+}
+
+/* The Page token never expires, but Facebook only lets it READ for ~90 days
+   ("Data Access Expires") before it must be renewed. This runs daily and
+   emails the script owner as soon as Facebook refuses, so the token gets
+   renewed before anyone notices stale posts. */
+function healthCheck() {
+  CacheService.getScriptCache().removeAll(["feed"]);   // force a live fetch
+  var o = JSON.parse(doGet().getContent());
+  if (o.ok && !o.stale) return;
+  MailApp.sendEmail(
+    Session.getEffectiveUser().getEmail(),
+    "Nord Werk website: Facebook feed needs a new token",
+    "The website's Facebook posts stopped updating.\n\n" +
+    "Facebook said: " + o.error + "\n\n" +
+    "Fix (about 5 minutes): get a new Page token (FACEBOOK-FEED-VIA-APPS-SCRIPT.md, " +
+    "\"When it stops updating\"), then paste it into this script's Project Settings → " +
+    "Script Properties → FB_PAGE_TOKEN. No redeploy needed."
+  );
+}
+
+/* Run this ONCE from the editor to start the daily check above. */
+function installDailyCheck() {
+  ScriptApp.getProjectTriggers().forEach(function (t) {
+    if (t.getHandlerFunction() === "healthCheck") ScriptApp.deleteTrigger(t);
+  });
+  ScriptApp.newTrigger("healthCheck").timeBased().everyDays(1).atHour(9).create();
+  Logger.log("Daily check installed — you'll get an email if the feed breaks.");
 }
