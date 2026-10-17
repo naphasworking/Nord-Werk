@@ -1176,3 +1176,33 @@ html[lang="th"] .reviews-empty__msg { line-height: 2; }
    actually arrives instead of reserving 440px of empty box. */
 .fbfeed__wrap, .fbfeed__frame { min-height: 212px; }
 @media (max-width: 560px) { .fbfeed__wrap, .fbfeed__frame { min-height: 212px; } }
+
+/* =========================================================
+   FACEBOOK POSTS (native, from the Apps Script feed)
+   Our own markup, so it follows the site's dark theme — no
+   Facebook SDK, no white iframe, no bezel needed.
+   ========================================================= */
+.fbfeed--native, .fbfeed--native .fbfeed__frame { min-height: 0; }
+.fbfeed--native .fbfeed__frame {
+  padding: 0; background: none; border: 0; box-shadow: none; overflow: visible;
+}
+.fbposts { display: grid; gap: 12px; }
+.fbpost {
+  display: flex; flex-direction: column; overflow: hidden;
+  background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+  color: inherit; text-decoration: none;
+  transition: border-color .25s var(--ease), transform .25s var(--ease);
+}
+.fbpost:hover { border-color: #1877F2; transform: translateY(-2px); }
+.fbpost:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.fbpost__media { display: block; aspect-ratio: 16 / 9; overflow: hidden; background: var(--bg-2); }
+.fbpost__media img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .4s var(--ease); }
+.fbpost:hover .fbpost__media img { transform: scale(1.04); }
+.fbpost__body { display: flex; flex-direction: column; gap: 8px; padding: 12px 14px 14px; }
+.fbpost__text {
+  font-size: .88rem; line-height: 1.6; color: var(--text); white-space: pre-line;
+  display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+}
+.fbpost__meta { font-size: .74rem; color: var(--muted); letter-spacing: .02em; }
+html[lang="th"] .fbpost__text { line-height: 1.8; }
+@media (prefers-reduced-motion: reduce) { .fbpost, .fbpost__media img { transition: none; } }

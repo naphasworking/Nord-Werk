@@ -585,6 +585,19 @@ function initLightbox(grid, getItems, captionFor) {
    ========================================================= */
 const FACEBOOK_PAGE = "https://www.facebook.com/nordwerkauto";
 
+/* Latest posts, served as JSON by the Apps Script in facebook-feed.gs.
+   Facebook's own Page Plugin stopped serving this page's timeline to logged-out
+   visitors (header only), so posts come from the Graph API via that script and
+   are rendered here in the site's theme. Setup: FACEBOOK-FEED-VIA-APPS-SCRIPT.md
+
+   Leave endpoint blank to fall back to Facebook's embed (header + Follow).
+   This is only ever a public /exec URL — the Facebook token stays inside the
+   Apps Script and must never be pasted here; this repo is public. */
+const FB_FEED = {
+  endpoint: "",    // e.g. "https://script.google.com/macros/s/AKfyc.../exec"
+  show: 3          // posts to display
+};
+
 function initFacebookFeed() {
   const host  = document.getElementById("fbFeed");
   const frame = document.getElementById("fbFeedFrame");
@@ -677,14 +690,74 @@ function initFacebookFeed() {
     }, 250);
   });
 
+  /* ---------- native posts from the Apps Script feed ---------- */
+  let nativePosts = null;
+
+  function renderNative() {
+    host.classList.add("fbfeed--native");
+    frame.innerHTML = `<div class="fbposts">${nativePosts.slice(0, FB_FEED.show).map(p => `
+      <a class="fbpost" href="${esc(p.url || FACEBOOK_PAGE)}" target="_blank" rel="noopener">
+        ${p.image ? `<span class="fbpost__media"><img src="${esc(p.image)}" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer" /></span>` : ""}
+        <span class="fbpost__body">
+          ${p.text ? `<span class="fbpost__text">${esc(p.text)}</span>` : ""}
+          <span class="fbpost__meta">${esc(fbRelTime(p.time))}${p.time ? " · " : ""}${esc(t("social.viewfb"))}</span>
+        </span>
+      </a>`).join("")}</div>`;
+    // Facebook image URLs are signed and can lapse; drop a dead image rather
+    // than leave a broken-image icon in the card.
+    frame.querySelectorAll(".fbpost__media img").forEach(img => {
+      img.addEventListener("error", () => img.parentElement.remove(), { once: true });
+    });
+  }
+
+  document.addEventListener("nw:langchange", () => { if (nativePosts) renderNative(); });
+
+  function begin() {
+    const url = (FB_FEED.endpoint || "").trim();
+    if (!url) { start(); return; }
+
+    // Apps Script cold-starts can take a few seconds; past 12s, assume it is
+    // down and fall back to Facebook's embed rather than leave a blank box.
+    const ctl = ("AbortController" in window) ? new AbortController() : null;
+    const timer = ctl ? setTimeout(() => ctl.abort(), 12000) : null;
+
+    fetch(url, ctl ? { signal: ctl.signal } : undefined)
+      .then(r => (r.ok ? r.json() : null))
+      .then(data => {
+        if (timer) clearTimeout(timer);
+        const posts = data && data.ok && Array.isArray(data.posts) ? data.posts : [];
+        if (!posts.length) { start(); return; }
+        nativePosts = posts;
+        renderNative();                       // no Facebook SDK loaded at all
+      })
+      .catch(() => { if (timer) clearTimeout(timer); start(); });
+  }
+
   if ("IntersectionObserver" in window) {
     const io = new IntersectionObserver((entries) => {
-      entries.forEach(e => { if (e.isIntersecting) { start(); io.disconnect(); } });
+      entries.forEach(e => { if (e.isIntersecting) { begin(); io.disconnect(); } });
     }, { rootMargin: "300px" });
     io.observe(host);
   } else {
-    start();
+    begin();
   }
+}
+
+/* "2 days ago" / "2 วันที่แล้ว", following the site language. Facebook returns
+   offsets as +0000 (no colon), which Safari's Date parser rejects — normalise. */
+function fbRelTime(iso) {
+  if (!iso) return "";
+  const d = new Date(String(iso).replace(/([+-]\d{2})(\d{2})$/, "$1:$2"));
+  if (isNaN(d)) return "";
+  const s = (d.getTime() - Date.now()) / 1000;
+  const units = [["year", 31536000], ["month", 2592000], ["week", 604800], ["day", 86400], ["hour", 3600], ["minute", 60]];
+  try {
+    const rtf = new Intl.RelativeTimeFormat(LANG === "th" ? "th" : "en", { numeric: "auto" });
+    for (const [u, sec] of units) {
+      if (Math.abs(s) >= sec || u === "minute") return rtf.format(Math.round(s / sec), u);
+    }
+  } catch (e) { /* very old browser — fall through */ }
+  return d.toLocaleDateString(LANG === "th" ? "th-TH" : "en-GB");
 }
 
 function initGoogleReviews() {
@@ -1004,6 +1077,7 @@ const I18N = {
     "social.ghead": "Google reviews", "social.fbhead": "Latest from Facebook",
     "social.fallback": "See our latest builds, coding jobs and shop updates on Facebook.",
     "social.follow": "Follow us on Facebook ↗",
+    "social.viewfb": "View on Facebook",
     "book.eyebrow": "VISIT THE GARAGE", "book.title": "BOOK AN APPOINTMENT",
     "book.desc": "Reserve a slot at our Pattaya workshop — coding, tuning, diagnostics or service. We'll confirm your booking shortly.",
     "book.name": "Name", "book.name.ph": "Your name", "book.phone": "Mobile number",
@@ -1055,6 +1129,7 @@ const I18N = {
     "social.ghead": "รีวิวบน Google", "social.fbhead": "อัปเดตล่าสุดจาก Facebook",
     "social.fallback": "ดูผลงานล่าสุด งานโค้ดดิ้ง และข่าวสารจากอู่ได้ที่เพจ Facebook ของเรา",
     "social.follow": "ติดตามเราบน Facebook ↗",
+    "social.viewfb": "ดูบน Facebook",
     "book.eyebrow": "เยี่ยมชมอู่ของเรา", "book.title": "จองคิวนัดหมาย",
     "book.desc": "จองคิวที่อู่ของเราในพัทยา — โค้ดดิ้ง จูน วิเคราะห์ปัญหา หรือซ่อมบำรุง เราจะยืนยันการจองให้เร็วที่สุด",
     "book.name": "ชื่อ", "book.name.ph": "ชื่อของคุณ", "book.phone": "เบอร์โทรศัพท์",
