@@ -6,3 +6,7 @@ desktop.ini
 
 # dependencies (none currently, but just in case)
 node_modules/
+
+# Gallery: untouched backups of the photos you dropped in. Kept on your
+# machine as a safety net, never published.
+Asset/service/_originals/

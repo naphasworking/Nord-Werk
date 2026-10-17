@@ -1,0 +1,40 @@
+SERVICE & MAINTENANCE GALLERY
+=============================
+
+HOW TO ADD PHOTOS
+-----------------
+1. Copy your photos into THIS folder (Asset\service).
+   Straight from the phone is fine - they get resized automatically.
+
+2. Go up to the project folder and double-click:  Update Gallery.cmd
+
+3. Say Y when it asks to publish.
+
+That's it. The website updates about a minute later.
+
+
+HOW TO REMOVE A PHOTO
+---------------------
+Delete it from this folder, then run Update Gallery.cmd again.
+
+
+CAPTIONS (optional)
+-------------------
+Photos work fine with no caption at all. If you want them, make a file
+called captions.txt in this folder, one line per photo:
+
+    svc-01.jpg = Full service on an F30 330e | เช็กระยะ F30 330e
+    brakes.jpg = Front brake overhaul | เปลี่ยนชุดเบรคหน้า
+
+English goes before the | and Thai after it. You can leave either side
+empty. The filenames to use are the ones shown when you run the update -
+they get tidied up (lowercase, dashes instead of spaces).
+
+
+WHAT THE FOLDERS ARE FOR
+------------------------
+thumbs\      small versions used in the grid - created automatically
+_originals\  untouched copies of what you dropped in, kept on your
+             computer only. Your safety net - never goes on the website.
+
+Don't edit either by hand.

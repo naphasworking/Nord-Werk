@@ -607,16 +607,6 @@ html[lang="th"] .hero__loc { letter-spacing: .06em; }
 .authorized__text { font-family: "Sora", sans-serif; font-weight: 700; font-size: .82rem; color: var(--text); }
 
 /* tuning partner + platforms — one compact credibility bar */
-.tuning-cred { display: flex; align-items: center; justify-content: center; gap: 28px; flex-wrap: wrap; margin: 4px auto 28px; }
-.tuning-cred__col { display: flex; flex-direction: column; align-items: center; gap: 9px; }
-.tuning-cred__label { color: var(--steel-2); font-size: .6rem; letter-spacing: .2em; text-transform: uppercase; font-weight: 700; }
-.tuning-cred__partner { height: 28px; width: auto; opacity: .96; }
-.tuning-cred__plats { display: flex; align-items: center; gap: 16px; }
-.tuning-cred__plat { height: 30px; width: auto; opacity: .95; transition: opacity .25s, transform .25s var(--ease); }
-.tuning-cred__plat--app { height: 34px; border-radius: 9px; }
-.tuning-cred__plat:hover { opacity: 1; transform: translateY(-2px); }
-.tuning-cred__divider { width: 1px; height: 42px; background: var(--border); }
-@media (max-width: 560px) { .tuning-cred { gap: 20px; } .tuning-cred__divider { display: none; } }
 
 /* arrows hidden — swipe on mobile, full 3-up grid on desktop */
 .stages-nav { display: none; }
@@ -627,28 +617,6 @@ html[lang="th"] .hero__loc { letter-spacing: .06em; }
 .stages-dots button.is-active { background: var(--accent); transform: scale(1.3); }
 
 .stages__note { text-align: center; color: var(--muted); font-size: .82rem; margin: 22px auto 0; max-width: 660px; }
-
-/* ---------- FEATURED BUILDS (right-scrolling marquee) ---------- */
-.builds { margin-top: 42px; }
-.builds__head { text-align: center; margin-bottom: 16px; }
-.builds__title { font-family: "Sora", sans-serif; font-weight: 800; font-size: clamp(1.2rem, 3vw, 1.65rem); letter-spacing: .04em; }
-.builds__lead { color: var(--muted); margin-top: 5px; font-size: .85rem; }
-.builds-marquee { overflow: hidden; -webkit-mask-image: linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent); mask-image: linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent); }
-.builds-row { display: flex; gap: 14px; width: max-content; animation: svcScroll 80s linear infinite; will-change: transform; }
-.builds-marquee:hover .builds-row { animation-play-state: paused; }
-.build-card { flex: 0 0 248px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
-.build-card__media { position: relative; aspect-ratio: 16 / 9; overflow: hidden; border-bottom: 1px solid var(--border); }
-.build-card__photo { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .5s var(--ease); }
-.build-card:hover .build-card__photo { transform: scale(1.05); }
-.build-card__stage { position: absolute; top: 9px; left: 9px; background: var(--accent); color: #fff; font-family: "Sora", sans-serif; font-weight: 700; font-size: .54rem; letter-spacing: .08em; text-transform: uppercase; padding: 3px 8px; border-radius: 999px; }
-.build-card__badge { position: absolute; right: 9px; bottom: 8px; height: 13px; width: auto; opacity: .92; filter: drop-shadow(0 2px 5px rgba(0,0,0,.7)); }
-.build-card__body { padding: 9px 12px 11px; }
-.build-card__car { font-family: "Sora", sans-serif; font-weight: 700; font-size: .9rem; }
-.build-card__spec { display: flex; align-items: baseline; gap: 8px; margin-top: 3px; flex-wrap: wrap; }
-.build-card__power { font-family: "Sora", sans-serif; font-weight: 800; color: var(--accent); font-size: .95rem; }
-.build-card__sub { color: var(--muted); font-size: .72rem; }
-@media (prefers-reduced-motion: reduce) { .builds-row { animation: none; } }
-@media (max-width: 520px) { .build-card { flex-basis: 210px; } }
 
 /* DESKTOP: show all three compact cards in one row — no scrolling */
 @media (min-width: 900px) {
@@ -931,40 +899,232 @@ html[lang="th"] .faq__item > p { line-height: 2; }
 .footer__hours svg { color: var(--accent); }
 
 /* =========================================================
-   FACEBOOK FEED
-   The embed is injected on scroll, so the frame reserves its
-   height up front — otherwise the page jumps when it lands.
+   SOCIAL PROOF — Google reviews + Facebook feed side by side
+   Both are the same kind of signal, so they share one section.
+   The Facebook column is the narrower aside; it stacks under
+   the reviews on tablet and below.
    ========================================================= */
+.social-grid {
+  display: grid; grid-template-columns: minmax(0, 1fr) 340px;
+  gap: 28px; align-items: start;
+}
+.social-col { min-width: 0; }
+.social-col__head {
+  display: flex; align-items: center; gap: 10px;
+  padding-bottom: 12px; margin-bottom: 20px; border-bottom: 1px solid var(--border);
+}
+.social-col__head svg { width: 20px; height: 20px; flex-shrink: 0; }
+.social-col__head h3 {
+  font-family: "Sora", sans-serif; font-weight: 600; font-size: .8rem;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--muted); margin: 0;
+}
+
+/* Reviews stack inside their column so they read as a feed beside the FB one */
+.social-col--google .reviews-grid { grid-template-columns: 1fr; gap: 14px; }
+.social-col--google .reviews-cta { margin-top: 24px; justify-content: flex-start; }
+.social-col--google .g-badge { margin-bottom: 20px; }
+
+/* ---- Facebook column ---- */
 .fbfeed__wrap {
-  position: relative; max-width: 500px; margin: 0 auto;
-  min-height: 640px; display: flex; align-items: center; justify-content: center;
+  position: relative; width: 100%;
+  min-height: 500px; display: flex; align-items: flex-start; justify-content: center;
 }
+/* Facebook's Page Plugin renders a fixed WHITE card and there is no dark mode for
+   it — the embed is a cross-origin iframe, so none of our CSS reaches inside it.
+   What we can do from out here is stop it glaring against the dark page: seat it
+   in a dark bezel and knock the brightness back a little. We deliberately do NOT
+   invert it — invert would turn every build photo into a colour negative, and we
+   cannot exclude the images because they live inside Facebook's document. */
 .fbfeed__frame {
-  width: 100%; border-radius: var(--radius); overflow: hidden;
-  background: var(--surface); border: 1px solid var(--border);
-  min-height: 640px;
+  width: 100%; border-radius: var(--radius); min-height: 500px;
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  padding: 6px;                                  /* the bezel */
+  box-shadow: 0 10px 30px rgba(0,0,0,.45), inset 0 0 0 1px rgba(255,255,255,.03);
+  overflow: hidden; position: relative;
 }
-/* Facebook's iframe is a fixed white block; centre it and let it own its height */
+/* Facebook's iframe is a fixed white block; let it own its width inside the frame */
 .fbfeed__frame .fb-page,
 .fbfeed__frame .fb-page span,
 .fbfeed__frame iframe { display: block !important; width: 100% !important; }
 
+.fbfeed__frame iframe {
+  border-radius: calc(var(--radius) - 3px);
+  /* Dimmed at rest so the white panel sits back into the page; restored on
+     hover/focus so it is at full fidelity the moment someone engages with it. */
+  filter: brightness(.88) contrast(1.03);
+  transition: filter .3s var(--ease);
+}
+.fbfeed__frame:hover iframe,
+.fbfeed__frame:focus-within iframe { filter: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .fbfeed__frame iframe { transition: none; }
+}
+
 /* Fallback card — only revealed when the SDK fails to render */
 .fbfeed__fallback {
   position: absolute; inset: 0; display: none; flex-direction: column;
-  align-items: center; justify-content: center; gap: 14px; padding: 32px 24px;
+  align-items: center; justify-content: center; gap: 14px; padding: 28px 22px;
   text-align: center; background: var(--surface);
   border: 1px solid var(--border); border-radius: var(--radius);
 }
-.fbfeed__fallback svg { width: 40px; height: 40px; color: var(--steel-2); }
-.fbfeed__fallback p { margin: 0; color: var(--muted); line-height: 1.7; max-width: 34ch; }
+.fbfeed__fallback svg { width: 34px; height: 34px; color: var(--steel-2); }
+.fbfeed__fallback p { margin: 0; color: var(--muted); line-height: 1.7; font-size: .92rem; }
 .fbfeed--unavailable .fbfeed__frame { display: none; }
 .fbfeed--unavailable .fbfeed__fallback { display: flex; }
 
-.fbfeed__cta {
-  display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin-top: 28px;
+.fbfeed__follow { display: flex; justify-content: center; margin-top: 16px; }
+
+@media (max-width: 980px) {
+  .social-grid { grid-template-columns: 1fr; gap: 44px; }
+  .social-col--google .reviews-grid { grid-template-columns: repeat(3, 1fr); }
+  .social-col--google .reviews-cta { justify-content: center; }
+  .social-col--fb { max-width: 500px; margin: 0 auto; width: 100%; }
+}
+@media (max-width: 720px) {
+  .social-col--google .reviews-grid { grid-template-columns: 1fr; }
 }
 @media (max-width: 560px) {
-  .fbfeed__wrap, .fbfeed__frame { min-height: 560px; }
-  .fbfeed__cta .btn { width: 100%; max-width: 320px; }
+  .fbfeed__wrap, .fbfeed__frame { min-height: 460px; }
+  .fbfeed__follow { width: 100%; }
+}
+
+/* ---------------------------------------------------------
+   Compact pass on the reviews / social section.
+   Everything here is scoped to #reviews so the other sections
+   keep the site's normal rhythm.
+   --------------------------------------------------------- */
+#reviews { padding-top: 48px; padding-bottom: 48px; }
+#reviews .section__head { margin-bottom: 22px; }
+#reviews .section__lead { margin-top: 8px; font-size: .98rem; }
+
+.social-grid { gap: 24px; }
+.social-col__head { padding-bottom: 10px; margin-bottom: 14px; flex-wrap: wrap; }
+.social-col__head h3 { flex: 1 1 auto; }
+
+/* Rating badge, inlined into the header row */
+.social-col__head .g-badge {
+  margin: 0; padding: 5px 12px; gap: 8px; flex-shrink: 0;
+}
+.social-col__head .g-badge__num { font-size: .95rem; }
+.social-col__head .g-badge__stars { font-size: .8rem; letter-spacing: 1px; }
+.social-col__head .g-badge__count { font-size: .76rem; }
+
+/* Tighter review cards — three of these stacked was the tallest thing here */
+#reviews .review { padding: 18px 20px; }
+#reviews .review__stars { margin-bottom: 8px; font-size: .9rem; letter-spacing: 2px; }
+#reviews .review blockquote { font-size: .94rem; line-height: 1.6; }
+#reviews .review figcaption { margin-top: 10px; font-size: .82rem; }
+#reviews .reviews-grid { gap: 12px; }
+#reviews .reviews-cta { margin-top: 18px; gap: 10px; }
+
+/* Feed shrinks to match the shorter reviews column */
+.fbfeed__wrap, .fbfeed__frame { min-height: 440px; }
+.fbfeed__follow { margin-top: 12px; }
+
+@media (max-width: 560px) {
+  #reviews { padding-top: 40px; padding-bottom: 40px; }
+  .social-col__head .g-badge { width: 100%; justify-content: center; }
+  .fbfeed__wrap, .fbfeed__frame { min-height: 420px; }
+}
+
+/* =========================================================
+   SERVICE & MAINTENANCE GALLERY
+   Compact square tiles — dense enough to read as a contact
+   sheet of real work without taking over the page.
+   ========================================================= */
+.service-gal .section__head { margin-bottom: 24px; }
+
+.sgal {
+  display: grid; gap: 10px;
+  grid-template-columns: repeat(5, 1fr);
+}
+.sgal__item {
+  position: relative; display: block; padding: 0; margin: 0;
+  border: 1px solid var(--border); border-radius: var(--radius);
+  background: var(--surface); overflow: hidden; cursor: pointer;
+  aspect-ratio: 1 / 1; width: 100%;
+  transition: border-color .25s var(--ease), transform .25s var(--ease);
+}
+.sgal__item img {
+  width: 100%; height: 100%; object-fit: cover; display: block;
+  transition: transform .4s var(--ease), filter .25s var(--ease);
+  filter: brightness(.92);
+}
+.sgal__item:hover { border-color: var(--steel); transform: translateY(-2px); }
+.sgal__item:hover img { transform: scale(1.06); filter: brightness(1); }
+.sgal__item:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* Caption rides on a scrim so it stays readable over any photo */
+.sgal__cap {
+  position: absolute; left: 0; right: 0; bottom: 0; padding: 18px 10px 8px;
+  font-size: .72rem; line-height: 1.35; color: #fff; text-align: left;
+  background: linear-gradient(to top, rgba(0,0,0,.82), rgba(0,0,0,0));
+  opacity: 0; transition: opacity .25s var(--ease);
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
+.sgal__item:hover .sgal__cap,
+.sgal__item:focus-visible .sgal__cap { opacity: 1; }
+
+.sgal__actions { display: flex; justify-content: center; margin-top: 20px; }
+
+@media (max-width: 900px) { .sgal { grid-template-columns: repeat(4, 1fr); } }
+@media (max-width: 680px) { .sgal { grid-template-columns: repeat(3, 1fr); gap: 8px; } }
+@media (max-width: 440px) {
+  .sgal { grid-template-columns: repeat(2, 1fr); }
+  .sgal__cap { opacity: 1; font-size: .68rem; }  /* no hover on touch */
+  .sgal__actions .btn { width: 100%; }
+}
+
+/* ---------------- Lightbox ---------------- */
+.lb {
+  position: fixed; inset: 0; z-index: 2000;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(8,8,10,.94);
+  padding: 56px 20px;
+  animation: lbIn .2s var(--ease) both;
+}
+@keyframes lbIn { from { opacity: 0; } to { opacity: 1; } }
+.lb__figure {
+  margin: 0; max-width: min(1100px, 100%); max-height: 100%;
+  display: flex; flex-direction: column; align-items: center; gap: 14px;
+}
+.lb__img {
+  max-width: 100%; max-height: calc(100vh - 150px);
+  object-fit: contain; border-radius: var(--radius);
+  box-shadow: 0 20px 60px rgba(0,0,0,.6);
+}
+.lb__cap {
+  color: var(--text); font-size: .95rem; text-align: center;
+  max-width: 62ch; line-height: 1.6;
+}
+.lb__close, .lb__nav {
+  position: absolute; background: rgba(255,255,255,.08); color: #fff;
+  border: 1px solid rgba(255,255,255,.16); border-radius: 50%;
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  transition: background .2s var(--ease), border-color .2s var(--ease);
+  line-height: 1;
+}
+.lb__close:hover, .lb__nav:hover { background: var(--accent); border-color: var(--accent); }
+.lb__close:focus-visible, .lb__nav:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+.lb__close { top: 16px; right: 16px; width: 42px; height: 42px; font-size: 1.6rem; }
+.lb__nav   { top: 50%; transform: translateY(-50%); width: 48px; height: 48px; font-size: 2rem; }
+.lb__nav--prev { left: 14px; }
+.lb__nav--next { right: 14px; }
+.lb__count {
+  position: absolute; bottom: 18px; left: 50%; transform: translateX(-50%);
+  font-family: "Sora", sans-serif; font-size: .78rem; letter-spacing: .1em;
+  color: var(--muted); font-variant-numeric: tabular-nums;
+}
+@media (max-width: 560px) {
+  .lb { padding: 56px 8px; }
+  .lb__nav { width: 40px; height: 40px; font-size: 1.6rem; }
+  .lb__nav--prev { left: 6px; }
+  .lb__nav--next { right: 6px; }
+  .lb__img { max-height: calc(100vh - 170px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .lb { animation: none; }
+  .sgal__item, .sgal__item img, .sgal__cap { transition: none; }
 }

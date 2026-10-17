@@ -209,43 +209,6 @@ const STAGES = [
     feats: ["Upgraded & hybrid turbo setups", "Plug-in hybrid (PHEV) specialist", "Flex-fuel / ethanol-blend ready", "Maximum safe power"] }
 ];
 
-/* Featured builds — real results from tuning partner Tune Up (model · stage · whp · torque/time).
-   Photos live in Asset/builds/. Edit/reorder freely; pairing of photo↔spec is approximate. */
-const BUILDS = [
-  { img: "Asset/builds/build-05.webp", car: "BMW G20 330e", stage: "Stage 3", power: "550 whp", sub: "B48TU · 8.03s (100–200)" },
-  { img: "Asset/builds/build-02.webp", car: "BMW G30 530e", stage: "Stage 3", power: "532 whp", sub: "B48TU · 8.3s (100–200)" },
-  { img: "Asset/builds/build-06.webp", car: "BMW G20 330e", stage: "Stage 3", power: "540 whp", sub: "B48TU · 8.25s (100–200)" },
-  { img: "Asset/builds/build-07.webp", car: "BMW G20 330e", stage: "Stage 3", power: "492 whp", sub: "B48TU · 752 Nm" },
-  { img: "Asset/builds/build-01.webp", car: "BMW G20 330e", stage: "Stage 2", power: "473 whp", sub: "B48TU · 843 Nm" },
-  { img: "Asset/builds/build-08.webp", car: "BMW G20 330e", stage: "Stage 2", power: "462 whp", sub: "B48TU · 823 Nm" },
-  { img: "Asset/builds/build-10.webp", car: "BMW G20 330e", stage: "Stage 2", power: "438 whp", sub: "B48TU · 802 Nm" },
-  { img: "Asset/builds/build-09.webp", car: "BMW F30 330e", stage: "Stage 2", power: "408 whp", sub: "B48 · 607 Nm" },
-  { img: "Asset/builds/build-03.webp", car: "BMW G22 430i", stage: "Stage 2", power: "328 whp", sub: "B48TU · 538 Nm" },
-  { img: "Asset/builds/build-11.webp", car: "BMW F30 320i", stage: "Stage 2", power: "287 whp", sub: "B48 · 451 Nm" }
-];
-
-function renderBuilds() {
-  const track = document.getElementById("buildsTrack");
-  if (!track) return;
-  const card = (b) => `
-    <article class="build-card">
-      <div class="build-card__media">
-        <img class="build-card__photo" src="${b.img}" alt="${b.car} — ${b.stage}" loading="lazy" onerror="this.closest('.build-card').style.display='none'" />
-        <span class="build-card__stage">${b.stage}</span>
-        <img class="build-card__badge" src="Asset/partners/tuneup.webp" alt="Tune Up" loading="lazy" />
-      </div>
-      <div class="build-card__body">
-        <h4 class="build-card__car">${b.car}</h4>
-        <div class="build-card__spec">
-          <span class="build-card__power">${b.power}</span>
-          <span class="build-card__sub">${b.sub}</span>
-        </div>
-      </div>
-    </article>`;
-  // duplicate the list so the right-scrolling marquee loops seamlessly
-  track.innerHTML = BUILDS.map(card).join("") + BUILDS.map(card).join("");
-}
-
 function renderStages() {
   const track = document.getElementById("stagesTrack");
   if (!track) return;
@@ -450,6 +413,159 @@ const FEATURABLE = {
 };
 
 /* =========================================================
+   SERVICE & MAINTENANCE GALLERY
+
+   Photos live in Asset/service/. To add or remove one: drop the file
+   in (or delete it) and double-click "Update Gallery.cmd" in the
+   project root — that regenerates the manifest this reads.
+
+   Never hand-edit data/service-gallery.json; the builder overwrites it.
+   ========================================================= */
+const SERVICE_GALLERY = {
+  manifest: "data/service-gallery.json",
+  initial: 10              // tiles shown before "Show all photos"
+};
+
+/* Captions come from a file the shop edits by hand, so they are untrusted
+   input as far as the page is concerned — escape before interpolating. */
+function esc(s) {
+  return String(s == null ? "" : s)
+    .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+}
+
+function initServiceGallery() {
+  const section = document.getElementById("service");
+  const grid    = document.getElementById("serviceGallery");
+  const moreBtn = document.getElementById("sgalMore");
+  if (!section || !grid) return;
+
+  let items = [];
+  let expanded = false;
+
+  const captionFor = (it) =>
+    (LANG === "th" && it.captionTh) ? it.captionTh : (it.caption || "");
+
+  function tile(it, i) {
+    const cap = captionFor(it);
+    // width/height are written so the browser reserves the right box before
+    // the image loads — without them the grid reflows and janks on mobile.
+    return `
+      <button type="button" class="sgal__item" data-i="${i}"
+              aria-label="${cap ? esc(cap) : "Open photo " + (i + 1)}">
+        <img src="${it.thumb || it.src}" alt="${esc(cap)}" loading="lazy" decoding="async"
+             width="${it.w || 600}" height="${it.h || 600}" />
+        ${cap ? `<span class="sgal__cap">${esc(cap)}</span>` : ""}
+      </button>`;
+  }
+
+  function render() {
+    const show = expanded ? items : items.slice(0, SERVICE_GALLERY.initial);
+    grid.innerHTML = show.map(tile).join("");
+    const hidden = items.length - show.length;
+    if (hidden > 0) {
+      moreBtn.hidden = false;
+      moreBtn.textContent = t("service.more") + " (" + hidden + ")";
+    } else {
+      moreBtn.hidden = (items.length <= SERVICE_GALLERY.initial);
+      if (!moreBtn.hidden) moreBtn.textContent = t("service.less");
+    }
+  }
+
+  if (moreBtn) {
+    moreBtn.addEventListener("click", () => { expanded = !expanded; render(); });
+  }
+
+  // Re-render on language switch so captions follow the site language.
+  document.addEventListener("nw:langchange", () => { if (items.length) render(); });
+
+  fetch(SERVICE_GALLERY.manifest, { cache: "no-cache" })
+    .then(r => (r.ok ? r.json() : null))
+    .then(data => {
+      items = (data && Array.isArray(data.items)) ? data.items : [];
+      if (!items.length) return;        // leave the section hidden
+      section.hidden = false;
+      render();
+      initLightbox(grid, () => items, captionFor);
+      // The section was display:none when initReveal() first measured the page, so
+      // its .reveal heading is still sitting at opacity 0. Poke the existing scroll
+      // handler to re-measure — calling initReveal() again would bind a second set
+      // of scroll/resize listeners.
+      window.dispatchEvent(new Event("scroll"));
+    })
+    .catch(() => { /* no manifest yet — section simply stays hidden */ });
+}
+
+/* ---- Lightbox, driven by whatever grid passes itself in ---- */
+function initLightbox(grid, getItems, captionFor) {
+  const box   = document.getElementById("lightbox");
+  const img   = document.getElementById("lbImg");
+  const cap   = document.getElementById("lbCap");
+  const count = document.getElementById("lbCount");
+  if (!box || !img) return;
+
+  let idx = 0;
+  let lastFocus = null;
+
+  function show(i) {
+    const items = getItems();
+    if (!items.length) return;
+    idx = (i + items.length) % items.length;      // wrap both ways
+    const it = items[idx];
+    img.src = it.src;
+    img.alt = captionFor(it) || "Nord Werk workshop photo";
+    const c = captionFor(it);
+    cap.textContent = c;
+    cap.hidden = !c;
+    count.textContent = (idx + 1) + " / " + items.length;
+  }
+
+  function open(i) {
+    lastFocus = document.activeElement;
+    show(i);
+    box.hidden = false;
+    document.body.style.overflow = "hidden";      // stop the page scrolling behind
+    document.getElementById("lbClose").focus();
+  }
+
+  function close() {
+    box.hidden = true;
+    img.src = "";
+    document.body.style.overflow = "";
+    if (lastFocus && lastFocus.focus) lastFocus.focus();
+  }
+
+  grid.addEventListener("click", (e) => {
+    const btn = e.target.closest(".sgal__item");
+    if (btn) open(Number(btn.dataset.i) || 0);
+  });
+
+  document.getElementById("lbClose").addEventListener("click", close);
+  document.getElementById("lbPrev").addEventListener("click", () => show(idx - 1));
+  document.getElementById("lbNext").addEventListener("click", () => show(idx + 1));
+
+  // Clicking the backdrop closes; clicking the photo itself must not.
+  box.addEventListener("click", (e) => { if (e.target === box) close(); });
+
+  document.addEventListener("keydown", (e) => {
+    if (box.hidden) return;
+    if (e.key === "Escape")     { close(); }
+    if (e.key === "ArrowLeft")  { show(idx - 1); }
+    if (e.key === "ArrowRight") { show(idx + 1); }
+  });
+
+  // Swipe on touch devices — most of this site's traffic is mobile.
+  let x0 = null;
+  box.addEventListener("touchstart", (e) => { x0 = e.changedTouches[0].clientX; }, { passive: true });
+  box.addEventListener("touchend", (e) => {
+    if (x0 === null) return;
+    const dx = e.changedTouches[0].clientX - x0;
+    if (Math.abs(dx) > 50) show(dx < 0 ? idx + 1 : idx - 1);
+    x0 = null;
+  }, { passive: true });
+}
+
+/* =========================================================
    FACEBOOK PAGE FEED
    Shows the page's recent posts via Facebook's official Page Plugin.
 
@@ -472,10 +588,16 @@ function initFacebookFeed() {
 
   let started = false, lastWidth = 0;
 
-  // The Page Plugin only accepts 180-500px; match the container so it never overflows.
+  // The Page Plugin only accepts 180-500px, and it needs the CONTENT width, not the
+  // border-box width — the frame carries a bezel (padding + border) and the page is
+  // border-box, so measuring naively would size the embed ~14px too wide and make it
+  // overflow its own bezel.
   const widthFor = () => {
-    const w = Math.floor(frame.getBoundingClientRect().width);
-    return Math.max(180, Math.min(500, w || 500));
+    const cs = getComputedStyle(frame);
+    const inset = parseFloat(cs.paddingLeft) + parseFloat(cs.paddingRight) +
+                  parseFloat(cs.borderLeftWidth) + parseFloat(cs.borderRightWidth);
+    const w = Math.floor(frame.getBoundingClientRect().width - (inset || 0));
+    return Math.max(180, Math.min(500, w || 340));
   };
 
   const fail = () => host.classList.add("fbfeed--unavailable");
@@ -488,7 +610,7 @@ function initFacebookFeed() {
       "data-href": FACEBOOK_PAGE,
       "data-tabs": "timeline",
       "data-width": String(lastWidth),
-      "data-height": "640",
+      "data-height": "440",
       "data-small-header": "false",
       "data-adapt-container-width": "true",
       "data-hide-cover": "false",
@@ -744,25 +866,24 @@ const I18N = {
     "props.secure.t": "Expert Technicians", "props.secure.d": "Talk to real specialists",
     "tuning.eyebrow": "PERFORMANCE TUNING", "tuning.title": "TUNING STAGES",
     "tuning.lead": "Staged power packages for your build — dyno-developed and street-reliable. Pick your level.",
-    "tuning.partner": "Calibrated by our tuning partner",
-    "tuning.partner.short": "Tuning partner", "tuning.platforms": "Platforms",
     "tuning.authorized": "bootmod3 Authorized Dealer",
     "tuning.from": "From", "tuning.quote": "Get a quote",
     "tuning.note": "Gains vary by model, fuel and supporting mods. Track, race & bespoke builds on custom quote — book a consultation for a build tailored to your car.",
-    "builds.title": "FEATURED BUILDS", "builds.lead": "Real dyno-proven results from our tuning partner.",
     "brands.label": "BRANDS WE OFFER",
     "parts.eyebrow": "PERFORMANCE PARTS", "parts.title": "FEATURED PARTS",
     "parts.lead": "Hand-picked bolt-ons for more power and a sharper drive.",
     "parts.all": "All cars", "parts.empty": "No parts listed for this model yet — get in touch.",
     "parts.view": "View details", "parts.filter": "Shop by car",
-    "reviews.title": "FROM THE GARAGE", "reviews.lead": "Real customer reviews — see them all on Google.",
+    "service.title": "SERVICE & MAINTENANCE",
+    "service.lead": "Real jobs from our Pattaya workshop — servicing, diagnostics, repairs and coding.",
+    "service.more": "Show all photos", "service.less": "Show fewer",
+    "reviews.title": "FROM THE GARAGE", "reviews.lead": "What customers say on Google, and the latest from our Facebook page.",
     "reviews.count": "Reviews on Google", "reviews.readall": "Read all reviews on Google", "reviews.write": "Write a review",
     "faq.title": "COMMON QUESTIONS", "faq.lead": "BMW & Benz owners in Pattaya ask us these most often.",
     "hours.line": "Mon – Sat · 10:00 – 19:00",
-    "social.title": "FROM THE WORKSHOP",
-    "social.lead": "Fresh builds, coding jobs and shop updates — straight from our Facebook page.",
+    "social.ghead": "Google reviews", "social.fbhead": "Latest from Facebook",
     "social.fallback": "See our latest builds, coding jobs and shop updates on Facebook.",
-    "social.follow": "Follow us on Facebook ↗", "social.line": "Add us on LINE ↗",
+    "social.follow": "Follow us on Facebook ↗",
     "book.eyebrow": "VISIT THE GARAGE", "book.title": "BOOK AN APPOINTMENT",
     "book.desc": "Reserve a slot at our Pattaya workshop — coding, tuning, diagnostics or service. We'll confirm your booking shortly.",
     "book.name": "Name", "book.name.ph": "Your name", "book.phone": "Mobile number",
@@ -794,25 +915,24 @@ const I18N = {
     "props.secure.t": "ช่างผู้เชี่ยวชาญ", "props.secure.d": "ปรึกษาช่างตัวจริง",
     "tuning.eyebrow": "การจูนสมรรถนะ", "tuning.title": "ระดับการจูน",
     "tuning.lead": "แพ็กเกจเพิ่มพลังแบบเป็นขั้นสำหรับรถของคุณ พัฒนาบนไดโน่ ขับใช้งานจริงได้ — เลือกระดับของคุณ",
-    "tuning.partner": "จูนโดยพาร์ทเนอร์จูนของเรา",
-    "tuning.partner.short": "พาร์ทเนอร์จูน", "tuning.platforms": "แพลตฟอร์ม",
     "tuning.authorized": "ตัวแทนจำหน่าย bootmod3 อย่างเป็นทางการ",
     "tuning.from": "เริ่มต้น", "tuning.quote": "ขอใบเสนอราคา",
     "tuning.note": "ผลลัพธ์แตกต่างกันตามรุ่นรถ เชื้อเพลิง และอุปกรณ์เสริม งานสนาม แข่ง และงานสั่งทำพิเศษ ประเมินราคาเฉพาะคัน — ปรึกษาเราเพื่อจัดสเปกให้เหมาะกับรถของคุณ",
-    "builds.title": "ผลงานเด่น", "builds.lead": "ผลลัพธ์จริงที่พิสูจน์บนไดโน่ จากพาร์ทเนอร์จูนของเรา",
     "brands.label": "แบรนด์ที่เราจำหน่าย",
     "parts.eyebrow": "อะไหล่สมรรถนะ", "parts.title": "อะไหล่แนะนำ",
     "parts.lead": "อะไหล่บอลต์ออนคัดสรร เพิ่มพลังและการขับขี่ที่ดีขึ้น",
     "parts.all": "ทุกรุ่น", "parts.empty": "ยังไม่มีอะไหล่สำหรับรุ่นนี้ — ติดต่อเราได้เลย",
     "parts.view": "ดูรายละเอียด", "parts.filter": "เลือกตามรถ",
-    "reviews.title": "เสียงจากลูกค้า", "reviews.lead": "รีวิวจริงจากลูกค้า — ดูทั้งหมดบน Google",
+    "service.title": "งานบริการและเช็กระยะ",
+    "service.lead": "งานจริงจากอู่ของเราในพัทยา — เช็กระยะ ตรวจเช็กปัญหา ซ่อมบำรุง และโค้ดดิ้ง",
+    "service.more": "ดูรูปทั้งหมด", "service.less": "ย่อกลับ",
+    "reviews.title": "เสียงจากลูกค้า", "reviews.lead": "รีวิวจากลูกค้าบน Google และอัปเดตล่าสุดจากเพจ Facebook ของเรา",
     "reviews.count": "รีวิวบน Google", "reviews.readall": "อ่านรีวิวทั้งหมดบน Google", "reviews.write": "เขียนรีวิว",
     "faq.title": "คำถามที่พบบ่อย", "faq.lead": "คำถามที่ลูกค้า BMW และ Benz ในพัทยาถามเราบ่อยที่สุด",
     "hours.line": "จันทร์ – เสาร์ · 10:00 – 19:00 น.",
-    "social.title": "อัปเดตจากอู่",
-    "social.lead": "ผลงาน งานโค้ดดิ้ง และข่าวสารล่าสุด — จากเพจ Facebook ของเราโดยตรง",
+    "social.ghead": "รีวิวบน Google", "social.fbhead": "อัปเดตล่าสุดจาก Facebook",
     "social.fallback": "ดูผลงานล่าสุด งานโค้ดดิ้ง และข่าวสารจากอู่ได้ที่เพจ Facebook ของเรา",
-    "social.follow": "ติดตามเราบน Facebook ↗", "social.line": "เพิ่มเพื่อนทาง LINE ↗",
+    "social.follow": "ติดตามเราบน Facebook ↗",
     "book.eyebrow": "เยี่ยมชมอู่ของเรา", "book.title": "จองคิวนัดหมาย",
     "book.desc": "จองคิวที่อู่ของเราในพัทยา — โค้ดดิ้ง จูน วิเคราะห์ปัญหา หรือซ่อมบำรุง เราจะยืนยันการจองให้เร็วที่สุด",
     "book.name": "ชื่อ", "book.name.ph": "ชื่อของคุณ", "book.phone": "เบอร์โทรศัพท์",
@@ -844,6 +964,9 @@ function applyLang() {
   document.querySelectorAll("[data-i18n-ph]").forEach(el => { el.setAttribute("placeholder", t(el.getAttribute("data-i18n-ph"))); });
   const btn = document.getElementById("langToggle");
   if (btn) btn.textContent = LANG === "en" ? "ไทย" : "ENG";
+  // Anything rendered from JS (gallery captions, etc.) can't be reached by the
+  // [data-i18n] sweep above, so let those components re-render themselves.
+  document.dispatchEvent(new CustomEvent("nw:langchange", { detail: { lang: LANG } }));
 }
 function setLang(l) { LANG = l; localStorage.setItem("nw_lang", l); applyLang(); }
 
@@ -886,7 +1009,6 @@ document.addEventListener("DOMContentLoaded", () => {
   initCountdown();
   renderCategories();
   renderStages();
-  renderBuilds();
   renderPartsFilter();
   renderProducts();   // immediate render with the built-in list…
   // …then swap in the Google Sheet list (if configured) once it loads
@@ -900,6 +1022,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initNav();
   initGoogleReviews();
   initLiveReviews();
+  initServiceGallery();
   initFacebookFeed();
   initBookingForm();
   initReveal();

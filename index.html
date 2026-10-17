@@ -48,7 +48,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@300;400;500;600&family=Noto+Sans+Thai:wght@300;400;500&display=swap" media="print" onload="this.media='all'" />
   <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@300;400;500;600&family=Noto+Sans+Thai:wght@300;400;500&display=swap" /></noscript>
-  <link rel="stylesheet" href="style.css?v=41" />
+  <link rel="stylesheet" href="style.css?v=43" />
 
   <!-- Local business structured data (helps the Google local pack) -->
   <script type="application/ld+json">
@@ -332,22 +332,6 @@
       <span class="authorized__text" data-i18n="tuning.authorized">bootmod3 Authorized Dealer</span>
     </div>
 
-    <!-- Tuning partner + platforms (one compact credibility bar) -->
-    <div class="tuning-cred reveal">
-      <div class="tuning-cred__col">
-        <span class="tuning-cred__label" data-i18n="tuning.partner.short">Tuning partner</span>
-        <img class="tuning-cred__partner" src="Asset/partners/tuneup.webp" alt="Tune Up — tuning partner" loading="lazy" />
-      </div>
-      <span class="tuning-cred__divider" aria-hidden="true"></span>
-      <div class="tuning-cred__col">
-        <span class="tuning-cred__label" data-i18n="tuning.platforms">Platforms</span>
-        <div class="tuning-cred__plats">
-          <img class="tuning-cred__plat tuning-cred__plat--app" src="Asset/partners/bootmod3.webp" alt="bootmod3" loading="lazy" />
-          <img class="tuning-cred__plat" src="Asset/partners/mgflasher.webp" alt="MG Flasher" loading="lazy" />
-        </div>
-      </div>
-    </div>
-
     <div class="stages-slider">
       <button class="stages-nav stages-nav--prev" id="stagesPrev" aria-label="Previous stage">‹</button>
       <div class="stages-track" id="stagesTrack">
@@ -359,18 +343,6 @@
     <div class="stages-dots" id="stagesDots"></div>
 
     <p class="stages__note reveal" data-i18n="tuning.note">Gains vary by model, fuel and supporting mods. Track, race &amp; bespoke builds on custom quote — book a consultation for a build tailored to your car.</p>
-
-    <!-- Featured builds — real results from tuning partner Tune Up -->
-    <div class="builds reveal">
-      <div class="builds__head">
-        <h3 class="builds__title" data-i18n="builds.title">FEATURED BUILDS</h3>
-        <p class="builds__lead" data-i18n="builds.lead">Real dyno-proven results from our tuning partner.</p>
-      </div>
-      <div class="builds-marquee">
-        <!-- cards render (twice, for a seamless loop) from the BUILDS array in script.js -->
-        <div class="builds-row" id="buildsTrack"></div>
-      </div>
-    </div>
   </section>
 
   <!-- ===================== PARTS & UPGRADES ===================== -->
@@ -391,6 +363,39 @@
     <div class="parts-dots" id="partsDots"></div>
     <p class="parts-empty" id="partsEmpty" data-i18n="parts.empty" hidden>No parts listed for this model yet — get in touch.</p>
   </section>
+
+  <!-- ===================== SERVICE & MAINTENANCE GALLERY =====================
+       Tiles are built by initServiceGallery() from data/service-gallery.json,
+       which tools/build-gallery.ps1 regenerates from Asset/service/. A browser
+       cannot list a folder, so that manifest is the bridge between the shop's
+       photo folder and this grid.
+
+       Starts hidden and only reveals itself once there is at least one photo,
+       so an empty folder leaves no empty section behind. -->
+  <section class="section service-gal" id="service" hidden>
+    <div class="section__head reveal">
+      <h2 class="section__title" data-i18n="service.title">SERVICE &amp; MAINTENANCE</h2>
+      <p class="section__lead" data-i18n="service.lead">Real jobs from our Pattaya workshop — servicing, diagnostics, repairs and coding.</p>
+    </div>
+
+    <div class="sgal" id="serviceGallery"></div>
+
+    <div class="sgal__actions">
+      <button type="button" class="btn btn--ghost" id="sgalMore" hidden data-i18n="service.more">Show all photos</button>
+    </div>
+  </section>
+
+  <!-- Lightbox, shared by the gallery. Inert until a tile is opened. -->
+  <div class="lb" id="lightbox" hidden role="dialog" aria-modal="true" aria-label="Photo viewer">
+    <button type="button" class="lb__close" id="lbClose" aria-label="Close">&times;</button>
+    <button type="button" class="lb__nav lb__nav--prev" id="lbPrev" aria-label="Previous photo">&#8249;</button>
+    <figure class="lb__figure">
+      <img class="lb__img" id="lbImg" alt="" />
+      <figcaption class="lb__cap" id="lbCap"></figcaption>
+    </figure>
+    <button type="button" class="lb__nav lb__nav--next" id="lbNext" aria-label="Next photo">&#8250;</button>
+    <span class="lb__count" id="lbCount"></span>
+  </div>
 
   <!-- ===================== BRANDS MARQUEE ===================== -->
   <section class="brands" id="brands">
@@ -419,18 +424,29 @@
   <section class="section" id="reviews">
     <div class="section__head reveal">
       <h2 class="section__title" data-i18n="reviews.title">FROM THE GARAGE</h2>
-      <p class="section__lead" data-i18n="reviews.lead">Real customer reviews — see them all on Google.</p>
+      <p class="section__lead" data-i18n="reviews.lead">What customers say on Google, and the latest from our Facebook page.</p>
     </div>
 
-    <!-- Google rating badge (href + rating + count are set from the GOOGLE config in script.js) -->
-    <a class="g-badge reveal" id="gReviewsBadge" href="#" target="_blank" rel="noopener" aria-label="Read Nord Werk Automotive reviews on Google">
-      <span class="g-badge__g" aria-hidden="true">
-        <svg viewBox="0 0 48 48" width="22" height="22"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
-      </span>
-      <span class="g-badge__num" id="gRatingNum"></span>
-      <span class="g-badge__stars" id="gRatingStars" aria-hidden="true">★★★★★</span>
-      <span class="g-badge__count" id="gRatingCount" data-i18n="reviews.count">Reviews on Google</span>
-    </a>
+    <!-- Two social-proof columns: Google reviews (primary) and the Facebook feed
+         (compact aside). They stack on narrow screens. -->
+    <div class="social-grid">
+
+      <div class="social-col social-col--google reveal">
+        <div class="social-col__head">
+          <svg viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+          <h3 data-i18n="social.ghead">Google reviews</h3>
+          <!-- Rating badge sits in the header row rather than on its own line — it
+               saves a whole band of vertical space. href/rating/count come from the
+               GOOGLE config in script.js. -->
+          <a class="g-badge" id="gReviewsBadge" href="#" target="_blank" rel="noopener" aria-label="Read Nord Werk Automotive reviews on Google">
+            <span class="g-badge__g" aria-hidden="true">
+              <svg viewBox="0 0 48 48" width="16" height="16"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+            </span>
+            <span class="g-badge__num" id="gRatingNum"></span>
+            <span class="g-badge__stars" id="gRatingStars" aria-hidden="true">★★★★★</span>
+            <span class="g-badge__count" id="gRatingCount" data-i18n="reviews.count">Reviews on Google</span>
+          </a>
+        </div>
 
     <!-- Live Google reviews render here once FEATURABLE.widgetId is set in script.js -->
     <div id="liveReviews" class="live-reviews"></div>
@@ -453,38 +469,35 @@
       </figure>
     </div>
 
-    <div class="reviews-cta reveal">
-      <a class="btn btn--primary" id="gReviewsLink" href="#" target="_blank" rel="noopener" data-i18n="reviews.readall">Read all reviews on Google</a>
-      <a class="btn btn--ghost" id="gWriteLink" href="#" target="_blank" rel="noopener" data-i18n="reviews.write">Write a review</a>
-    </div>
-  </section>
+        <div class="reviews-cta">
+          <a class="btn btn--primary" id="gReviewsLink" href="#" target="_blank" rel="noopener" data-i18n="reviews.readall">Read all reviews on Google</a>
+          <a class="btn btn--ghost" id="gWriteLink" href="#" target="_blank" rel="noopener" data-i18n="reviews.write">Write a review</a>
+        </div>
+      </div><!-- /google -->
 
-  <!-- ===================== FACEBOOK FEED =====================
-       The Page Plugin is injected by initFacebookFeed() only once this section
-       scrolls into view — the SDK is ~300KB and would otherwise land on every
-       page load. The frame keeps a reserved height so nothing shifts (CLS) when
-       the embed finally appears, and if the SDK is blocked the static card
-       underneath is revealed instead of leaving an empty box. -->
-  <section class="section fbfeed" id="social">
-    <div class="section__head reveal">
-      <h2 class="section__title" data-i18n="social.title">FROM THE WORKSHOP</h2>
-      <p class="section__lead" data-i18n="social.lead">Fresh builds, coding jobs and shop updates — straight from our Facebook page.</p>
-    </div>
+      <!-- Facebook feed. The Page Plugin is injected by initFacebookFeed() only once
+           this column scrolls into view — the SDK is ~300KB and would otherwise land
+           on every page load. The frame reserves its height so nothing shifts when
+           the embed appears, and if the SDK is blocked (ad blockers routinely block
+           connect.facebook.net) the static card underneath is revealed instead. -->
+      <aside class="social-col social-col--fb reveal" id="social">
+        <div class="social-col__head">
+          <svg viewBox="0 0 24 24" fill="#1877F2" aria-hidden="true"><path d="M24 12.07C24 5.4 18.63 0 12 0S0 5.4 0 12.07c0 6 4.39 10.97 10.13 11.87v-8.4H7.08v-3.47h3.05V9.41c0-3.02 1.79-4.69 4.53-4.69 1.31 0 2.68.24 2.68.24v2.97h-1.51c-1.49 0-1.95.93-1.95 1.88v2.26h3.32l-.53 3.47h-2.79v8.4C19.61 23.04 24 18.07 24 12.07z"/></svg>
+          <h3 data-i18n="social.fbhead">Latest from Facebook</h3>
+        </div>
 
-    <div class="fbfeed__wrap reveal" id="fbFeed">
-      <div class="fbfeed__frame" id="fbFeedFrame"></div>
+        <div class="fbfeed__wrap" id="fbFeed">
+          <div class="fbfeed__frame" id="fbFeedFrame"></div>
+          <div class="fbfeed__fallback" id="fbFeedFallback">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M24 12.07C24 5.4 18.63 0 12 0S0 5.4 0 12.07c0 6 4.39 10.97 10.13 11.87v-8.4H7.08v-3.47h3.05V9.41c0-3.02 1.79-4.69 4.53-4.69 1.31 0 2.68.24 2.68.24v2.97h-1.51c-1.49 0-1.95.93-1.95 1.88v2.26h3.32l-.53 3.47h-2.79v8.4C19.61 23.04 24 18.07 24 12.07z"/></svg>
+            <p data-i18n="social.fallback">See our latest builds, coding jobs and shop updates on Facebook.</p>
+          </div>
+        </div>
 
-      <!-- Shown when the SDK is unavailable (ad blockers routinely block it) -->
-      <div class="fbfeed__fallback" id="fbFeedFallback">
-        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M24 12.07C24 5.4 18.63 0 12 0S0 5.4 0 12.07c0 6 4.39 10.97 10.13 11.87v-8.4H7.08v-3.47h3.05V9.41c0-3.02 1.79-4.69 4.53-4.69 1.31 0 2.68.24 2.68.24v2.97h-1.51c-1.49 0-1.95.93-1.95 1.88v2.26h3.32l-.53 3.47h-2.79v8.4C19.61 23.04 24 18.07 24 12.07z"/></svg>
-        <p data-i18n="social.fallback">See our latest builds, coding jobs and shop updates on Facebook.</p>
-      </div>
-    </div>
+        <a class="btn btn--ghost fbfeed__follow" href="https://www.facebook.com/nordwerkauto" target="_blank" rel="noopener" data-i18n="social.follow">Follow us on Facebook ↗</a>
+      </aside>
 
-    <div class="fbfeed__cta reveal">
-      <a class="btn btn--primary" href="https://www.facebook.com/nordwerkauto" target="_blank" rel="noopener" data-i18n="social.follow">Follow us on Facebook ↗</a>
-      <a class="btn btn--ghost" href="https://lin.ee/yfhXIx4" target="_blank" rel="noopener" data-i18n="social.line">Add us on LINE ↗</a>
-    </div>
+    </div><!-- /social-grid -->
   </section>
 
   <!-- ===================== FAQ =====================
@@ -587,7 +600,7 @@
     </div>
   </footer>
 
-  <script defer src="products.js?v=41"></script>
-  <script defer src="script.js?v=41"></script>
+  <script defer src="products.js?v=43"></script>
+  <script defer src="script.js?v=43"></script>
 </body>
 </html>
