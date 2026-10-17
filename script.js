@@ -840,26 +840,49 @@ function renderReviewCards(host, reviews) {
     return isFinite(n) && n > 0 ? Math.min(5, Math.round(n)) : 5;
   };
 
-  const html = reviews.map(r => {
+  // Unix seconds (Places) or ISO strings (Business Profile) -> relative date.
+  const whenOf = (r) => {
+    const raw = pick(r, ["createTime", "publishedAt", "publishTime", "updateTime", "time", "date"]);
+    if (typeof raw === "number") return fbRelTime(new Date(raw < 1e12 ? raw * 1000 : raw).toISOString());
+    return fbRelTime(raw);
+  };
+
+  // Written reviews first; star-only ratings (Google doesn't share the tags or
+  // services a customer ticks, only the stars) still get a card after them.
+  const textOf = (r) => String(pick(r, ["comment", "text", "review", "content"]) || "").trim();
+  const ordered = reviews.filter(textOf).concat(reviews.filter(r => !textOf(r))).slice(0, 6);
+
+  const html = ordered.map(r => {
     const who  = pick(r.reviewer || r, ["displayName", "name", "author_name", "author"]) || "Google user";
-    const text = pick(r, ["comment", "text", "review", "content"]);
-    if (!text) return "";                       // star-only rating: nothing to show
+    const text = textOf(r);
     const n = starsOf(r);
     const photo = pick(r.reviewer || r, ["profilePhotoUrl", "profile_photo_url", "avatar"]);
+    const when = whenOf(r);
     return `
-      <figure class="review">
+      <figure class="review${text ? "" : " review--rating"}">
         <div class="review__stars" aria-label="${n} out of 5">${"★".repeat(n)}${"☆".repeat(5 - n)}</div>
-        <blockquote>${esc(text)}</blockquote>
+        ${text ? `<blockquote>${esc(text)}</blockquote>`
+               : `<p class="review__note">${esc(t("reviews.rated").replace("{n}", n))}</p>`}
         <figcaption>
           ${photo ? `<img class="review__avatar" src="${esc(photo)}" alt="" loading="lazy" referrerpolicy="no-referrer" />` : ""}
           <span>${esc(who)}</span>
+          ${when ? `<span class="review__date">${esc(when)}</span>` : ""}
         </figcaption>
       </figure>`;
   }).join("");
 
-  if (!html.trim()) { const e = document.getElementById("reviewsEmpty"); if (e) e.hidden = false; return; }
+  const empty = document.getElementById("reviewsEmpty");
+  if (!html.trim()) { if (empty) empty.hidden = false; return; }
+  if (empty) empty.hidden = true;
   host.innerHTML = `<div class="reviews-grid">${html}</div>`;
+  LIVE_REVIEWS = { host, reviews };
 }
+
+/* Cards carry translated text and dates — redraw them on a language switch. */
+let LIVE_REVIEWS = null;
+document.addEventListener("nw:langchange", () => {
+  if (LIVE_REVIEWS) renderReviewCards(LIVE_REVIEWS.host, LIVE_REVIEWS.reviews);
+});
 
 /* Fill the Google badge from live values (falls back to the GOOGLE config). */
 /* Live rating values, kept so a language switch can re-render the count. */
@@ -1071,6 +1094,7 @@ const I18N = {
     "reviews.title": "FROM THE GARAGE", "reviews.lead": "What customers say on Google, and the latest from our Facebook page.",
     "reviews.count": "Reviews on Google", "reviews.readall": "Read all reviews on Google", "reviews.write": "Write a review",
     "reviews.one": "review on Google", "reviews.many": "reviews on Google",
+    "reviews.rated": "Rated {n} stars on Google",
     "reviews.empty": "Our customers rate us 5 stars on Google. Been in for a service or a tune? A few words from you helps other BMW and Benz owners in Pattaya find us.",
     "faq.title": "COMMON QUESTIONS", "faq.lead": "BMW & Benz owners in Pattaya ask us these most often.",
     "hours.line": "Mon – Sat · 10:00 – 19:00",
@@ -1123,6 +1147,7 @@ const I18N = {
     "reviews.title": "เสียงจากลูกค้า", "reviews.lead": "รีวิวจากลูกค้าบน Google และอัปเดตล่าสุดจากเพจ Facebook ของเรา",
     "reviews.count": "รีวิวบน Google", "reviews.readall": "อ่านรีวิวทั้งหมดบน Google", "reviews.write": "เขียนรีวิว",
     "reviews.one": "รีวิวบน Google", "reviews.many": "รีวิวบน Google",
+    "reviews.rated": "ให้คะแนน {n} ดาวบน Google",
     "reviews.empty": "ลูกค้าให้คะแนนเรา 5 ดาวบน Google — ถ้าเคยใช้บริการเช็กระยะหรือจูนกับเรา ฝากรีวิวสั้น ๆ ช่วยให้เจ้าของรถ BMW และ Benz ในพัทยาเจอเราได้ง่ายขึ้น",
     "faq.title": "คำถามที่พบบ่อย", "faq.lead": "คำถามที่ลูกค้า BMW และ Benz ในพัทยาถามเราบ่อยที่สุด",
     "hours.line": "จันทร์ – เสาร์ · 10:00 – 19:00 น.",

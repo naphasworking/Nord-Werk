@@ -1166,6 +1166,8 @@ html[lang="th"] .reviews-empty__msg { line-height: 2; }
   width: 26px; height: 26px; border-radius: 50%; object-fit: cover;
   border: 1px solid var(--border); flex-shrink: 0;
 }
+.review__date { margin-left: auto; font-weight: 400; opacity: .75; white-space: nowrap; }
+.review__note { color: var(--muted); font-size: .9rem; margin: 0; }
 @media (max-width: 440px) {
   .rsum { padding: 12px 14px; gap: 12px; }
   .rsum__num { font-size: 1.45rem; }
