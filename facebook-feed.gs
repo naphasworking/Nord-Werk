@@ -71,13 +71,32 @@ function doGet() {
   var out = JSON.stringify({ ok: true, fetched: new Date().toISOString(), posts: posts });
   cache.put("feed", out, CACHE_SECONDS);
   cache.put("feed_lastgood", out, STALE_SECONDS);
+  saveLastGood_(posts);
   return json_(out);
+}
+
+/* CacheService forgets after 6 h at most, so a token that breaks overnight used
+   to leave the site with no posts at all. Keep a slim copy of the newest posts
+   in Script Properties too (9 KB per value), which never expires. */
+function saveLastGood_(posts) {
+  try {
+    var slim = posts.slice(0, 3).map(function (p) {
+      return { text: p.text.length > 400 ? p.text.slice(0, 400) + "…" : p.text, image: p.image, url: p.url, time: p.time };
+    });
+    var bytes = function (s) { return encodeURIComponent(s).replace(/%[0-9A-F]{2}/g, "x").length; };
+    var s = JSON.stringify({ ok: true, fetched: new Date().toISOString(), posts: slim });
+    if (bytes(s) > 8500) {
+      slim.forEach(function (p) { p.image = ""; });
+      s = JSON.stringify({ ok: true, fetched: new Date().toISOString(), posts: slim });
+    }
+    if (bytes(s) <= 8500) PropertiesService.getScriptProperties().setProperty("FEED_LASTGOOD", s);
+  } catch (e) { /* best effort — never break a good response */ }
 }
 
 /* On failure, prefer the last good payload over an error — a dead token should
    degrade to "slightly old posts", not an empty section. */
 function staleOr_(cache, error) {
-  var last = cache.get("feed_lastgood");
+  var last = cache.get("feed_lastgood") || PropertiesService.getScriptProperties().getProperty("FEED_LASTGOOD");
   if (last) {
     var o = JSON.parse(last);
     o.stale = true;
